@@ -1,0 +1,14 @@
+{
+  "token_generate_ms": 0.0005995000010443619,
+  "token_verify_ms": 0.00018790000103763305,
+  "bp_generate_ms": 11.569156000005023,
+  "bp_verify_ms": 2.5602799999978743,
+  "bp_proof_size": 672,
+  "merkle_build_ms": 0.2655000007507624,
+  "merkle_proof_generate_ms": 0.003206000001227949,
+  "merkle_proof_verify_ms": 0.007127000008040341,
+  "merkle_proof_size": 224,
+  "lsag_sign_ms": 0.010277000001224224,
+  "lsag_verify_ms": 0.005952999999863096,
+  "lsag_signature_size": 320
+}

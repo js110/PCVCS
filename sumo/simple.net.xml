@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,100.00,100.00" origBoundary="0.00,0.00,100.00,100.00" projParameter="!"/>
+    <node id="node1" x="0.0" y="0.0" type="priority"/>
+    <node id="node2" x="100.0" y="0.0" type="priority"/>
+    <edge id="edge1" from="node1" to="node2" priority="1">
+        <lane id="edge1_0" index="0" speed="13.89" length="100.00" shape="0.00,0.00 100.00,0.00"/>
+    </edge>
+    <edge id="edge2" from="node2" to="node1" priority="1">
+        <lane id="edge2_0" index="0" speed="13.89" length="100.00" shape="100.00,0.00 0.00,0.00"/>
+    </edge>
+</net>

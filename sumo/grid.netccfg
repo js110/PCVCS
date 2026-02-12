@@ -1,0 +1,7 @@
+<configuration>
+    <grid_network>
+        <grid width="3" height="3" length="100.00" />
+        <junction cornerDetail="5" />
+        <edge streetName="路" />
+    </grid_network>
+</configuration>

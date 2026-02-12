@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="50"/>
+  <trip id="veh_0" depart="57.55" from="gneE0" to="gneE9" type="car"/>
+  <trip id="veh_1" depart="22.04" from="gneE4" to="gneE3" type="car"/>
+  <trip id="veh_2" depart="60.90" from="gneE17" to="gneE2" type="car"/>
+  <trip id="veh_3" depart="53.14" from="gneE1" to="gneE0" type="car"/>
+  <trip id="veh_4" depart="8.43" from="gneE7" to="gneE17" type="car"/>
+  <trip id="veh_5" depart="54.18" from="gneE17" to="gneE6" type="car"/>
+  <trip id="veh_6" depart="64.44" from="gneE17" to="gneE13" type="car"/>
+  <trip id="veh_7" depart="19.84" from="gneE8" to="gneE0" type="car"/>
+  <trip id="veh_8" depart="68.29" from="gneE5" to="gneE14" type="car"/>
+  <trip id="veh_9" depart="30.62" from="gneE4" to="gneE7" type="car"/>
+  <trip id="veh_10" depart="86.15" from="gneE10" to="gneE3" type="car"/>
+  <trip id="veh_11" depart="8.35" from="gneE3" to="gneE12" type="car"/>
+  <trip id="veh_12" depart="76.27" from="gneE8" to="gneE1" type="car"/>
+  <trip id="veh_13" depart="65.68" from="gneE17" to="gneE3" type="car"/>
+  <trip id="veh_14" depart="87.58" from="gneE12" to="gneE2" type="car"/>
+  <trip id="veh_15" depart="49.68" from="gneE11" to="gneE6" type="car"/>
+  <trip id="veh_16" depart="63.41" from="gneE1" to="gneE8" type="car"/>
+  <trip id="veh_17" depart="69.58" from="gneE2" to="gneE8" type="car"/>
+  <trip id="veh_18" depart="77.98" from="gneE12" to="gneE8" type="car"/>
+  <trip id="veh_19" depart="40.81" from="gneE11" to="gneE5" type="car"/>
+  <trip id="veh_20" depart="33.32" from="gneE6" to="gneE9" type="car"/>
+  <trip id="veh_21" depart="63.16" from="gneE2" to="gneE6" type="car"/>
+  <trip id="veh_22" depart="48.07" from="gneE7" to="gneE5" type="car"/>
+  <trip id="veh_23" depart="41.60" from="gneE8" to="gneE7" type="car"/>
+  <trip id="veh_24" depart="61.62" from="gneE1" to="gneE8" type="car"/>
+  <trip id="veh_25" depart="73.96" from="gneE10" to="gneE13" type="car"/>
+  <trip id="veh_26" depart="24.10" from="gneE6" to="gneE11" type="car"/>
+  <trip id="veh_27" depart="19.14" from="gneE15" to="gneE12" type="car"/>
+  <trip id="veh_28" depart="79.62" from="gneE14" to="gneE4" type="car"/>
+  <trip id="veh_29" depart="23.84" from="gneE7" to="gneE9" type="car"/>
+  <trip id="veh_30" depart="67.23" from="gneE13" to="gneE12" type="car"/>
+  <trip id="veh_31" depart="32.58" from="gneE4" to="gneE17" type="car"/>
+  <trip id="veh_32" depart="44.42" from="gneE1" to="gneE4" type="car"/>
+  <trip id="veh_33" depart="13.76" from="gneE5" to="gneE14" type="car"/>
+  <trip id="veh_34" depart="53.68" from="gneE12" to="gneE13" type="car"/>
+  <trip id="veh_35" depart="53.63" from="gneE14" to="gneE17" type="car"/>
+  <trip id="veh_36" depart="22.63" from="gneE17" to="gneE0" type="car"/>
+  <trip id="veh_37" depart="61.23" from="gneE3" to="gneE9" type="car"/>
+  <trip id="veh_38" depart="69.17" from="gneE10" to="gneE3" type="car"/>
+  <trip id="veh_39" depart="26.42" from="gneE5" to="gneE15" type="car"/>
+  <trip id="veh_40" depart="0.29" from="gneE8" to="gneE17" type="car"/>
+  <trip id="veh_41" depart="68.58" from="gneE16" to="gneE3" type="car"/>
+  <trip id="veh_42" depart="78.35" from="gneE9" to="gneE17" type="car"/>
+  <trip id="veh_43" depart="54.81" from="gneE4" to="gneE12" type="car"/>
+  <trip id="veh_44" depart="68.63" from="gneE17" to="gneE16" type="car"/>
+  <trip id="veh_45" depart="82.66" from="gneE10" to="gneE16" type="car"/>
+  <trip id="veh_46" depart="1.75" from="gneE11" to="gneE9" type="car"/>
+  <trip id="veh_47" depart="21.55" from="gneE7" to="gneE2" type="car"/>
+  <trip id="veh_48" depart="7.71" from="gneE15" to="gneE2" type="car"/>
+  <trip id="veh_49" depart="88.02" from="gneE17" to="gneE4" type="car"/>
+</routes>

@@ -1,0 +1,241 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# Rust target directory
+target/
+Cargo.lock
+
+# Rust build artifacts
+*.dll
+*.so
+*.dylib
+
+# Rust backup files
+*.bk
+*.bak
+
+# SUMO configuration and output
+*.sumocfg
+*.net.xml
+*.rou.xml
+*.add.xml
+*.out.xml
+*.fcd.xml
+*.ssl.xml
+*.s.xml
+*.vtype.xml
+
+# Experiment data and results
+experiment_results/
+results/
+charts/
+plots/*.pdf
+plots/*.png
+plots/*.svg
+
+# Temporary files and logs
+*.tmp
+*.temp
+temp/
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Windows specific
+C:/temp/
+C:/temp_cargo_build/
+
+# Cryptographic keys and certificates (security)
+*.key
+*.pem
+*.crt
+*.p12
+
+# Configuration files with sensitive data
+config/secrets.json
+config/local.json
+
+# Public repo scope: code-only artifact for reproducibility
+paper/
+performance_evaluation_results*/
+.qoder/
+.cargo/
+.tmp_*
+
+# Exclude manuscript/document/image assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.bmp
+*.tif
+*.tiff
+*.pdf
+*.doc
+*.docx
+*.rtf
+
+# Keep SUMO reproducibility configs versioned (override generic XML ignores above)
+!sumo/*.sumocfg
+!sumo/*.net.xml
+!sumo/*.rou.xml
+!sumo/*.add.xml
+!sumo/*.trips.xml
+!sumo/*.cfg
+!sumo/*.netccfg
+!sumo_real_small/*.sumocfg
+!sumo_real_small/*.net.xml
+!sumo_real_small/*.rou.xml
+!sumo_real_small/*.add.xml
+!sumo_real_small/*.trips.xml
+!sumo_real_small/*.cfg
+!sumo_real_small/*.netccfg

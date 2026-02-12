@@ -1,0 +1,146 @@
+{
+  "rsus": [
+    {
+      "rsu_id": 1,
+      "sk_hex": "611e86561a1398c1fdf8e92b75719f13ee8c5bec6f391083416c0148800fa477",
+      "pk_hex": "bfdf46503511dd617c2a18da6088f67f035a97aa2285ca6456a3f74ec0110d58"
+    },
+    {
+      "rsu_id": 2,
+      "sk_hex": "c6402bf1444abd74588f9e7f9209790b5440d21721d5aa5be02ff691a5ca3650",
+      "pk_hex": "9f44b8979eeef8eca05abe8ef6508870296f2b64e5dc265ea02b93c674e964b1"
+    },
+    {
+      "rsu_id": 3,
+      "sk_hex": "6ec331e3ca045ad5a923e6cf6711836cae3cc1cc08265a6eed56781ae8296808",
+      "pk_hex": "f99a0cdfe62158e16ea87fe4bc6fb6b52afda88f8930765b7a38793fdd345363"
+    },
+    {
+      "rsu_id": 4,
+      "sk_hex": "80a317c650972977300d02fca58e1ac9b336242053a17b19e9a22a7cb52c300b",
+      "pk_hex": "eedc8e8234e948a6bb12312880feca7cd44c90ddfbf52d0ffe0c6f319692072e"
+    }
+  ],
+  "events": [
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 13591684049666574615,
+        "expiry_ts": 1763460293,
+        "rsu_id": 1,
+        "signature_hex": "ab7aee6b37480e3119098fd51cef51ab0a17b6766175b18b6714799ee46acb8a"
+      },
+      "lat": 31.2345,
+      "lon": 121.47449999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456633
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 7691135919354500053,
+        "expiry_ts": 1763460293,
+        "rsu_id": 2,
+        "signature_hex": "8bf271dd6f4ea95c0b10b663f465ef216179418b7c27d8d4fd3a83fbc6d54fff"
+      },
+      "lat": 31.2375,
+      "lon": 121.47449999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456633
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 5885179585338849722,
+        "expiry_ts": 1763460293,
+        "rsu_id": 3,
+        "signature_hex": "ce6cfca3f9a45f3c4d34253fb71b320a49002063c2f4e864220d53dac6404acd"
+      },
+      "lat": 31.2345,
+      "lon": 121.47749999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456633
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 4683751484511097322,
+        "expiry_ts": 1763460293,
+        "rsu_id": 4,
+        "signature_hex": "5b5869473edecdd28c51f816e5aab4c65de1bd72338c180a55bdb49d7721a8f6"
+      },
+      "lat": 31.2375,
+      "lon": 121.47749999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456633
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 2,
+        "nonce": 13056603451549519615,
+        "expiry_ts": 1763460353,
+        "rsu_id": 1,
+        "signature_hex": "50f65c0b5a02386a92559ace74e40a1ba38bb8a731f64cd99e8832113dbf1fbe"
+      },
+      "lat": 31.2345,
+      "lon": 121.47449999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456693
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 2,
+        "nonce": 9105383741202255828,
+        "expiry_ts": 1763460353,
+        "rsu_id": 2,
+        "signature_hex": "b51e4c2e5d13090ca48ba04a1a6e67e8efda5c21bda29dbdab3701cc310d8c78"
+      },
+      "lat": 31.2375,
+      "lon": 121.47449999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456693
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 2,
+        "nonce": 13041599661400064438,
+        "expiry_ts": 1763460353,
+        "rsu_id": 3,
+        "signature_hex": "eef102414127a528a282fc6e358d292dab2f4cabc4bdff2803efa34fb8bbe968"
+      },
+      "lat": 31.2345,
+      "lon": 121.47749999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456693
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 2,
+        "nonce": 9247320566452969373,
+        "expiry_ts": 1763460353,
+        "rsu_id": 4,
+        "signature_hex": "931929b6acc1d8a94ad3fb5d0133cfd32e4c61bfa46be08655a492f4c3e95b8f"
+      },
+      "lat": 31.2375,
+      "lon": 121.47749999999999,
+      "geohash7": "wtw3s90",
+      "timestamp": 1763456693
+    }
+  ]
+}

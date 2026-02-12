@@ -1,0 +1,48 @@
+{
+  "task_id": "window_12345",
+  "total_registered_vehicles": 5,
+  "unique_vehicles": 5,
+  "records": [
+    {
+      "vehicle_id": "Vehicle_01",
+      "master_pk": "558b8dce9119bd9343496304bf96378f2928dd4003fe93b3fd6ec5e29604db47",
+      "task_id": "window_12345",
+      "derived_pk": "7859f417aaa8303b71d7e6211559db0b9943b7a7e7f006ebfc8c806135488fed",
+      "link_tag": "db3d4e40f49031b9011a19f0fc5d0d75910ec6fc47cf16d502f8935be0928744",
+      "timestamp": 0
+    },
+    {
+      "vehicle_id": "Vehicle_02",
+      "master_pk": "feeefa92a139b5350729615eb0376da55fc6cbefb9093c9ee0baed3515d2693c",
+      "task_id": "window_12345",
+      "derived_pk": "1afb2329b6c150b7726d1e7b59dba7ba976b707607f17116db5b459c5d1c954e",
+      "link_tag": "2802aba65ae7c86170e192853b77706065eeda4c74022ba51ffa5415481a753c",
+      "timestamp": 0
+    },
+    {
+      "vehicle_id": "Vehicle_03",
+      "master_pk": "16f57f9dae1394ba60281d0b71a668f10760db0df1b3dee9e9d4b3df59f336ec",
+      "task_id": "window_12345",
+      "derived_pk": "aeb6db2e872851f159c7f53ab4292423c90f6b490d14938466cd9990a8d8b4f5",
+      "link_tag": "c2fba652df3a8ab02b1a8725b930235543fdd8101b102631029cdab157e2dbf7",
+      "timestamp": 0
+    },
+    {
+      "vehicle_id": "Vehicle_04",
+      "master_pk": "115a29d478aa969f9d72a046993603e2437a671ebbbdc96e46972e7bb519da13",
+      "task_id": "window_12345",
+      "derived_pk": "945fec197eb08ed051563d9d00521eefd774007e7a0a8189b8cb146442dde6ce",
+      "link_tag": "0ec9840a41794a8762727dca0b8f8135623f585055abeb824323dd0ccade9fe9",
+      "timestamp": 0
+    },
+    {
+      "vehicle_id": "Vehicle_05",
+      "master_pk": "1ca7331d5a70f554ef0cb8c85584fdf331a7ddc2f72e12a19cc6ff217ffad02d",
+      "task_id": "window_12345",
+      "derived_pk": "9904a0ee81b144fa3726865b69e97b8f9e79bef167dcf462f0127573cc6ef87e",
+      "link_tag": "fd3b4cc426ab00b9d0a6a61aa3412817ca640f6aa673d049b1bb602ff8b605e2",
+      "timestamp": 0
+    }
+  ],
+  "timestamp": 0
+}

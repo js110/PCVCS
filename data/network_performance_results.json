@@ -1,0 +1,29 @@
+[
+  {
+    "scenario": "稀疏流量",
+    "vehicle_count": 30,
+    "simulation_duration": 1000,
+    "execution_time": 0.17458009719848633,
+    "inserted_vehicles": 0,
+    "running_vehicles": 0,
+    "waiting_vehicles": 0
+  },
+  {
+    "scenario": "中等密度",
+    "vehicle_count": 100,
+    "simulation_duration": 1000,
+    "execution_time": 0.1574411392211914,
+    "inserted_vehicles": 0,
+    "running_vehicles": 0,
+    "waiting_vehicles": 0
+  },
+  {
+    "scenario": "高密度拥堵",
+    "vehicle_count": 300,
+    "simulation_duration": 1000,
+    "execution_time": 0.19896960258483887,
+    "inserted_vehicles": 0,
+    "running_vehicles": 0,
+    "waiting_vehicles": 0
+  }
+]

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Grid network for SUMO simulation -->
+<network xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd" version="1.9">
+    <!-- Nodes -->
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,1000.00,1000.00" origBoundary="0.00,0.00,1000.00,1000.00" projParameter="!"/>
+    
+    <node id="node0" x="0.0" y="0.0" type="priority"/>
+    <node id="node1" x="500.0" y="0.0" type="priority"/>
+    <node id="node2" x="1000.0" y="0.0" type="priority"/>
+    <node id="node3" x="0.0" y="500.0" type="priority"/>
+    <node id="node4" x="500.0" y="500.0" type="priority"/>
+    <node id="node5" x="1000.0" y="500.0" type="priority"/>
+    <node id="node6" x="0.0" y="1000.0" type="priority"/>
+    <node id="node7" x="500.0" y="1000.0" type="priority"/>
+    <node id="node8" x="1000.0" y="1000.0" type="priority"/>
+    
+    <!-- Edges -->
+    <edge id="edge0" from="node0" to="node1" priority="1">
+        <lane id="edge0_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,0.00 500.00,0.00"/>
+    </edge>
+    <edge id="edge1" from="node1" to="node2" priority="1">
+        <lane id="edge1_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,0.00 1000.00,0.00"/>
+    </edge>
+    <edge id="edge2" from="node0" to="node3" priority="1">
+        <lane id="edge2_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,0.00 0.00,500.00"/>
+    </edge>
+    <edge id="edge3" from="node1" to="node4" priority="1">
+        <lane id="edge3_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,0.00 500.00,500.00"/>
+    </edge>
+    <edge id="edge4" from="node2" to="node5" priority="1">
+        <lane id="edge4_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,0.00 1000.00,500.00"/>
+    </edge>
+    <edge id="edge5" from="node3" to="node4" priority="1">
+        <lane id="edge5_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,500.00 500.00,500.00"/>
+    </edge>
+    <edge id="edge6" from="node4" to="node5" priority="1">
+        <lane id="edge6_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,500.00 1000.00,500.00"/>
+    </edge>
+    <edge id="edge7" from="node3" to="node6" priority="1">
+        <lane id="edge7_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,500.00 0.00,1000.00"/>
+    </edge>
+    <edge id="edge8" from="node4" to="node7" priority="1">
+        <lane id="edge8_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,500.00 500.00,1000.00"/>
+    </edge>
+    <edge id="edge9" from="node5" to="node8" priority="1">
+        <lane id="edge9_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,500.00 1000.00,1000.00"/>
+    </edge>
+    <edge id="edge10" from="node6" to="node7" priority="1">
+        <lane id="edge10_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,1000.00 500.00,1000.00"/>
+    </edge>
+    <edge id="edge11" from="node7" to="node8" priority="1">
+        <lane id="edge11_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,1000.00 1000.00,1000.00"/>
+    </edge>
+    
+    <!-- Reverse edges for bidirectional traffic -->
+    <edge id="edge0r" from="node1" to="node0" priority="1">
+        <lane id="edge0r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,0.00 0.00,0.00"/>
+    </edge>
+    <edge id="edge1r" from="node2" to="node1" priority="1">
+        <lane id="edge1r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,0.00 500.00,0.00"/>
+    </edge>
+    <edge id="edge2r" from="node3" to="node0" priority="1">
+        <lane id="edge2r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,500.00 0.00,0.00"/>
+    </edge>
+    <edge id="edge3r" from="node4" to="node1" priority="1">
+        <lane id="edge3r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,500.00 500.00,0.00"/>
+    </edge>
+    <edge id="edge4r" from="node5" to="node2" priority="1">
+        <lane id="edge4r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,500.00 1000.00,0.00"/>
+    </edge>
+    <edge id="edge5r" from="node4" to="node3" priority="1">
+        <lane id="edge5r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,500.00 0.00,500.00"/>
+    </edge>
+    <edge id="edge6r" from="node5" to="node4" priority="1">
+        <lane id="edge6r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,500.00 500.00,500.00"/>
+    </edge>
+    <edge id="edge7r" from="node6" to="node3" priority="1">
+        <lane id="edge7r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="0.00,1000.00 0.00,500.00"/>
+    </edge>
+    <edge id="edge8r" from="node7" to="node4" priority="1">
+        <lane id="edge8r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,1000.00 500.00,500.00"/>
+    </edge>
+    <edge id="edge9r" from="node8" to="node5" priority="1">
+        <lane id="edge9r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,1000.00 1000.00,500.00"/>
+    </edge>
+    <edge id="edge10r" from="node7" to="node6" priority="1">
+        <lane id="edge10r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="500.00,1000.00 0.00,1000.00"/>
+    </edge>
+    <edge id="edge11r" from="node8" to="node7" priority="1">
+        <lane id="edge11r_0" index="0" speed="13.89" length="500.0" width="3.2" shape="1000.00,1000.00 500.00,1000.00"/>
+    </edge>
+</network>

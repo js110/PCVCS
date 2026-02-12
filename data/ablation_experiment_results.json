@@ -1,0 +1,50 @@
+[
+  {
+    "variant": "完整方案",
+    "avg_processing_time_ms": 2.4675619999470655,
+    "avg_message_size_bytes": 3080.0,
+    "capabilities": {
+      "location_protection": true,
+      "time_protection": true,
+      "anonymity": true,
+      "linkability": true,
+      "post_quantum": true
+    }
+  },
+  {
+    "variant": "Variant-1 (无Bulletproofs)",
+    "avg_processing_time_ms": 0.0018899999849963933,
+    "avg_message_size_bytes": 1452.0,
+    "capabilities": {
+      "location_protection": true,
+      "time_protection": false,
+      "anonymity": false,
+      "linkability": false,
+      "post_quantum": false
+    }
+  },
+  {
+    "variant": "Variant-2 (无LSAG)",
+    "avg_processing_time_ms": 2.4712629998248303,
+    "avg_message_size_bytes": 2413.0,
+    "capabilities": {
+      "location_protection": true,
+      "time_protection": true,
+      "anonymity": false,
+      "linkability": false,
+      "post_quantum": false
+    }
+  },
+  {
+    "variant": "Variant-3 (无Kyber)",
+    "avg_processing_time_ms": 2.46920300025522,
+    "avg_message_size_bytes": 3089.0,
+    "capabilities": {
+      "location_protection": true,
+      "time_protection": true,
+      "anonymity": true,
+      "linkability": true,
+      "post_quantum": false
+    }
+  }
+]

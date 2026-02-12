@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated network for SUMO simulation -->
+<network xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd" version="1.9" junctionCornerDetail="5" limitTurnSpeed="5.50">
+    <!-- Nodes -->
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,1000.00,1000.00" origBoundary="0.00,0.00,1000.00,1000.00" projParameter="!"/>
+    
+    <node id="A0" x="0.0" y="0.0" type="priority"/>
+    <node id="A1" x="300.0" y="0.0" type="priority"/>
+    <node id="A2" x="600.0" y="0.0" type="priority"/>
+    <node id="A3" x="1000.0" y="0.0" type="priority"/>
+    <node id="B0" x="0.0" y="300.0" type="priority"/>
+    <node id="B1" x="300.0" y="300.0" type="priority"/>
+    <node id="B2" x="600.0" y="300.0" type="priority"/>
+    <node id="B3" x="1000.0" y="300.0" type="priority"/>
+    <node id="C0" x="0.0" y="600.0" type="priority"/>
+    <node id="C1" x="300.0" y="600.0" type="priority"/>
+    <node id="C2" x="600.0" y="600.0" type="priority"/>
+    <node id="C3" x="1000.0" y="600.0" type="priority"/>
+    <node id="D0" x="0.0" y="1000.0" type="priority"/>
+    <node id="D1" x="300.0" y="1000.0" type="priority"/>
+    <node id="D2" x="600.0" y="1000.0" type="priority"/>
+    <node id="D3" x="1000.0" y="1000.0" type="priority"/>
+    
+    <!-- Edges -->
+    <!-- Horizontal edges -->
+    <edge id="A0A1" from="A0" to="A1" priority="1">
+        <lane id="A0A1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,0.00 300.00,0.00"/>
+    </edge>
+    <edge id="A1A2" from="A1" to="A2" priority="1">
+        <lane id="A1A2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,0.00 600.00,0.00"/>
+    </edge>
+    <edge id="A2A3" from="A2" to="A3" priority="1">
+        <lane id="A2A3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,0.00 1000.00,0.00"/>
+    </edge>
+    
+    <edge id="B0B1" from="B0" to="B1" priority="1">
+        <lane id="B0B1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,300.00 300.00,300.00"/>
+    </edge>
+    <edge id="B1B2" from="B1" to="B2" priority="1">
+        <lane id="B1B2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,300.00 600.00,300.00"/>
+    </edge>
+    <edge id="B2B3" from="B2" to="B3" priority="1">
+        <lane id="B2B3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,300.00 1000.00,300.00"/>
+    </edge>
+    
+    <edge id="C0C1" from="C0" to="C1" priority="1">
+        <lane id="C0C1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,600.00 300.00,600.00"/>
+    </edge>
+    <edge id="C1C2" from="C1" to="C2" priority="1">
+        <lane id="C1C2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,600.00 600.00,600.00"/>
+    </edge>
+    <edge id="C2C3" from="C2" to="C3" priority="1">
+        <lane id="C2C3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,600.00 1000.00,600.00"/>
+    </edge>
+    
+    <edge id="D0D1" from="D0" to="D1" priority="1">
+        <lane id="D0D1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,1000.00 300.00,1000.00"/>
+    </edge>
+    <edge id="D1D2" from="D1" to="D2" priority="1">
+        <lane id="D1D2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,1000.00 600.00,1000.00"/>
+    </edge>
+    <edge id="D2D3" from="D2" to="D3" priority="1">
+        <lane id="D2D3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,1000.00 1000.00,1000.00"/>
+    </edge>
+    
+    <!-- Vertical edges -->
+    <edge id="A0B0" from="A0" to="B0" priority="1">
+        <lane id="A0B0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,0.00 0.00,300.00"/>
+    </edge>
+    <edge id="B0C0" from="B0" to="C0" priority="1">
+        <lane id="B0C0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,300.00 0.00,600.00"/>
+    </edge>
+    <edge id="C0D0" from="C0" to="D0" priority="1">
+        <lane id="C0D0_0" index="0" speed="13.89" length="400.0" width="3.2" shape="0.00,600.00 0.00,1000.00"/>
+    </edge>
+    
+    <edge id="A1B1" from="A1" to="B1" priority="1">
+        <lane id="A1B1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,0.00 300.00,300.00"/>
+    </edge>
+    <edge id="B1C1" from="B1" to="C1" priority="1">
+        <lane id="B1C1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,300.00 300.00,600.00"/>
+    </edge>
+    <edge id="C1D1" from="C1" to="D1" priority="1">
+        <lane id="C1D1_0" index="0" speed="13.89" length="400.0" width="3.2" shape="300.00,600.00 300.00,1000.00"/>
+    </edge>
+    
+    <edge id="A2B2" from="A2" to="B2" priority="1">
+        <lane id="A2B2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,0.00 600.00,300.00"/>
+    </edge>
+    <edge id="B2C2" from="B2" to="C2" priority="1">
+        <lane id="B2C2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,300.00 600.00,600.00"/>
+    </edge>
+    <edge id="C2D2" from="C2" to="D2" priority="1">
+        <lane id="C2D2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,600.00 600.00,1000.00"/>
+    </edge>
+    
+    <edge id="A3B3" from="A3" to="B3" priority="1">
+        <lane id="A3B3_0" index="0" speed="13.89" length="300.0" width="3.2" shape="1000.00,0.00 1000.00,300.00"/>
+    </edge>
+    <edge id="B3C3" from="B3" to="C3" priority="1">
+        <lane id="B3C3_0" index="0" speed="13.89" length="300.0" width="3.2" shape="1000.00,300.00 1000.00,600.00"/>
+    </edge>
+    <edge id="C3D3" from="C3" to="D3" priority="1">
+        <lane id="C3D3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,600.00 1000.00,1000.00"/>
+    </edge>
+    
+    <!-- Reverse edges for bidirectional traffic -->
+    <edge id="A1A0" from="A1" to="A0" priority="1">
+        <lane id="A1A0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,0.00 0.00,0.00"/>
+    </edge>
+    <edge id="A2A1" from="A2" to="A1" priority="1">
+        <lane id="A2A1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,0.00 300.00,0.00"/>
+    </edge>
+    <edge id="A3A2" from="A3" to="A2" priority="1">
+        <lane id="A3A2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,0.00 600.00,0.00"/>
+    </edge>
+    
+    <edge id="B1B0" from="B1" to="B0" priority="1">
+        <lane id="B1B0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,300.00 0.00,300.00"/>
+    </edge>
+    <edge id="B2B1" from="B2" to="B1" priority="1">
+        <lane id="B2B1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,300.00 300.00,300.00"/>
+    </edge>
+    <edge id="B3B2" from="B3" to="B2" priority="1">
+        <lane id="B3B2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,300.00 600.00,300.00"/>
+    </edge>
+    
+    <edge id="C1C0" from="C1" to="C0" priority="1">
+        <lane id="C1C0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,600.00 0.00,600.00"/>
+    </edge>
+    <edge id="C2C1" from="C2" to="C1" priority="1">
+        <lane id="C2C1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,600.00 300.00,600.00"/>
+    </edge>
+    <edge id="C3C2" from="C3" to="C2" priority="1">
+        <lane id="C3C2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,600.00 600.00,600.00"/>
+    </edge>
+    
+    <edge id="D1D0" from="D1" to="D0" priority="1">
+        <lane id="D1D0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,1000.00 0.00,1000.00"/>
+    </edge>
+    <edge id="D2D1" from="D2" to="D1" priority="1">
+        <lane id="D2D1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,1000.00 300.00,1000.00"/>
+    </edge>
+    <edge id="D3D2" from="D3" to="D2" priority="1">
+        <lane id="D3D2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,1000.00 600.00,1000.00"/>
+    </edge>
+    
+    <edge id="B0A0" from="B0" to="A0" priority="1">
+        <lane id="B0A0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,300.00 0.00,0.00"/>
+    </edge>
+    <edge id="C0B0" from="C0" to="B0" priority="1">
+        <lane id="C0B0_0" index="0" speed="13.89" length="300.0" width="3.2" shape="0.00,600.00 0.00,300.00"/>
+    </edge>
+    <edge id="D0C0" from="D0" to="C0" priority="1">
+        <lane id="D0C0_0" index="0" speed="13.89" length="400.0" width="3.2" shape="0.00,1000.00 0.00,600.00"/>
+    </edge>
+    
+    <edge id="B1A1" from="B1" to="A1" priority="1">
+        <lane id="B1A1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,300.00 300.00,0.00"/>
+    </edge>
+    <edge id="C1B1" from="C1" to="B1" priority="1">
+        <lane id="C1B1_0" index="0" speed="13.89" length="300.0" width="3.2" shape="300.00,600.00 300.00,300.00"/>
+    </edge>
+    <edge id="D1C1" from="D1" to="C1" priority="1">
+        <lane id="D1C1_0" index="0" speed="13.89" length="400.0" width="3.2" shape="300.00,1000.00 300.00,600.00"/>
+    </edge>
+    
+    <edge id="B2A2" from="B2" to="A2" priority="1">
+        <lane id="B2A2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,300.00 600.00,0.00"/>
+    </edge>
+    <edge id="C2B2" from="C2" to="B2" priority="1">
+        <lane id="C2B2_0" index="0" speed="13.89" length="300.0" width="3.2" shape="600.00,600.00 600.00,300.00"/>
+    </edge>
+    <edge id="D2C2" from="D2" to="C2" priority="1">
+        <lane id="D2C2_0" index="0" speed="13.89" length="400.0" width="3.2" shape="600.00,1000.00 600.00,600.00"/>
+    </edge>
+    
+    <edge id="B3A3" from="B3" to="A3" priority="1">
+        <lane id="B3A3_0" index="0" speed="13.89" length="300.0" width="3.2" shape="1000.00,300.00 1000.00,0.00"/>
+    </edge>
+    <edge id="C3B3" from="C3" to="B3" priority="1">
+        <lane id="C3B3_0" index="0" speed="13.89" length="300.0" width="3.2" shape="1000.00,600.00 1000.00,300.00"/>
+    </edge>
+    <edge id="D3C3" from="D3" to="C3" priority="1">
+        <lane id="D3C3_0" index="0" speed="13.89" length="400.0" width="3.2" shape="1000.00,1000.00 1000.00,600.00"/>
+    </edge>
+</network>

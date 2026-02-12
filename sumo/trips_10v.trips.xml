@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+  <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="50"/>
+  <trip id="veh_0" depart="57.55" from="gneE0" to="gneE9" type="car"/>
+  <trip id="veh_1" depart="22.04" from="gneE4" to="gneE3" type="car"/>
+  <trip id="veh_2" depart="60.90" from="gneE17" to="gneE2" type="car"/>
+  <trip id="veh_3" depart="53.14" from="gneE1" to="gneE0" type="car"/>
+  <trip id="veh_4" depart="8.43" from="gneE7" to="gneE17" type="car"/>
+  <trip id="veh_5" depart="54.18" from="gneE17" to="gneE6" type="car"/>
+  <trip id="veh_6" depart="64.44" from="gneE17" to="gneE13" type="car"/>
+  <trip id="veh_7" depart="19.84" from="gneE8" to="gneE0" type="car"/>
+  <trip id="veh_8" depart="68.29" from="gneE5" to="gneE14" type="car"/>
+  <trip id="veh_9" depart="30.62" from="gneE4" to="gneE7" type="car"/>
+</routes>

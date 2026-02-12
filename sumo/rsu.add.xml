@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+    <!-- RSU definitions for 4x4 grid -->
+    <poi id="rsu_0" type="rsu" color="1,0,0" layer="10" lane="A0B0_0" pos="450" />
+    <poi id="rsu_1" type="rsu" color="1,0,0" layer="10" lane="A0A1_0" pos="450" />
+    <poi id="rsu_2" type="rsu" color="1,0,0" layer="10" lane="B0C0_0" pos="450" />
+    <poi id="rsu_3" type="rsu" color="1,0,0" layer="10" lane="A1B1_0" pos="450" />
+</additional>

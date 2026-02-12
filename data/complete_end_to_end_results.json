@@ -1,0 +1,63 @@
+{
+  "results": [
+    {
+      "scenario_name": "快速测试",
+      "vehicle_count": 5,
+      "total_packets": 4,
+      "latency_metrics": {
+        "avg_ms": 18.178250000346452,
+        "p50_ms": 17.92300000124669,
+        "p95_ms": 19.466749999992317,
+        "p99_ms": 19.672549999813782,
+        "max_ms": 19.72399999976915,
+        "min_ms": 17.142999999123276
+      },
+      "throughput_qps": 55.0107958676408,
+      "resource_metrics": {
+        "avg_cpu_percent": 0.0,
+        "max_cpu_percent": 0.0,
+        "avg_memory_mb": 36.203125,
+        "max_memory_mb": 36.203125
+      },
+      "communication_metrics": {
+        "avg_packet_size_bytes": 4095.0,
+        "total_data_kb": 15.99609375,
+        "packet_count": 4
+      },
+      "use_zkp": true,
+      "duration_seconds": 0.9664161205291748,
+      "success_count": 4,
+      "failure_count": 0
+    },
+    {
+      "scenario_name": "快速测试",
+      "vehicle_count": 5,
+      "total_packets": 4,
+      "latency_metrics": {
+        "avg_ms": 0.27170000021214946,
+        "p50_ms": 0.2638500000102795,
+        "p95_ms": 0.31474999959755223,
+        "p99_ms": 0.3201499996794155,
+        "max_ms": 0.3214999996998813,
+        "min_ms": 0.2376000011281576
+      },
+      "throughput_qps": 3680.5299934456293,
+      "resource_metrics": {
+        "avg_cpu_percent": 0.0,
+        "max_cpu_percent": 0.0,
+        "avg_memory_mb": 37.15234375,
+        "max_memory_mb": 37.15234375
+      },
+      "communication_metrics": {
+        "avg_packet_size_bytes": 270.75,
+        "total_data_kb": 1.0576171875,
+        "packet_count": 4
+      },
+      "use_zkp": false,
+      "duration_seconds": 0.9202055931091309,
+      "success_count": 4,
+      "failure_count": 0
+    }
+  ],
+  "count": 2
+}

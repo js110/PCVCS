@@ -1,0 +1,41 @@
+{
+  "ring_sizes": [4, 8, 16],
+  "merkle_leaf_counts": [10, 50, 100, 200],
+  "bulletproof_batch_sizes": [1, 10, 100],
+  "geohash_precisions": [5, 6, 7],
+  "simulation_scenarios": [
+    {
+      "name": "light",
+      "vehicles": 20,
+      "duration": 3600
+    },
+    {
+      "name": "medium",
+      "vehicles": 50,
+      "duration": 3600
+    },
+    {
+      "name": "heavy",
+      "vehicles": 100,
+      "duration": 3600
+    }
+  ],
+  "attack_sample_count": 100,
+  "attack_types": [
+    "location_forge",
+    "time_forge",
+    "token_abuse",
+    "replay",
+    "duplicate"
+  ],
+  "benchmark_iterations": 100,
+  "output_dir": "./experiment_results",
+  "chart_format": "pdf",
+  "chart_dpi": 300,
+  "language": "en",
+  "log_level": "INFO",
+  "log_file": "experiment.log",
+  "enable_parallel": true,
+  "max_workers": 4,
+  "sumo_home": "D:/sumo"
+}

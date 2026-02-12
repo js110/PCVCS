@@ -1,0 +1,238 @@
+{
+  "rsus": [
+    {
+      "rsu_id": 1,
+      "sk_hex": "868e702cb2b6a462bf14e156362e560b1018f1fe4ecfd0f3d4388b8ad3dbadf0",
+      "pk_hex": "9ac67033404854a373ae7e30e8053d6e7e9e5b0df9c4b8520e81902d85dfc7f2"
+    },
+    {
+      "rsu_id": 2,
+      "sk_hex": "ac09fae7c687712613d2d9cb76bce473df26834dba8e2cfdd774c7300b00faed",
+      "pk_hex": "cde514ed85004942da9b37786d26e99683ebda8c7f3110e1328ed8b70ab92cf5"
+    },
+    {
+      "rsu_id": 3,
+      "sk_hex": "40b80080ff1733b7fac1b46e02d79f47ab9735a1004b738e1f58503e7eb8518f",
+      "pk_hex": "fe6a6f9c8274d1a441f45a95533fd3fc4d6c4e5015cdae17c5ae157ee29aea56"
+    },
+    {
+      "rsu_id": 4,
+      "sk_hex": "e9391869cd4c11be1987f716c05ae74beaf5da4c377fbb01c0c1c5d6b8af622c",
+      "pk_hex": "0d0bae98d37db20db06260be769909caaa669c87c66676852895891b6b997923"
+    }
+  ],
+  "events": [
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 11178897964821328675,
+        "expiry_ts": 1763708372,
+        "rsu_id": 1,
+        "signature_hex": "cd90f273687df06e8c05425128273f26f6b24705c894c516c83327af2fa2e104"
+      },
+      "lat": 31.231,
+      "lon": 121.471,
+      "geohash7": "wtw3s8n",
+      "timestamp": 1763704712
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 16683978141967937480,
+        "expiry_ts": 1763708372,
+        "rsu_id": 2,
+        "signature_hex": "bf90e1b7e0ef6170275e2baada75864eef17ac0c835fb76dfe5953fd49397e31"
+      },
+      "lat": 31.232,
+      "lon": 121.472,
+      "geohash7": "wtw3s8n",
+      "timestamp": 1763704712
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 5473426496115450898,
+        "expiry_ts": 1763708372,
+        "rsu_id": 3,
+        "signature_hex": "d860cc236cb75cbf216b293fbecda2553057e6fcf2ed63a38647e642d91c02d6"
+      },
+      "lat": 31.233,
+      "lon": 121.473,
+      "geohash7": "wtw3s8n",
+      "timestamp": 1763704712
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "NET",
+        "window_id": 1,
+        "nonce": 13383450985942403198,
+        "expiry_ts": 1763708372,
+        "rsu_id": 4,
+        "signature_hex": "76705297de2650b0386dacf92fc3efb6da03398019b96ed8c4361f8c06bc2c4c"
+      },
+      "lat": 31.234,
+      "lon": 121.474,
+      "geohash7": "wtw3s8n",
+      "timestamp": 1763704712
+    }
+  ],
+  "metrics": [
+    {
+      "timestamp": 1.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 2.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 3.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 4.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 5.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 6.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 7.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 8.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 9.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 10.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 11.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 12.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 13.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 14.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 15.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 16.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 17.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 18.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 19.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 20.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 21.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 22.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 23.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 24.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 25.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 26.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 27.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 28.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 29.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    },
+    {
+      "timestamp": 30.0,
+      "vehicle_count": 0,
+      "vehicles": []
+    }
+  ]
+}

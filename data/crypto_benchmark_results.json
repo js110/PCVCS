@@ -1,0 +1,93 @@
+[
+  {
+    "operation": "Ed25519签名/验证",
+    "avg_sign_time_ms": 0.031084000038390514,
+    "avg_verify_time_ms": 0.08585999996284954,
+    "signature_size_bytes": 64
+  },
+  {
+    "operation": "Merkle树(10叶子)",
+    "leaf_count": 10,
+    "root_gen_time_ms": 0.06379999831551686,
+    "proof_gen_time_ms": 0.026199999410891905,
+    "proof_verify_time_ms": 0.000200001522898674,
+    "proof_size_bytes": 272
+  },
+  {
+    "operation": "Merkle树(50叶子)",
+    "leaf_count": 50,
+    "root_gen_time_ms": 0.07859999823267572,
+    "proof_gen_time_ms": 0.07759999789413996,
+    "proof_verify_time_ms": 0.00019999788491986692,
+    "proof_size_bytes": 408
+  },
+  {
+    "operation": "Merkle树(100叶子)",
+    "leaf_count": 100,
+    "root_gen_time_ms": 0.14820000069448724,
+    "proof_gen_time_ms": 0.14819999705650844,
+    "proof_verify_time_ms": 0.000100000761449337,
+    "proof_size_bytes": 476
+  },
+  {
+    "operation": "Merkle树(200叶子)",
+    "leaf_count": 200,
+    "root_gen_time_ms": 0.279799998679664,
+    "proof_gen_time_ms": 0.229199999012053,
+    "proof_verify_time_ms": 0.000100000761449337,
+    "proof_size_bytes": 544
+  },
+  {
+    "operation": "Bulletproofs(1个)",
+    "batch_size": 1,
+    "prove_time_ms": 13.371699998970143,
+    "verify_time_ms": 2.6060000018333085,
+    "avg_proof_size_bytes": 1468.0
+  },
+  {
+    "operation": "Bulletproofs(10个)",
+    "batch_size": 10,
+    "prove_time_ms": 116.20050000055926,
+    "verify_time_ms": 24.583599999459693,
+    "avg_proof_size_bytes": 1468.0
+  },
+  {
+    "operation": "Bulletproofs(100个)",
+    "batch_size": 100,
+    "prove_time_ms": 1177.6807999995071,
+    "verify_time_ms": 247.420300001977,
+    "avg_proof_size_bytes": 1468.0
+  },
+  {
+    "operation": "LSAG环签名(环大小=4)",
+    "ring_size": 4,
+    "sign_time_ms": 16.807200001494493,
+    "verify_time_ms": 0.03099999958067201,
+    "signature_size_bytes": 588
+  },
+  {
+    "operation": "LSAG环签名(环大小=8)",
+    "ring_size": 8,
+    "sign_time_ms": 0.05749999763793312,
+    "verify_time_ms": 0.009400002454640344,
+    "signature_size_bytes": 860
+  },
+  {
+    "operation": "LSAG环签名(环大小=16)",
+    "ring_size": 16,
+    "sign_time_ms": 0.030399998649954796,
+    "verify_time_ms": 0.009100000170292333,
+    "signature_size_bytes": 1404
+  },
+  {
+    "operation": "Kyber密钥协商",
+    "error": "Validation of decapsulation key or ciphertext failed: e = ValueError('ciphertext type check failed. Expected 768 bytes and obtained 32')"
+  },
+  {
+    "operation": "朴素方案(仅RSU Token)",
+    "sign_time_ms": 0.06160000339150429,
+    "verify_time_ms": 0.1351000028080307,
+    "signature_size_bytes": 64,
+    "verify_success": true
+  }
+]

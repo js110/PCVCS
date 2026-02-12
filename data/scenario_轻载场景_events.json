@@ -1,0 +1,318 @@
+{
+  "rsus": [
+    {
+      "rsu_id": 1,
+      "pk_hex": "5897b228a083b3cd0905567e783f414be7931e2b2eb57cceba512e80ad27703c"
+    },
+    {
+      "rsu_id": 2,
+      "pk_hex": "d0915d2faf3add00ff6a1b59c1d00e814c9b12a46e7ed9e90ce88ab21d4e1ade"
+    },
+    {
+      "rsu_id": 3,
+      "pk_hex": "3cd1363288b0c6361f6d9962b205834d3743e65f40c192c1f69cfcd7f99e4683"
+    }
+  ],
+  "events": [
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 1,
+        "nonce": 5816556468025142822,
+        "expiry_ts": 1763619264,
+        "rsu_id": 2,
+        "signature_hex": "38abba1cf0d36b30076bfc1073c8eee036da390e7618562737f24ae40244973b"
+      },
+      "lat": 31.222659981229423,
+      "lon": 121.46188741914109,
+      "geohash7": "wtw3egv",
+      "timestamp": 1763612064
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 2,
+        "nonce": 8751601375406132930,
+        "expiry_ts": 1763619266,
+        "rsu_id": 1,
+        "signature_hex": "5dd468f89520a8a9d90c6293bf4244e337d7174d81c755370dd2907f7c34ddb9"
+      },
+      "lat": 31.23328937556207,
+      "lon": 121.47657503343777,
+      "geohash7": "wtw3smb",
+      "timestamp": 1763612066
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 3,
+        "nonce": 10332172752595395456,
+        "expiry_ts": 1763619269,
+        "rsu_id": 2,
+        "signature_hex": "29a8651bcc2156de832c500f7dd1d69ec52d4da660beb710803e06de5814d9c4"
+      },
+      "lat": 31.235992407769675,
+      "lon": 121.46683044161797,
+      "geohash7": "wtw3sn3",
+      "timestamp": 1763612069
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 4,
+        "nonce": 11166475166455447376,
+        "expiry_ts": 1763619270,
+        "rsu_id": 2,
+        "signature_hex": "60aea0e7e5ba49b1c52dce61c250f7112a5e3603f54e41472aa0a5bc5cdf10d2"
+      },
+      "lat": 31.223776949844993,
+      "lon": 121.46279273569694,
+      "geohash7": "wtw3eun",
+      "timestamp": 1763612070
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 5,
+        "nonce": 1723775727858939619,
+        "expiry_ts": 1763619273,
+        "rsu_id": 2,
+        "signature_hex": "a247c42370a7f4e5f952a1011fba9262ecc115b329b7e1d0826a09f85aee5320"
+      },
+      "lat": 31.231430877834935,
+      "lon": 121.47692318716716,
+      "geohash7": "wtw3sm8",
+      "timestamp": 1763612073
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 6,
+        "nonce": 14888404751854452599,
+        "expiry_ts": 1763619277,
+        "rsu_id": 2,
+        "signature_hex": "00fbd4a23fc738bc29ac62a264424022c9e59b20b2183b89c4ec54e6219955f1"
+      },
+      "lat": 31.235432302857504,
+      "lon": 121.46758058563901,
+      "geohash7": "wtw3sn1",
+      "timestamp": 1763612077
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 7,
+        "nonce": 13343185321083603190,
+        "expiry_ts": 1763619279,
+        "rsu_id": 3,
+        "signature_hex": "55be35cd2d91f4893369dff8d623ba9d9c1012ab3b6837d29f1223dcc3e5a2e3"
+      },
+      "lat": 31.224624135890043,
+      "lon": 121.47425944106912,
+      "geohash7": "wtw3shq",
+      "timestamp": 1763612079
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 8,
+        "nonce": 7342331032783330991,
+        "expiry_ts": 1763619283,
+        "rsu_id": 3,
+        "signature_hex": "23f8f36633992995226de4eec60736d17ae5a4b0344f999c5d924163c6ca3c7e"
+      },
+      "lat": 31.227975859564502,
+      "lon": 121.47211369604551,
+      "geohash7": "wtw3shv",
+      "timestamp": 1763612083
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 9,
+        "nonce": 2684040207878849845,
+        "expiry_ts": 1763619288,
+        "rsu_id": 2,
+        "signature_hex": "31dad90f77b5cbcf4f95e18b4bb88bf324f519ec6b69ff9099f49c0f2735c433"
+      },
+      "lat": 31.23844682458131,
+      "lon": 121.46216444592937,
+      "geohash7": "wtw3eyy",
+      "timestamp": 1763612088
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 10,
+        "nonce": 14839881204589114396,
+        "expiry_ts": 1763619293,
+        "rsu_id": 1,
+        "signature_hex": "e2fc6b046b7a205a25190cce99bfa6aabd42db6ed9bb60ab7408e72d2c70528a"
+      },
+      "lat": 31.239804981634276,
+      "lon": 121.46082852872006,
+      "geohash7": "wtw3ezj",
+      "timestamp": 1763612093
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 11,
+        "nonce": 12440780613286780783,
+        "expiry_ts": 1763619296,
+        "rsu_id": 1,
+        "signature_hex": "dac54db1bfe28d78e77352a592a8a6432772d42e9d66ab1360ba2bea70036ecd"
+      },
+      "lat": 31.231028613989466,
+      "lon": 121.47295283946936,
+      "geohash7": "wtw3sjm",
+      "timestamp": 1763612096
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 12,
+        "nonce": 6767378559967875591,
+        "expiry_ts": 1763619299,
+        "rsu_id": 1,
+        "signature_hex": "44eb23fdd6ca6b3abfe309a96072e4faf51b730d4e71dea5e1e258235a2981ca"
+      },
+      "lat": 31.226232034778253,
+      "lon": 121.46734352789109,
+      "geohash7": "wtw3sh9",
+      "timestamp": 1763612099
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 13,
+        "nonce": 16564587161494404936,
+        "expiry_ts": 1763619304,
+        "rsu_id": 2,
+        "signature_hex": "1f326c014a25e47e7ce20715d2d63099cb82a625bd1eb21b9126e6c85ed639c7"
+      },
+      "lat": 31.23172373605473,
+      "lon": 121.47347571990518,
+      "geohash7": "wtw3sjw",
+      "timestamp": 1763612104
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 14,
+        "nonce": 14806936070886416629,
+        "expiry_ts": 1763619308,
+        "rsu_id": 2,
+        "signature_hex": "d257c20fe9201d0325ae2fcfcb0fcffeace3bda3d54c5eebb187e9a607ce49e5"
+      },
+      "lat": 31.23389506577578,
+      "lon": 121.47270326036383,
+      "geohash7": "wtw3sjv",
+      "timestamp": 1763612108
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 15,
+        "nonce": 18433209419720792774,
+        "expiry_ts": 1763619309,
+        "rsu_id": 3,
+        "signature_hex": "e4abfdfd958dbf4b52730422abfd6a93051898f6be32cc24f51378f499f06134"
+      },
+      "lat": 31.22223452946779,
+      "lon": 121.46161450281616,
+      "geohash7": "wtw3egv",
+      "timestamp": 1763612109
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 16,
+        "nonce": 17501150408970929875,
+        "expiry_ts": 1763619314,
+        "rsu_id": 3,
+        "signature_hex": "f3cdf6f7ff49175bc162db33a7814fad742ee10f4f23d119730104a276737ab0"
+      },
+      "lat": 31.22799641668995,
+      "lon": 121.47443849210839,
+      "geohash7": "wtw3shy",
+      "timestamp": 1763612114
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 17,
+        "nonce": 8683745478388827383,
+        "expiry_ts": 1763619319,
+        "rsu_id": 1,
+        "signature_hex": "237c830896c0470f8f86f193aaa01eb4eb1ac3c48c77472e9cc05b26c08518b5"
+      },
+      "lat": 31.231449565598908,
+      "lon": 121.47649545389176,
+      "geohash7": "wtw3sm8",
+      "timestamp": 1763612119
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 18,
+        "nonce": 16099492656526992723,
+        "expiry_ts": 1763619324,
+        "rsu_id": 3,
+        "signature_hex": "725d91024df4af2ddc22c44d81f7e8653c28db2dfc5744e2288ba3e1fb917769"
+      },
+      "lat": 31.23724723020438,
+      "lon": 121.47573479636272,
+      "geohash7": "wtw3snx",
+      "timestamp": 1763612124
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 19,
+        "nonce": 5987291832650284454,
+        "expiry_ts": 1763619328,
+        "rsu_id": 2,
+        "signature_hex": "00d4921af5487d8df5900626333e12cd8092753be9f3c0ef49ff359da298a25d"
+      },
+      "lat": 31.238167348704852,
+      "lon": 121.4621121611163,
+      "geohash7": "wtw3eyw",
+      "timestamp": 1763612128
+    },
+    {
+      "token": {
+        "version": 1,
+        "region_id": "ROAD_SEG_A",
+        "window_id": 20,
+        "nonce": 18190936260846779059,
+        "expiry_ts": 1763619332,
+        "rsu_id": 2,
+        "signature_hex": "1b4f77bacb2f56be5ff40ade4e055f68f1e255a52a261cc416386bd88a891006"
+      },
+      "lat": 31.22970600632304,
+      "lon": 121.47989402995373,
+      "geohash7": "wtw3sm4",
+      "timestamp": 1763612132
+    }
+  ]
+}
