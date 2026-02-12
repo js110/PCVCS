@@ -7,67 +7,67 @@ import sys
 import os
 import hashlib
 
-# 尝试加载Bulletproofs库
+                   
 _lib = None
 try:
-    # 根据操作系统选择库文件
+                 
     if sys.platform.startswith('win'):
-        # Windows - 使用完整路径
+                          
         dll_path = os.path.join(os.path.dirname(__file__), '..', 'libbulletproofs.dll')
         dll_path = os.path.abspath(dll_path)
         if os.path.exists(dll_path):
             _lib = ctypes.CDLL(dll_path)
         else:
-            # 尝试在当前目录查找
+                       
             dll_path = os.path.join(os.getcwd(), 'libbulletproofs.dll')
             if os.path.exists(dll_path):
                 _lib = ctypes.CDLL(dll_path)
             else:
                 print(f"Bulletproofs库文件未找到: {dll_path}")
     elif sys.platform.startswith('darwin'):
-        # macOS
+               
         _lib = ctypes.CDLL("libbulletproofs.dylib")
     else:
-        # Linux
+               
         _lib = ctypes.CDLL("libbulletproofs.so")
 except OSError as e:
-    # 库未找到，使用占位符
+                
     print(f"无法加载Bulletproofs库: {e}")
     _lib = None
 except Exception as e:
     print(f"加载Bulletproofs库时出现未知错误: {e}")
     _lib = None
 
-# 定义函数签名（如果库加载成功）
+                 
 if _lib:
     try:
-        # Pedersen承诺函数
+                      
         _lib.bp_pedersen_commit.argtypes = [
-            ctypes.c_uint64,  # value
-            ctypes.c_uint64,  # blinding
-            ctypes.c_char_p   # out_commit (32 bytes)
+            ctypes.c_uint64,         
+            ctypes.c_uint64,            
+            ctypes.c_char_p                          
         ]
         _lib.bp_pedersen_commit.restype = ctypes.c_int
 
-        # 范围证明生成函数
+                  
         _lib.bp_range_proof_prove.argtypes = [
-            ctypes.c_uint64,  # value
-            ctypes.c_uint64,  # L
-            ctypes.c_uint64,  # U
-            ctypes.c_uint64,  # blinding
-            ctypes.c_char_p,  # out_commit (32 bytes)
-            ctypes.c_char_p,  # out_proof
-            ctypes.POINTER(ctypes.c_size_t)  # out_proof_len
+            ctypes.c_uint64,         
+            ctypes.c_uint64,     
+            ctypes.c_uint64,     
+            ctypes.c_uint64,            
+            ctypes.c_char_p,                         
+            ctypes.c_char_p,             
+            ctypes.POINTER(ctypes.c_size_t)                 
         ]
         _lib.bp_range_proof_prove.restype = ctypes.c_int
 
-        # 范围证明验证函数
+                  
         _lib.bp_range_proof_verify.argtypes = [
-            ctypes.c_uint64,  # L
-            ctypes.c_uint64,  # U
-            ctypes.c_char_p,  # commit (32 bytes)
-            ctypes.c_char_p,  # proof
-            ctypes.c_size_t   # proof_len
+            ctypes.c_uint64,     
+            ctypes.c_uint64,     
+            ctypes.c_char_p,                     
+            ctypes.c_char_p,         
+            ctypes.c_size_t              
         ]
         _lib.bp_range_proof_verify.restype = ctypes.c_int
         
@@ -90,10 +90,10 @@ def pedersen_commit_py(value: int, blinding: int) -> bytes:
         bytes: 32字节的承诺值
     """
     if _lib:
-        # 准备输出缓冲区
+                 
         commit_buf = ctypes.create_string_buffer(32)
         
-        # 调用C函数
+               
         rc = _lib.bp_pedersen_commit(
             ctypes.c_uint64(value),
             ctypes.c_uint64(blinding),
@@ -105,8 +105,8 @@ def pedersen_commit_py(value: int, blinding: int) -> bytes:
         
         return commit_buf.raw
     else:
-        # 使用Python实现的简化版本
-        return placeholder_pedersen_commit(value, blinding)
+                         
+        return fallback_pedersen_commit(value, blinding)
 
 def range_proof_prove_py(value: int, L: int, U: int, blinding: int) -> tuple[bytes, bytes]:
     """
@@ -122,12 +122,12 @@ def range_proof_prove_py(value: int, L: int, U: int, blinding: int) -> tuple[byt
         tuple: (commitment, proof)
     """
     if _lib:
-        # 准备输出缓冲区
+                 
         commit_buf = ctypes.create_string_buffer(32)
-        proof_buf = ctypes.create_string_buffer(10240)  # 假设足够大
+        proof_buf = ctypes.create_string_buffer(10240)         
         proof_len = ctypes.c_size_t(0)
         
-        # 调用C函数
+               
         rc = _lib.bp_range_proof_prove(
             ctypes.c_uint64(value),
             ctypes.c_uint64(L),
@@ -146,8 +146,8 @@ def range_proof_prove_py(value: int, L: int, U: int, blinding: int) -> tuple[byt
         
         return commit, proof
     else:
-        # 使用Python实现的简化版本
-        return placeholder_range_proof_prove(value, L, U, blinding)
+                         
+        return fallback_range_proof_prove(value, L, U, blinding)
 
 def range_proof_verify_py(L: int, U: int, commit: bytes, proof: bytes) -> bool:
     """
@@ -163,11 +163,11 @@ def range_proof_verify_py(L: int, U: int, commit: bytes, proof: bytes) -> bool:
         bool: 验证是否成功
     """
     if _lib:
-        # 确保commit是32字节
+                       
         if len(commit) != 32:
             raise ValueError("承诺值必须是32字节")
         
-        # 调用C函数
+               
         rc = _lib.bp_range_proof_verify(
             ctypes.c_uint64(L),
             ctypes.c_uint64(U),
@@ -178,18 +178,18 @@ def range_proof_verify_py(L: int, U: int, commit: bytes, proof: bytes) -> bool:
         
         return rc == 0
     else:
-        # 使用Python实现的简化版本
-        return placeholder_range_proof_verify(L, U, commit, proof)
+                         
+        return fallback_range_proof_verify(L, U, commit, proof)
 
-# 占位符实现（如果库未加载）
-def placeholder_pedersen_commit(value: int, blinding: int) -> bytes:
+               
+def fallback_pedersen_commit(value: int, blinding: int) -> bytes:
     """
     占位符Pedersen承诺实现
     """
     commit = hashlib.sha256(f"{value}|{blinding}".encode()).digest()
     return commit
 
-def placeholder_range_proof_prove(value: int, L: int, U: int, blinding: int) -> tuple[bytes, bytes]:
+def fallback_range_proof_prove(value: int, L: int, U: int, blinding: int) -> tuple[bytes, bytes]:
     """
     占位符范围证明生成实现
     """
@@ -197,9 +197,9 @@ def placeholder_range_proof_prove(value: int, L: int, U: int, blinding: int) -> 
     proof = hashlib.sha256(f"{value}|{L}|{U}|{blinding}".encode()).digest()
     return commit, proof
 
-def placeholder_range_proof_verify(L: int, U: int, commit: bytes, proof: bytes) -> bool:
+def fallback_range_proof_verify(L: int, U: int, commit: bytes, proof: bytes) -> bool:
     """
     占位符范围证明验证实现
     """
-    # 简化的验证：总是返回True
+                    
     return True

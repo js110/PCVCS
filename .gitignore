@@ -169,6 +169,7 @@ plots/*.svg
 # Temporary files and logs
 *.tmp
 *.temp
+*.orig
 temp/
 logs/
 *.log

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 安全性测试模块 - 使用真实攻击样本
 """
@@ -32,14 +32,14 @@ class SecurityTester:
         self.logger = logger
         self.results = DetectionResultCollection()
         
-        # 数据目录
+              
         self.data_dir = project_root / "data"
         self.data_dir.mkdir(exist_ok=True)
         
-        # 加载白名单
+               
         self.whitelist = self._load_whitelist()
         
-        # 生成测试用的RSU密钥
+                     
         self.rsu_keys = []
         for i in range(4):
             sk, pk = ed25519_generate_keypair()
@@ -61,7 +61,7 @@ class SecurityTester:
             with open(whitelist_file, 'r', encoding='utf-8') as f:
                 return [line.strip() for line in f if line.strip()]
         else:
-            # 创建默认白名单
+                     
             default_whitelist = [
                 "wtw3s8n", "wtw3s8p", "wtw3s8q", "wtw3s8r",
                 "wtw3s8x", "wtw3s8y", "wtw3s8z", "wtw3s90"
@@ -72,7 +72,7 @@ class SecurityTester:
     def _pk_to_hex(self, pk) -> str:
         """将公钥转换为十六进制字符"""
         if hasattr(pk, 'encode'):
-            # PyNaCl VerifyKey对象
+                                
             return pk.encode().hex()
         elif isinstance(pk, bytes):
             return pk.hex()
@@ -81,20 +81,20 @@ class SecurityTester:
     
     def generate_valid_sample(self) -> Dict[str, Any]:
         """生成合法样本"""
-        # 选择一个白名单中的geohash
+                          
         geohash = random.choice(self.whitelist)
         
-        # 生成合法的时间戳（当前时间窗口内）
+                           
         current_time = now_s()
         window_id = current_time // 60
         timestamp = current_time
         
-        # 选择一个RSU
+                 
         rsu = random.choice(self.rsu_keys)
         
-        # 生成RSU Token
+                     
         nonce = random.getrandbits(64)
-        expiry = current_time + 3600  # 1小时后过期
+        expiry = current_time + 3600          
         token_msg = f"1|NET|{window_id}|{nonce}|{expiry}|{rsu['rsu_id']}".encode()
         token_sig = ed25519_sign(rsu['sk'], token_msg)
         
@@ -108,16 +108,16 @@ class SecurityTester:
             "signature_hex": token_sig.hex()
         }
         
-        # 生成Merkle证明
+                    
         merkle_root_hash = merkle_root(self.whitelist)
         geohash_index = self.whitelist.index(geohash)
         merkle_path = merkle_proof(self.whitelist, geohash_index)
         
-        # 生成Bulletproofs范围证明
+                            
         blinding = random.randint(1, 1000000)
         range_proof = range_proof_prove(timestamp, window_id * 60, (window_id + 1) * 60, blinding)
         
-        # 生成LSAG签名
+                  
         ring_size = 8
         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
         signer_index = 0
@@ -141,10 +141,10 @@ class SecurityTester:
     
     def generate_location_forge_attack(self) -> Dict[str, Any]:
         """生成位置伪造攻击样本"""
-        # 使用不在白名单中的geohash
-        fake_geohash = "wtw3xxx"  # 不在白名单中
+                          
+        invalid_geohash = "wtw3xxx"          
         
-        # 其他部分正常生成
+                  
         current_time = now_s()
         window_id = current_time // 60
         timestamp = current_time
@@ -165,9 +165,9 @@ class SecurityTester:
             "signature_hex": token_sig.hex()
         }
         
-        # 伪造Merkle证明（使用错误的geohash）
+                                  
         merkle_root_hash = merkle_root(self.whitelist)
-        merkle_path = []  # 空路径或错误路径
+        merkle_path = []            
         
         blinding = random.randint(1, 1000000)
         range_proof = range_proof_prove(timestamp, window_id * 60, (window_id + 1) * 60, blinding)
@@ -177,13 +177,13 @@ class SecurityTester:
         ring_pubkeys = [pk for _, pk in ring_keys]
         signer_sk = ring_keys[0][0]
         
-        message = f"{fake_geohash}|{timestamp}".encode()
+        message = f"{invalid_geohash}|{timestamp}".encode()
         lsag_sig = lrs_sign(message, ring_pubkeys, 0, signer_sk, b"context")
         
         return {
             "type": "location_forge",
             "token": token,
-            "geohash": fake_geohash,
+            "geohash": invalid_geohash,
             "timestamp": timestamp,
             "merkle_root": merkle_root_hash,
             "merkle_proof": merkle_path,
@@ -196,10 +196,10 @@ class SecurityTester:
         """生成时间窗口作弊攻击样本"""
         geohash = random.choice(self.whitelist)
         
-        # 使用窗口外的时间戳
+                   
         current_time = now_s()
         window_id = current_time // 60
-        fake_timestamp = (window_id - 2) * 60  # 2个窗口之前的时间
+        invalid_timestamp = (window_id - 2) * 60             
         
         rsu = random.choice(self.rsu_keys)
         nonce = random.getrandbits(64)
@@ -221,23 +221,23 @@ class SecurityTester:
         geohash_index = self.whitelist.index(geohash)
         merkle_path = merkle_proof(self.whitelist, geohash_index)
         
-        # 伪造范围证明（使用错误的时间戳）
+                          
         blinding = random.randint(1, 1000000)
-        range_proof = range_proof_prove(fake_timestamp, window_id * 60, (window_id + 1) * 60, blinding)
+        range_proof = range_proof_prove(invalid_timestamp, window_id * 60, (window_id + 1) * 60, blinding)
         
         ring_size = 8
         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
         ring_pubkeys = [pk for _, pk in ring_keys]
         signer_sk = ring_keys[0][0]
         
-        message = f"{geohash}|{fake_timestamp}".encode()
+        message = f"{geohash}|{invalid_timestamp}".encode()
         lsag_sig = lrs_sign(message, ring_pubkeys, 0, signer_sk, b"context")
         
         return {
             "type": "time_forge",
             "token": token,
             "geohash": geohash,
-            "timestamp": fake_timestamp,
+            "timestamp": invalid_timestamp,
             "merkle_root": merkle_root_hash,
             "merkle_proof": merkle_path,
             "range_proof": range_proof,
@@ -255,8 +255,8 @@ class SecurityTester:
         
         rsu = random.choice(self.rsu_keys)
         nonce = random.getrandbits(64)
-        # 使用已过期的Token
-        expiry = current_time - 3600  # 1小时前就过期了
+                     
+        expiry = current_time - 3600            
         token_msg = f"1|NET|{window_id}|{nonce}|{expiry}|{rsu['rsu_id']}".encode()
         token_sig = ed25519_sign(rsu['sk'], token_msg)
         
@@ -265,7 +265,7 @@ class SecurityTester:
             "region_id": "NET",
             "window_id": window_id,
             "nonce": nonce,
-            "expiry_ts": expiry,  # 过期时间
+            "expiry_ts": expiry,        
             "rsu_id": rsu['rsu_id'],
             "signature_hex": token_sig.hex()
         }
@@ -302,9 +302,9 @@ class SecurityTester:
         """生成重放攻击样本（旧时间戳）"""
         geohash = random.choice(self.whitelist)
         
-        # 使用旧的时间戳
+                 
         current_time = now_s()
-        old_timestamp = current_time - 7200  # 2小时前的时间戳
+        old_timestamp = current_time - 7200            
         old_window_id = old_timestamp // 60
         
         rsu = random.choice(self.rsu_keys)
@@ -353,7 +353,7 @@ class SecurityTester:
     
     def generate_duplicate_report_attack(self) -> List[Dict[str, Any]]:
         """生成多次上报攻击样本（相同key image）"""
-        # 生成两个使用相同私钥的上报
+                       
         geohash = random.choice(self.whitelist)
         
         current_time = now_s()
@@ -361,11 +361,11 @@ class SecurityTester:
         
         rsu = random.choice(self.rsu_keys)
         
-        # 生成环签名密钥（使用相同的签名者）
+                           
         ring_size = 8
         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
         ring_pubkeys = [pk for _, pk in ring_keys]
-        signer_sk = ring_keys[0][0]  # 相同的签名
+        signer_sk = ring_keys[0][0]         
         
         samples = []
         for i in range(2):
@@ -423,45 +423,45 @@ class SecurityTester:
             是否通过验证
         """
         if not use_zkp:
-            # 朴素方案：只验证Token签名
-            # 在朴素方案中，大部分攻击无法检测
+                             
+                              
             if sample["type"] == "token_abuse":
-                # 朴素方案可以检测过期Token
+                                 
                 return sample["token"]["expiry_ts"] > now_s()
             else:
-                # 其他攻击无法检测
+                          
                 return True
         
-        # ZKP方案：完整验证
+                    
         try:
-            # 1. 验证Token过期时间
+                            
             if sample["token"]["expiry_ts"] < now_s():
                 return False
             
-            # 2. 验证Merkle证明（位置合规性）
+                                  
             if sample["type"] == "location_forge":
-                # 检查geohash是否在白名单中
+                                  
                 if sample["geohash"] not in self.whitelist:
                     return False
-                # 检查Merkle路径
+                            
                 if not sample["merkle_proof"]:
                     return False
             
-            # 3. 验证Bulletproofs范围证明（时间窗口）
+                                         
             if sample["type"] == "time_forge":
-                # 检查时间戳是否在合法窗口内
+                               
                 window_id = sample["token"]["window_id"]
                 timestamp = sample["timestamp"]
                 if not (window_id * 60 <= timestamp < (window_id + 1) * 60):
                     return False
             
-            # 4. 验证重放攻击（检查时间戳新鲜度）
+                                 
             if sample["type"] == "replay":
-                # 检查时间戳是否过旧
-                if sample["timestamp"] < now_s() - 3600:  # 超过1小时
+                           
+                if sample["timestamp"] < now_s() - 3600:         
                     return False
             
-            # 合法样本应该通过所有检测
+                          
             return True
             
         except Exception as e:
@@ -485,7 +485,7 @@ class SecurityTester:
         detected_count = 0
         total_samples = sample_count
         
-        # 生成攻击样本并验证
+                   
         for i in range(sample_count):
             if attack_type == "location_forge":
                 sample = self.generate_location_forge_attack()
@@ -496,9 +496,9 @@ class SecurityTester:
             elif attack_type == "replay":
                 sample = self.generate_replay_attack()
             elif attack_type == "duplicate":
-                # 多次上报攻击需要特殊处理
+                              
                 samples = self.generate_duplicate_report_attack()
-                # 检查key image是否相同
+                                 
                 if use_zkp:
                     key_images = [s["lsag_signature"].get("link_tag") for s in samples]
                     if len(set(key_images)) < len(key_images):
@@ -508,10 +508,10 @@ class SecurityTester:
                 self._log(f"未知攻击类型: {attack_type}", "warning")
                 continue
             
-            # 验证样本
+                  
             is_valid = self.verify_sample(sample, use_zkp)
             
-            # 如果验证失败，说明攻击被检测到
+                             
             if not is_valid:
                 detected_count += 1
         
@@ -534,9 +534,9 @@ class SecurityTester:
         self._log("=" * 60)
         
         for attack_type in attack_types:
-            # 测试ZKP方案
+                     
             self.test_attack_type(attack_type, sample_count, use_zkp=True)
-            # 测试朴素方案
+                    
             self.test_attack_type(attack_type, sample_count, use_zkp=False)
         
         self._log("=" * 60)

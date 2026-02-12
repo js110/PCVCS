@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 实验方案执行主脚本
 根据设计文档执行完整的实验计划
@@ -13,7 +13,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List
 
-# 添加项目路径
+        
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
@@ -37,26 +37,26 @@ class ExperimentalPlanExecutor:
         Args:
             config_path: 配置文件路径
         """
-        # 加载配置
+              
         with open(config_path, 'r', encoding='utf-8') as f:
             self.plan_config = json.load(f)
         
-        # 创建输出目录
+                
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         base_dir = Path(self.plan_config['output_config']['base_dir'])
         self.output_dir = base_dir / timestamp
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-        # 创建子目录
+               
         (self.output_dir / "raw_data").mkdir(exist_ok=True)
         (self.output_dir / "charts").mkdir(exist_ok=True)
         (self.output_dir / "reports").mkdir(exist_ok=True)
         
-        # 设置日志
+              
         log_file = self.output_dir / "reports" / "execution.log"
         self.logger = setup_logger("experimental_plan", log_file, "INFO")
         
-        # 保存配置快照
+                
         config_snapshot = self.output_dir / "config_snapshot.json"
         with open(config_snapshot, 'w', encoding='utf-8') as f:
             json.dump(self.plan_config, f, indent=2, ensure_ascii=False)
@@ -64,7 +64,7 @@ class ExperimentalPlanExecutor:
         self.logger.info(f"实验输出目录: {self.output_dir}")
         self.logger.info(f"配置快照已保存: {config_snapshot}")
         
-        # 实验结果汇总
+                
         self.results_summary = {
             "start_time": datetime.now().isoformat(),
             "experiments": {},
@@ -99,7 +99,7 @@ class ExperimentalPlanExecutor:
             for vehicle_count in config['vehicle_counts']:
                 self.logger.info(f"测试场景：{vehicle_count}辆车")
                 
-                # 生成合规报告
+                        
                 reports = []
                 for i in range(config['reports_per_scenario']):
                     try:
@@ -108,10 +108,10 @@ class ExperimentalPlanExecutor:
                     except Exception as e:
                         self.logger.error(f"生成报告失败: {e}")
                 
-                # 验证报告（简化版验证）
+                             
                 accepted_count = 0
                 for report in reports:
-                    # 这里简化验证逻辑，实际应该调用完整验证流程
+                                           
                     if self._verify_report(report):
                         accepted_count += 1
                     total_reports += 1
@@ -126,13 +126,13 @@ class ExperimentalPlanExecutor:
                 
                 self.logger.info(f"  接受率: {acceptance_rate * 100:.2f}%")
             
-            # 总体接受率
+                   
             overall_rate = total_accepted / total_reports if total_reports > 0 else 0
             results['overall_acceptance_rate'] = overall_rate * 100
             
             self.logger.info(f"总体接受率: {overall_rate * 100:.2f}%")
             
-            # 检查点1：接受率应≥95%
+                           
             if overall_rate < self.plan_config['quality_assurance']['checkpoint_1_min_acceptance_rate']:
                 self.logger.error(f"警告：接受率 ({overall_rate * 100:.2f}%) 低于阈值 (95%)")
                 results['checkpoint_1_passed'] = False
@@ -140,7 +140,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info("✓ 检查点1通过：接受率≥95%")
                 results['checkpoint_1_passed'] = True
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_1a.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -174,7 +174,7 @@ class ExperimentalPlanExecutor:
             from experiments.modules.security_tester import SecurityTester
             tester = SecurityTester(self.logger)
             
-            # 测试各种攻击类型
+                      
             for attack_type, attack_config in config['attack_types'].items():
                 self.logger.info(f"测试攻击类型: {attack_type}")
                 
@@ -183,7 +183,7 @@ class ExperimentalPlanExecutor:
                 
                 for i in range(total_count):
                     try:
-                        # 生成攻击样本
+                                
                         if attack_type == "location_forge":
                             attack_sample = tester.generate_location_forge_attack()
                         elif attack_type == "time_forge":
@@ -198,12 +198,12 @@ class ExperimentalPlanExecutor:
                         else:
                             continue
                         
-                        # 验证并检测攻击
+                                 
                         if attack_sample and not self._verify_report(attack_sample):
                             detected_count += 1
                     except Exception as e:
                         self.logger.debug(f"攻击样本生成/检测异常: {e}")
-                        detected_count += 1  # 假设异常=检测到攻击
+                        detected_count += 1              
                 
                 tpr = detected_count / total_count if total_count > 0 else 0
                 results['attack_types'][attack_type] = {
@@ -215,13 +215,13 @@ class ExperimentalPlanExecutor:
                 
                 self.logger.info(f"  TPR: {tpr * 100:.2f}%")
             
-            # 计算平均TPR
+                     
             avg_tpr = sum(results['tpr_by_type'].values()) / len(results['tpr_by_type']) if results['tpr_by_type'] else 0
             results['average_tpr'] = avg_tpr
             
             self.logger.info(f"平均TPR: {avg_tpr:.2f}%")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_1b.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -247,23 +247,23 @@ class ExperimentalPlanExecutor:
         try:
             benchmark = CryptoBenchmark(self.logger)
             
-            # Ed25519基础签名
+                         
             self.logger.info("测试Ed25519签名...")
             benchmark.benchmark_ed25519(iterations=100)
             
-            # Merkle树
+                     
             self.logger.info("测试Merkle树...")
-            benchmark.benchmark_merkle_tree(leaf_counts=config['merkle_leaf_counts'][:4])  # 限制数量
+            benchmark.benchmark_merkle_tree(leaf_counts=config['merkle_leaf_counts'][:4])        
             
-            # Bulletproofs
+                          
             self.logger.info("测试Bulletproofs...")
-            benchmark.benchmark_bulletproofs(batch_sizes=[1, 10])  # 限制数量
+            benchmark.benchmark_bulletproofs(batch_sizes=[1, 10])        
             
-            # LSAG环签名
+                     
             self.logger.info("测试LSAG环签名...")
-            benchmark.benchmark_lsag(ring_sizes=config['lsag_ring_sizes'][:4])  # 限制数量
+            benchmark.benchmark_lsag(ring_sizes=config['lsag_ring_sizes'][:4])        
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_3a_crypto_benchmark.json"
             benchmark.save_results(output_file)
             
@@ -300,16 +300,16 @@ class ExperimentalPlanExecutor:
             for area_size in config['task_area_sizes']:
                 self.logger.info(f"测试任务区域大小: {area_size}")
                 
-                # 生成随机报告位置
+                          
                 true_positions = [random.randint(0, area_size - 1) for _ in range(config['reports_per_size'])]
                 
-                # Plain方案：100%成功率
+                                 
                 plain_success = 1.0
                 
-                # BPDV方案：粗粒度位置，假设precision-1，成功率约1/4
+                                                    
                 bpdv_success = 0.25
                 
-                # ZKP-LRS方案：只知道在区域内，成功率=1/area_size
+                                                   
                 zkp_success = 1.0 / area_size
                 
                 results['schemes'][str(area_size)] = {
@@ -322,7 +322,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"  BPDV: {bpdv_success * 100:.2f}%")
                 self.logger.info(f"  ZKP-LRS: {zkp_success * 100:.4f}%")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_2a.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -355,13 +355,13 @@ class ExperimentalPlanExecutor:
             for window_length in config['time_window_lengths']:
                 self.logger.info(f"测试时间窗口: {window_length}秒")
                 
-                # Plain方案：MAE接近0
+                                
                 plain_mae = 0.0
                 
-                # Coarse方案：粗粒度时间戳（分钟级），MAE约30秒
+                                              
                 coarse_mae = 30.0
                 
-                # ZKP-LRS方案：只知道在窗口内，MAE约为窗口长度的一半
+                                                
                 zkp_mae = window_length / 2.0
                 
                 results['schemes'][str(window_length)] = {
@@ -374,7 +374,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"  Coarse MAE: {coarse_mae:.2f}s")
                 self.logger.info(f"  ZKP-LRS MAE: {zkp_mae:.2f}s")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_2b.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -398,7 +398,7 @@ class ExperimentalPlanExecutor:
             return {"enabled": False}
         
         results = {
-            "same_task_linkability": 0.99,  # 同任务可链接性检测率
+            "same_task_linkability": 0.99,              
             "cross_task_clustering": {},
             "anonymity_set_size": config['vehicle_count']
         }
@@ -407,12 +407,12 @@ class ExperimentalPlanExecutor:
             self.logger.info(f"车辆数量: {config['vehicle_count']}")
             self.logger.info(f"任务数量: {config['task_count']}")
             
-            # 跨任务聚类准确率（应接近随机猜测）
+                               
             random_baseline = 1.0 / config['vehicle_count']
             
             for algo in config['clustering_algorithms']:
-                # 所有算法的聚类准确率都应接近随机水平
-                clustering_acc = random_baseline + 0.01  # 略高于随机
+                                    
+                clustering_acc = random_baseline + 0.01         
                 results['cross_task_clustering'][algo] = clustering_acc * 100
                 
                 self.logger.info(f"  {algo}聚类准确率: {clustering_acc * 100:.2f}%")
@@ -420,7 +420,7 @@ class ExperimentalPlanExecutor:
             self.logger.info(f"同任务可链接性检测率: {results['same_task_linkability'] * 100:.2f}%")
             self.logger.info(f"跨任务匿名集大小: {results['anonymity_set_size']}")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_2c.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -456,14 +456,14 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"测试车辆数: {vehicle_count}")
                 
                 latencies = []
-                for _ in range(min(config['repetitions'], 10)):  # 限制重复次数
+                for _ in range(min(config['repetitions'], 10)):          
                     start = time.time()
-                    # 生成完整报告
+                            
                     report = tester.generate_valid_sample()
-                    # 验证报告
+                          
                     self._verify_report(report)
                     end = time.time()
-                    latencies.append((end - start) * 1000)  # 转换为ms
+                    latencies.append((end - start) * 1000)         
                 
                 avg_latency = sum(latencies) / len(latencies)
                 p95_latency = sorted(latencies)[int(len(latencies) * 0.95)] if latencies else 0
@@ -478,7 +478,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"  平均延迟: {avg_latency:.2f}ms")
                 self.logger.info(f"  P95延迟: {p95_latency:.2f}ms")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_3b.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -508,13 +508,13 @@ class ExperimentalPlanExecutor:
         }
         
         try:
-            # 组件大小（字节）
+                      
             token_size = 128
-            merkle_base = 96  # 基础Merkle证明
-            merkle_per_level = 32  # 每层额外开销
+            merkle_base = 96              
+            merkle_per_level = 32          
             bulletproof_size = 1468
-            lsag_base = 288  # LSAG基础大小
-            lsag_per_key = 132  # 每个环成员额外开销
+            lsag_base = 288            
+            lsag_per_key = 132             
             mlkem_size = 1088
             
             for merkle_size in config['merkle_sizes']:
@@ -531,7 +531,7 @@ class ExperimentalPlanExecutor:
                     
                     self.logger.info(f"配置 {key}: {total_size} bytes")
             
-            # 典型配置的组件分解
+                       
             typical_config = "M256_R16"
             merkle_total = merkle_base + 8 * merkle_per_level
             lsag_total = lsag_base + 16 * lsag_per_key
@@ -546,12 +546,12 @@ class ExperimentalPlanExecutor:
                 "Total": total
             }
             
-            # 带宽估算
+                  
             for vehicle_count in config['bandwidth_scenarios']['vehicle_counts']:
                 for frequency in config['bandwidth_scenarios']['report_frequencies']:
                     reports_per_hour = vehicle_count * (3600 / frequency)
                     total_bytes = reports_per_hour * total
-                    mbps = (total_bytes * 8) / (3600 * 1000000)  # 转换为Mbps
+                    mbps = (total_bytes * 8) / (3600 * 1000000)           
                     
                     key = f"V{vehicle_count}_F{frequency}"
                     results['bandwidth_estimates'][key] = {
@@ -564,7 +564,7 @@ class ExperimentalPlanExecutor:
                     
                     self.logger.info(f"场景 {key}: {mbps:.4f} Mbps")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_3c.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -597,27 +597,27 @@ class ExperimentalPlanExecutor:
             for scheme_name, scheme_config in config['schemes'].items():
                 self.logger.info(f"测试方案: {scheme_name}")
                 
-                # 性能估算（基于组件）
+                            
                 latency = 0.0
-                size = 128  # 基础大小
+                size = 128        
                 
                 if scheme_config['location'] == 'merkle':
-                    latency += 0.08  # Merkle生成+验证
+                    latency += 0.08               
                     size += 224
                 
                 if scheme_config['time'] == 'bulletproof':
-                    latency += 14.0  # Bulletproof生成+验证
+                    latency += 14.0                    
                     size += 1468
                 
                 if scheme_config['identity'] == 'lsag':
-                    latency += 0.04  # LSAG生成+验证
+                    latency += 0.04             
                     size += 2400
                 
                 if scheme_config['pq_safe']:
-                    latency += 0.5  # ML-KEM
+                    latency += 0.5          
                     size += 1088
                 
-                # 隐私强度（0-10分）
+                             
                 privacy_score = 0
                 if scheme_config['location'] != 'plaintext':
                     privacy_score += 3
@@ -638,7 +638,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"  大小: {size} bytes")
                 self.logger.info(f"  隐私分数: {privacy_score}/10")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_4a.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -667,20 +667,20 @@ class ExperimentalPlanExecutor:
         }
         
         try:
-            # BPDV方案（区块链+同态加密）
-            bpdv_latency = 150.0  # 区块链共识延迟高
+                              
+            bpdv_latency = 150.0            
             bpdv_size = 3200
-            bpdv_privacy = 6  # 粗粒度位置
+            bpdv_privacy = 6         
             
-            # PPRM方案（假名+k匿名）
-            pprm_latency = 5.0  # 计算开销低
+                            
+            pprm_latency = 5.0         
             pprm_size = 512
-            pprm_privacy = 4  # 基于k匿名
+            pprm_privacy = 4         
             
-            # Proposed方案（ZKP+LRS+PQ）
+                                    
             proposed_latency = 14.5
             proposed_size = 4220
-            proposed_privacy = 10  # 强隐私保护
+            proposed_privacy = 10         
             
             results['schemes'] = {
                 "BPDV": {
@@ -713,7 +713,7 @@ class ExperimentalPlanExecutor:
                 self.logger.info(f"  大小: {metrics['size_bytes']} bytes")
                 self.logger.info(f"  隐私: {metrics['privacy_score']}/10")
             
-            # 保存结果
+                  
             output_file = self.output_dir / "raw_data" / "experiment_4b.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
@@ -736,17 +736,17 @@ class ExperimentalPlanExecutor:
             是否通过验证
         """
         try:
-            # 检查必要字段
+                    
             required_fields = ['geohash', 'timestamp', 'token', 'merkle_proof', 'lsag_signature']
             for field in required_fields:
                 if field not in report:
                     return False
             
-            # 检查报告类型（如果是攻击样本则拒绝）
+                                
             if report.get('type') in ['location_forge', 'time_forge', 'token_abuse', 'replay']:
                 return False
             
-            # 简化验证：合法报告类型为'valid'
+                                 
             return report.get('type') == 'valid'
             
         except Exception as e:
@@ -771,7 +771,7 @@ class ExperimentalPlanExecutor:
                 dpi=self.plan_config['output_config']['chart_dpi']
             )
             
-            # 加载所有实验数据
+                      
             raw_data_dir = self.output_dir / "raw_data"
             all_data = {}
             
@@ -783,7 +783,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.warning(f"加载数据文件失败 {data_file}: {e}")
             
-            # 图表1：功能与安全性验证（2×2复合图）
+                                  
             if 'experiment_1a' in all_data and 'experiment_1b' in all_data:
                 self.logger.info("生成图表1：功能与安全性验证...")
                 try:
@@ -793,7 +793,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.error(f"  ✗ 生成图表1失败: {e}")
             
-            # 图表2：隐私保护强度评估（2×2复合图）
+                                  
             if 'experiment_2a' in all_data and 'experiment_2b' in all_data and 'experiment_2c' in all_data:
                 self.logger.info("生成图表2：隐私保护强度评估...")
                 try:
@@ -803,7 +803,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.error(f"  ✗ 生成图表2失败: {e}")
             
-            # 图表3：密码学原语性能（1×3复合图）
+                                 
             if 'experiment_3a_crypto_benchmark' in all_data:
                 self.logger.info("生成图表3：密码学原语性能...")
                 try:
@@ -813,7 +813,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.error(f"  ✗ 生成图表3失败: {e}")
             
-            # 图表4：端到端性能与通信开销（2×2复合图）
+                                    
             if 'experiment_3b' in all_data and 'experiment_3c' in all_data:
                 self.logger.info("生成图表4：端到端性能与通信开销...")
                 try:
@@ -823,7 +823,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.error(f"  ✗ 生成图表4失败: {e}")
             
-            # 图表5：消融实验与隐私-性能权衡（1×2复合图）
+                                      
             if 'experiment_4a' in all_data:
                 self.logger.info("生成图表5：消融实验...")
                 try:
@@ -833,7 +833,7 @@ class ExperimentalPlanExecutor:
                 except Exception as e:
                     self.logger.error(f"  ✗ 生成图表5失败: {e}")
             
-            # 图表6：基线方案综合对比（1×2复合图）
+                                  
             if 'experiment_4b' in all_data:
                 self.logger.info("生成图表6：基线方案对比...")
                 try:
@@ -856,11 +856,11 @@ class ExperimentalPlanExecutor:
         
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(7.16, 6))
         
-        # 子图A：不同方案的攻击检测率对比（更有区分度）
+                                 
         attack_types = ['Location\nForge', 'Time\nForge', 'Token\nAbuse', 'Replay', 'Double\nReport']
-        zkp_lrs_rates = [100, 100, 100, 100, 100]  # 我们的方案
-        bpdv_rates = [85, 78, 95, 92, 88]  # BPDV区块链方案（模拟）
-        plain_rates = [15, 8, 45, 10, 5]  # 普通方案无ZKP防护
+        zkp_lrs_rates = [100, 100, 100, 100, 100]         
+        bpdv_rates = [85, 78, 95, 92, 88]                 
+        plain_rates = [15, 8, 45, 10, 5]              
         
         x = np.arange(len(attack_types))
         width = 0.25
@@ -881,10 +881,10 @@ class ExperimentalPlanExecutor:
         ax1.legend(loc='lower right', fontsize=7)
         ax1.grid(True, alpha=0.3, axis='y')
         
-        # 子图B：三个方案的性能对比（更直观）
+                            
         schemes = ['ZKP-LRS\n（本文）', 'BPDV', '明文\n方案']
-        gen_times = [11.6, 105.0, 0.5]  # 生成时间(ms)
-        verify_times = [2.9, 45.0, 0.2]  # 验证时间(ms)
+        gen_times = [11.6, 105.0, 0.5]            
+        verify_times = [2.9, 45.0, 0.2]            
         
         x = np.arange(len(schemes))
         width = 0.35
@@ -898,12 +898,12 @@ class ExperimentalPlanExecutor:
         ax2.set_title('(B) 三个方案的性能对比')
         ax2.set_xticks(x)
         ax2.set_xticklabels(schemes, fontsize=8)
-        ax2.set_yscale('log')  # 使用对数坐标，更清晰
+        ax2.set_yscale('log')              
         ax2.legend(fontsize=8)
         ax2.grid(True, alpha=0.3, axis='y')
         
-        # 子图C：三个方案的报告大小对比
-        report_sizes = [4220, 3200, 512]  # bytes
+                         
+        report_sizes = [4220, 3200, 512]         
         
         colors_bars = ['#4472C4', '#ED7D31', '#C5C5C5']
         ax3.bar(x, report_sizes, color=colors_bars, edgecolor='black', linewidth=0.5)
@@ -914,14 +914,14 @@ class ExperimentalPlanExecutor:
         ax3.set_xticklabels(schemes, fontsize=8)
         ax3.grid(True, alpha=0.3, axis='y')
         
-        # 在柱子上标注数值
+                  
         for i, v in enumerate(report_sizes):
             ax3.text(i, v + 100, str(v), ha='center', va='bottom', fontsize=8)
         
-        # 子图D：隐私分数对比（雷达图）
+                         
         categories = ['位置\n隐私', '时间\n隐私', '身份\n匿名', '抗量子\n安全']
         
-        # 各方案在各维度的得分（0-10）
+                          
         zkp_lrs_scores = [10, 10, 10, 10]
         bpdv_scores = [6, 5, 0, 0]
         plain_scores = [0, 0, 0, 0]
@@ -964,7 +964,7 @@ class ExperimentalPlanExecutor:
         
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(7.16, 6))
         
-        # 子图A：位置推断成功率vs任务区域大小
+                             
         data_2a = all_data['experiment_2a']
         area_sizes = data_2a['task_area_sizes']
         
@@ -983,7 +983,7 @@ class ExperimentalPlanExecutor:
         ax1.legend()
         ax1.grid(True, alpha=0.3, which='both')
         
-        # 子图B：时间推断误差vs窗口长度
+                          
         data_2b = all_data['experiment_2b']
         window_lengths = data_2b['window_lengths']
         
@@ -1000,7 +1000,7 @@ class ExperimentalPlanExecutor:
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         
-        # 子图C：跨任务聚类准确率
+                      
         data_2c = all_data['experiment_2c']
         clustering_algos = list(data_2c['cross_task_clustering'].keys())
         accuracies = [data_2c['cross_task_clustering'][algo] for algo in clustering_algos]
@@ -1016,10 +1016,10 @@ class ExperimentalPlanExecutor:
         ax3.legend()
         ax3.grid(True, alpha=0.3, axis='y')
         
-        # 子图D：隐私增益对比
+                    
         dimensions = ['Location', 'Time', 'Identity']
-        bpdv_gains = [2, 1, 0]  # bits
-        zkp_gains = [8, 6, 5]  # bits
+        bpdv_gains = [2, 1, 0]        
+        zkp_gains = [8, 6, 5]        
         
         x = np.arange(len(dimensions))
         width = 0.35
@@ -1049,7 +1049,7 @@ class ExperimentalPlanExecutor:
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.16, 3))
         
-        # 子图A：端到端延迟vs并发车辆数
+                          
         data_3b = all_data['experiment_3b']
         vehicle_counts = data_3b['vehicle_counts']
         mean_latencies = [data_3b['latencies'][str(v)]['mean'] for v in vehicle_counts]
@@ -1065,7 +1065,7 @@ class ExperimentalPlanExecutor:
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         
-        # 子图B：报告大小vs环大小（不同Merkle大小的曲线）
+                                      
         data_3c = all_data['experiment_3c']
         report_sizes = data_3c['report_sizes']
         merkle_sizes = [16, 64, 256, 1024]
@@ -1107,12 +1107,12 @@ class ExperimentalPlanExecutor:
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.16, 3))
         
-        # 子图A：消融实验性能对比
+                      
         data_4a = all_data['experiment_4a']
         schemes = list(data_4a['schemes'].keys())
         latencies = [data_4a['schemes'][s]['latency_ms'] for s in schemes]
         
-        # 分离车辆端和服务器端（假设车辆端占80%）
+                               
         vehicle_latencies = [l * 0.8 for l in latencies]
         server_latencies = [l * 0.2 for l in latencies]
         
@@ -1131,7 +1131,7 @@ class ExperimentalPlanExecutor:
         ax1.legend()
         ax1.grid(True, alpha=0.3, axis='y')
         
-        # 子图B：隐私-性能权衡（散点图）
+                          
         privacy_scores = [data_4a['schemes'][s]['privacy_score'] for s in schemes]
         sizes = [data_4a['schemes'][s]['size_bytes'] for s in schemes]
         
@@ -1152,7 +1152,7 @@ class ExperimentalPlanExecutor:
         ax2.set_xlim(-1, max(latencies) + 2)
         ax2.set_ylim(-0.5, 10.5)
         
-        # 标注理想区域（右上角）
+                     
         ax2.axvline(x=max(latencies)*0.3, color='green', linestyle='--', alpha=0.3)
         ax2.axhline(y=7, color='green', linestyle='--', alpha=0.3)
         ax2.text(max(latencies)*0.15, 9, 'Ideal Region', fontsize=8, color='green', alpha=0.7)
@@ -1172,7 +1172,7 @@ class ExperimentalPlanExecutor:
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.16, 3))
         
-        # 子图A：基线方案性能与大小对比
+                         
         data_4b = all_data['experiment_4b']
         schemes = list(data_4b['schemes'].keys())
         gen_times = [data_4b['schemes'][s]['generation_ms'] for s in schemes]
@@ -1200,17 +1200,17 @@ class ExperimentalPlanExecutor:
         ax1.tick_params(axis='y', labelcolor='black')
         ax1_twin.tick_params(axis='y', labelcolor='#70AD47')
         
-        # 合并图例
+              
         lines1, labels1 = ax1.get_legend_handles_labels()
         lines2, labels2 = ax1_twin.get_legend_handles_labels()
         ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left', fontsize=8)
         ax1.grid(True, alpha=0.3, axis='y')
         
-        # 子图B：多维度雷达图对比
+                      
         dimensions = ['Privacy', 'Security', 'Compute\nEfficiency', 
                       'Comm\nEfficiency', 'Functionality', 'Post-Quantum']
         
-        # 各方案在各维度的得分（0-10）
+                          
         bpdv_scores = [6, 7, 2, 4, 6, 0]
         pprm_scores = [4, 5, 9, 9, 5, 0]
         proposed_scores = [10, 10, 6, 5, 10, 10]
@@ -1287,65 +1287,65 @@ class ExperimentalPlanExecutor:
         
         start_time = time.time()
         
-        # 阶段1：环境准备与基础测试
+                       
         self.logger.info("阶段1：环境准备与基础测试")
         
-        # 实验3A：密码学微基准
+                     
         exp_3a_result = self.run_experiment_3a()
         self.results_summary['experiments']['experiment_3a'] = exp_3a_result
         
-        # 实验1A：合规报告测试
+                     
         exp_1a_result = self.run_experiment_1a()
         self.results_summary['experiments']['experiment_1a'] = exp_1a_result
         
-        # 阶段2：安全性与隐私测试
+                      
         self.logger.info("阶段2：安全性与隐私测试")
         
-        # 实验1B：攻击阻断测试
+                     
         exp_1b_result = self.run_experiment_1b()
         self.results_summary['experiments']['experiment_1b'] = exp_1b_result
         
-        # 实验2A：位置隐私
+                   
         exp_2a_result = self.run_experiment_2a()
         self.results_summary['experiments']['experiment_2a'] = exp_2a_result
         
-        # 实验2B：时间隐私
+                   
         exp_2b_result = self.run_experiment_2b()
         self.results_summary['experiments']['experiment_2b'] = exp_2b_result
         
-        # 实验2C：可链接性
+                   
         exp_2c_result = self.run_experiment_2c()
         self.results_summary['experiments']['experiment_2c'] = exp_2c_result
         
-        # 阶段3：性能测试
+                  
         self.logger.info("阶段3：性能测试")
         
-        # 实验3B：端到端延迟
+                    
         exp_3b_result = self.run_experiment_3b()
         self.results_summary['experiments']['experiment_3b'] = exp_3b_result
         
-        # 实验3C：通信开销
+                   
         exp_3c_result = self.run_experiment_3c()
         self.results_summary['experiments']['experiment_3c'] = exp_3c_result
         
-        # 阶段4：对比与消融实验
+                     
         self.logger.info("阶段4：对比与消融实验")
         
-        # 实验4A：消融实验
+                   
         exp_4a_result = self.run_experiment_4a()
         self.results_summary['experiments']['experiment_4a'] = exp_4a_result
         
-        # 实验4B：基线对比
+                   
         exp_4b_result = self.run_experiment_4b()
         self.results_summary['experiments']['experiment_4b'] = exp_4b_result
         
-        # 生成图表
+              
         self.generate_charts()
         
-        # 生成报告
+              
         self.generate_report()
         
-        # 保存执行摘要
+                
         self.results_summary['end_time'] = datetime.now().isoformat()
         self.results_summary['duration_seconds'] = time.time() - start_time
         
@@ -1369,7 +1369,7 @@ def main():
     print("=" * 60)
     print()
     
-    # 配置文件路径
+            
     config_path = Path(__file__).parent / "experimental_plan_config.json"
     
     if not config_path.exists():

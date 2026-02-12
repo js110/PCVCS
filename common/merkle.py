@@ -31,12 +31,12 @@ class MerkleTree:
         if not leaves:
             return []
         
-        # Start with leaf level
+                               
         tree = []
         current_level = [self._hash(leaf) for leaf in leaves]
         tree.append(current_level)
         
-        # Build intermediate levels
+                                   
         while len(current_level) > 1:
             next_level = []
             for i in range(0, len(current_level), 2):
@@ -72,14 +72,14 @@ class MerkleTree:
         proof = []
         current_index = index
         
-        # Traverse up the tree
-        for level in self.tree[:-1]:  # Exclude root
+                              
+        for level in self.tree[:-1]:                
             level_size = len(level)
             if current_index % 2 == 0:
-                # Left node, get right sibling
+                                              
                 sibling_index = current_index + 1 if current_index + 1 < level_size else current_index
             else:
-                # Right node, get left sibling
+                                              
                 sibling_index = current_index - 1
             
             sibling_hash = level[sibling_index]
@@ -103,16 +103,16 @@ class MerkleTree:
         if not proof or not root:
             return False
         
-        # Calculate leaf hash
+                             
         current_hash = self._hash(leaf)
         
-        # Apply proof
+                     
         for sibling_hex in proof:
             sibling = bytes.fromhex(sibling_hex)
-            # For simplicity, we assume even indices are left nodes
-            # In a real implementation, we would need to track the exact path
+                                                                   
+                                                                             
             combined = current_hash + sibling
             current_hash = hashlib.sha256(combined).digest()
         
-        # Compare with root
+                           
         return current_hash.hex() == root

@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 生成中文版性能评估图表
 用于论文第六部分 (VI. PERFORMANCE EVALUATION)
@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# 设置中文字体
+        
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 plt.rcParams.update({
@@ -46,11 +46,11 @@ def generate_fig1_client_breakdown(data, output_dir):
     lsag = [item["lsag_signing"] for item in breakdown]
     kem = [item["ml_kem_encryption"] for item in breakdown]
     
-    # 分组柱状图设置
+             
     x = np.arange(len(ring_sizes))
-    width = 0.2  # 每组柱子的宽度
+    width = 0.2           
     
-    # 绘制4组柱子
+            
     bars1 = ax.bar(x - 1.5*width, setup, width, label='承诺与初始化', 
                    color='#FFC000', edgecolor='black', linewidth=1)
     bars2 = ax.bar(x - 0.5*width, zk, width, label='时空零知识证明', 
@@ -60,15 +60,15 @@ def generate_fig1_client_breakdown(data, output_dir):
     bars4 = ax.bar(x + 1.5*width, kem, width, label='ML-KEM加密', 
                    color='#70AD47', edgecolor='black', linewidth=1)
     
-    # 在每组柱子顶部标注数值（只标注非极小值）
+                          
     for i, (s, z, l, k) in enumerate(zip(setup, zk, lsag, kem)):
-        if s > 0.5:  # 只有大于0.5ms才标注，避免拥挤
+        if s > 0.5:                     
             ax.text(i - 1.5*width, s + 0.2, f'{s:.1f}', ha='center', va='bottom', fontsize=7)
         ax.text(i - 0.5*width, z + 0.2, f'{z:.1f}', ha='center', va='bottom', fontsize=7)
         ax.text(i + 0.5*width, l + 0.2, f'{l:.1f}', ha='center', va='bottom', fontsize=7)
         ax.text(i + 1.5*width, k + 0.2, f'{k:.1f}', ha='center', va='bottom', fontsize=7)
     
-    # 在图表上方标注总耗时
+                
     totals = [sum([s, z, l, k]) for s, z, l, k in zip(setup, zk, lsag, kem)]
     for i, total in enumerate(totals):
         ax.text(i, max([setup[i], zk[i], lsag[i], kem[i]]) + 1.0, 
@@ -104,11 +104,11 @@ def generate_fig2_server_breakdown(data, output_dir):
     lrs_ver = [item["lrs_verification"] for item in breakdown]
     kem_dec = [item["kem_decapsulation"] for item in breakdown]
     
-    # 分组柱状图设置
+             
     x = np.arange(len(ring_sizes))
-    width = 0.25  # 每组柱子的宽度
+    width = 0.25           
     
-    # 绘制3组柱子
+            
     bars1 = ax.bar(x - width, zk_ver, width, label='零知识证明验证', 
                    color='#4472C4', edgecolor='black', linewidth=1)
     bars2 = ax.bar(x, lrs_ver, width, label='环签名验证', 
@@ -116,13 +116,13 @@ def generate_fig2_server_breakdown(data, output_dir):
     bars3 = ax.bar(x + width, kem_dec, width, label='KEM解封装', 
                    color='#70AD47', edgecolor='black', linewidth=1)
     
-    # 在每组柱子顶部标注数值
+                 
     for i, (z, l, k) in enumerate(zip(zk_ver, lrs_ver, kem_dec)):
         ax.text(i - width, z + 0.15, f'{z:.1f}', ha='center', va='bottom', fontsize=8)
         ax.text(i, l + 0.15, f'{l:.1f}', ha='center', va='bottom', fontsize=8)
         ax.text(i + width, k + 0.15, f'{k:.1f}', ha='center', va='bottom', fontsize=8)
     
-    # 在图表上方标注总耗时
+                
     totals = [sum([z, l, k]) for z, l, k in zip(zk_ver, lrs_ver, kem_dec)]
     for i, total in enumerate(totals):
         ax.text(i, max([zk_ver[i], lrs_ver[i], kem_dec[i]]) + 0.7, 
@@ -154,28 +154,28 @@ def generate_fig3_communication(data, output_dir):
     heights = exp2["merkle_heights"]
     sizes_kb = [item["size_kb"] for item in exp2["report_sizes"]]
     
-    # 根据 Merkle 高度计算授权区域数 |A_tau| = 2^h
-    num_cells = [2**h for h in heights[:3]]  # 只使用前3个高度: [4, 8, 12] -> [16, 256, 4096]
-    sizes_kb = sizes_kb[:3]  # 对应的前3个大小值
+                                       
+    num_cells = [2**h for h in heights[:3]]                                           
+    sizes_kb = sizes_kb[:3]             
     
-    # PCVCS (Merkle-based) 的真实数据
+                                
     ax.plot(num_cells, sizes_kb, marker='o', linewidth=2.5, markersize=10, 
             color='#4472C4', markerfacecolor='white', markeredgewidth=2.5, 
             label='PCVCS (Merkle树)', zorder=3)
     
-    # Naïve list encoding 的理论线 (每个cell ID占 8字节)
-    c0 = 6.0  # 基础开销 (KB): 签名、KEM、其他元数据
-    naive_sizes_kb = [c0 + (8 * n / 1024) for n in num_cells]  # 8B per cell ID
+                                               
+    c0 = 6.0                           
+    naive_sizes_kb = [c0 + (8 * n / 1024) for n in num_cells]                  
     
     ax.plot(num_cells, naive_sizes_kb, marker='s', linewidth=2.5, markersize=9,
             color='#FF6B35', linestyle='--', markerfacecolor='white', 
             markeredgewidth=2.5, markeredgecolor='#FF6B35', 
             label='Naive (列表编码)', alpha=0.9, zorder=2)
     
-    # 设置对数坐标轴
+             
     ax.set_xscale('log', base=2)
     
-    # 设置 x 轴刻度和标签
+                 
     ax.set_xticks(num_cells)
     ax.set_xticklabels([f'{n:,}' for n in num_cells], fontsize=10)
     
@@ -183,21 +183,21 @@ def generate_fig3_communication(data, output_dir):
     ax.set_ylabel('报告大小 (KB)', fontsize=12, fontweight='bold')
     ax.set_title('报告大小与授权区域数的关系', fontsize=13, fontweight='bold')
     
-    # 图例
+        
     ax.legend(loc='upper left', framealpha=0.95, fontsize=11, 
               edgecolor='black', fancybox=True)
     
     ax.grid(True, alpha=0.3, linestyle='--', which='both')
     ax.set_ylim(0, max(max(sizes_kb), max(naive_sizes_kb)) * 1.15)
     
-    # 标注 PCVCS 数据点
+                  
     for n, s in zip(num_cells, sizes_kb):
         ax.text(n, s + max(naive_sizes_kb)*0.015, f'{s:.2f}', ha='center', va='bottom', 
                 fontsize=10, color='#4472C4', fontweight='bold')
     
-    # 标注 Naïve 的所有点
+                   
     for i, (n, s) in enumerate(zip(num_cells, naive_sizes_kb)):
-        # 调整标注位置避免重叠
+                    
         if i == 0:
             ax.text(n, s + max(naive_sizes_kb)*0.025, f'{s:.1f}', ha='center', va='bottom', 
                     fontsize=11, color='#FF6B35', fontweight='bold')
@@ -208,7 +208,7 @@ def generate_fig3_communication(data, output_dir):
             ax.text(n, s + max(naive_sizes_kb)*0.02, f'{s:.1f}', ha='center', va='bottom', 
                     fontsize=10, color='#FF6B35', fontweight='bold')
     
-    # 添加说明
+          
     ax.text(0.98, 0.05, 
             '* PCVCS: O(log n) 增长 (Merkle证明)\n'
             '* Naive: O(n) 增长 (列表存储)', 
@@ -229,11 +229,11 @@ def generate_fig4_security(data, output_dir):
     
     exp3 = data['experiment3_security']
     
-    # Panel (a): 接受率
+                    
     categories = list(exp3["acceptance_rates"].keys())
     rates = list(exp3["acceptance_rates"].values())
     
-    # 翻译类别名称
+            
     category_names = {
         "Honest": "诚实报告",
         "Fake Loc.": "伪造位置",
@@ -243,18 +243,18 @@ def generate_fig4_security(data, output_dir):
     }
     cn_categories = [category_names.get(c, c) for c in categories]
     
-    # 为显示目的，将0%设为最小可见值2%
+                        
     display_rates = [r if r > 0 else 2 for r in rates]
     colors = ['#70AD47' if c == 'Honest' else '#E74C3C' for c in categories]
     
     x = np.arange(len(cn_categories))
     bars1 = ax1.bar(x, display_rates, color=colors, alpha=0.85, edgecolor='black', linewidth=1.2, width=0.7)
     
-    # 高亮诚实报告
+            
     bars1[0].set_linewidth(2.5)
     bars1[0].set_edgecolor('darkgreen')
     
-    # 为0%的柱子添加斜线填充效果，表示"不可见"
+                            
     for i, r in enumerate(rates):
         if r == 0:
             bars1[i].set_hatch('///')
@@ -267,38 +267,38 @@ def generate_fig4_security(data, output_dir):
     ax1.set_ylim(0, 108)
     ax1.grid(True, alpha=0.3, axis='y', linestyle='--')
     
-    # 标注数值
+          
     for i, (v, dv) in enumerate(zip(rates, display_rates)):
         if v > 5:
             ax1.text(i, dv/2, f'{v:.1f}%', ha='center', va='center', fontsize=11, fontweight='bold', color='white')
         elif v > 0:
             ax1.text(i, dv + 2, f'{v:.2f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')
         else:
-            # 0%的情况，显示在柱子上方
+                           
             ax1.text(i, dv + 1.5, '0.00%\n(被拒绝)', ha='center', va='bottom', 
                     fontsize=10, fontweight='bold', color='#E74C3C',
                     bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#E74C3C', linewidth=1.5))
     
-    # 添加说明
+          
     ax1.text(0.02, 0.98, '注: 斜线填充表示0%（为可见性设为2%高度）', 
             transform=ax1.transAxes, fontsize=9, verticalalignment='top',
             bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
     
-    # Panel (b): 检测率和误报率
+                        
     metrics = ['检测率', '误报率']
     values = [
         exp3["detection_metrics"]["detection_rate"],
         exp3["detection_metrics"]["false_positive_rate"]
     ]
     
-    # 为显示目的，将0%设为最小可见值4%
+                        
     display_values = [v if v > 0 else 4 for v in values]
     
     x2 = np.arange(len(metrics))
     colors2 = ['#70AD47', '#FFC000']
     bars2 = ax2.bar(x2, display_values, color=colors2, alpha=0.85, edgecolor='black', linewidth=1.2, width=0.5)
     
-    # 为0%的柱子添加填充效果
+                  
     for i, v in enumerate(values):
         if v == 0:
             bars2[i].set_hatch('////')
@@ -312,19 +312,19 @@ def generate_fig4_security(data, output_dir):
     ax2.set_ylim(0, 108)
     ax2.grid(True, alpha=0.3, axis='y', linestyle='--')
     
-    # 标注数值
+          
     for i, (v, dv) in enumerate(zip(values, display_values)):
         if v > 5:
             ax2.text(i, dv/2, f'{v:.2f}%', ha='center', va='center', fontsize=12, fontweight='bold', color='white')
         elif v > 0:
             ax2.text(i, dv + 2, f'{v:.2f}%', ha='center', va='bottom', fontsize=12, fontweight='bold')
         else:
-            # 0%的情况
+                   
             ax2.text(i, dv + 1.5, '0.00%\n(无误报)', ha='center', va='bottom', 
                     fontsize=11, fontweight='bold', color='#FFA500',
                     bbox=dict(boxstyle='round,pad=0.4', facecolor='white', edgecolor='#FFA500', linewidth=1.5))
     
-    # 添加说明
+          
     ax2.text(0.02, 0.98, '注: 斜线填充表示0%（为可见性设为4%高度）', 
             transform=ax2.transAxes, fontsize=9, verticalalignment='top',
             bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
@@ -344,7 +344,7 @@ def generate_fig5_comparative(data, output_dir):
     schemes = list(exp4["schemes"].keys())
     times = [exp4["schemes"][s]["vehicle_time_ms"] for s in schemes]
     
-    # 翻译方案名称
+            
     scheme_names = {
         "PCVCS": "PCVCS\n(本方案)",
         "LA-SPR": "LA-SPR\n位置认证",
@@ -357,21 +357,21 @@ def generate_fig5_comparative(data, output_dir):
     
     x = np.arange(len(cn_schemes))
     
-    # 颜色: PCVCS高亮, FAIR类似性能, 其他蓝色
+                                 
     colors = []
     for s, t in zip(schemes, times):
         if s == 'PCVCS':
-            colors.append('#C55A11')  # 橙色高亮
+            colors.append('#C55A11')        
         elif s == 'FAIR':
-            colors.append('#ED7D31')  # 类似性能 (橙红)
+            colors.append('#ED7D31')             
         elif t < 5:
-            colors.append('#70AD47')  # 快速方案 (绿色)
+            colors.append('#70AD47')             
         else:
-            colors.append('#4472C4')  # 中等方案 (蓝色)
+            colors.append('#4472C4')             
     
     bars = ax.bar(x, times, color=colors, alpha=0.85, edgecolor='black', linewidth=1.2, width=0.7)
     
-    # 高亮本方案
+           
     bars[0].set_linewidth(3)
     bars[0].set_edgecolor('darkred')
     
@@ -383,12 +383,12 @@ def generate_fig5_comparative(data, output_dir):
     ax.grid(True, alpha=0.3, axis='y', linestyle='--')
     ax.set_ylim(0, max(times) * 1.2)
     
-    # 标注数值
+          
     for i, v in enumerate(times):
         ax.text(i, v + max(times)*0.02, f'{v:.2f}', ha='center', va='bottom', 
                 fontsize=10, fontweight='bold')
     
-    # 添加说明
+          
     ax.text(0.98, 0.97, '* PCVCS为本方案\n* 数值越小越好', 
             transform=ax.transAxes, fontsize=9, 
             verticalalignment='top', horizontalalignment='right',
@@ -412,7 +412,7 @@ def generate_fig6_communication_comparison(data, output_dir):
     schemes = list(exp5["schemes"].keys())
     sizes_kb = [exp5["schemes"][s]["size_kb"] for s in schemes]
     
-    # 翻译方案名称
+            
     scheme_names = {
         "SS-TA": "SS-TA\n秘密分享",
         "PRVB": "PRVB\n区块链",
@@ -425,21 +425,21 @@ def generate_fig6_communication_comparison(data, output_dir):
     
     x = np.arange(len(cn_schemes))
     
-    # 颜色编码
+          
     colors = []
     for s, size in zip(schemes, sizes_kb):
         if s == 'PCVCS':
-            colors.append('#C55A11')  # 橙色高亮
-        elif size < 1:  # 极轻量级
-            colors.append('#70AD47')  # 绿色
-        elif size > 4:  # 重量级
-            colors.append('#ED7D31')  # 橙红
+            colors.append('#C55A11')        
+        elif size < 1:        
+            colors.append('#70AD47')      
+        elif size > 4:       
+            colors.append('#ED7D31')      
         else:
-            colors.append('#4472C4')  # 蓝色
+            colors.append('#4472C4')      
     
     bars = ax.bar(x, sizes_kb, color=colors, alpha=0.85, edgecolor='black', linewidth=1.2, width=0.7)
     
-    # 高亮PCVCS
+             
     for i, s in enumerate(schemes):
         if s == 'PCVCS':
             bars[i].set_linewidth(3)
@@ -453,12 +453,12 @@ def generate_fig6_communication_comparison(data, output_dir):
     ax.grid(True, alpha=0.3, axis='y', linestyle='--')
     ax.set_ylim(0, max(sizes_kb) * 1.2)
     
-    # 标注数值
+          
     for i, v in enumerate(sizes_kb):
         ax.text(i, v + max(sizes_kb)*0.02, f'{v:.2f}', ha='center', va='bottom', 
                 fontsize=10, fontweight='bold')
     
-    # 添加说明
+          
     ax.text(0.98, 0.97, '* PCVCS为本方案\n* 基于协议格式静态分析', 
             transform=ax.transAxes, fontsize=9, 
             verticalalignment='top', horizontalalignment='right',
@@ -481,7 +481,7 @@ def generate_fig7_anonymity_strength(data, output_dir):
     exp6 = data['experiment6_anonymity_strength_comparison']
     schemes = list(exp6["schemes"].keys())
     
-    # 中文方案名称
+            
     scheme_names_cn = {
         "SS-TA": "SS-TA",
         "PRVB": "PRVB",
@@ -492,16 +492,16 @@ def generate_fig7_anonymity_strength(data, output_dir):
     }
     cn_schemes = [scheme_names_cn.get(s, s) for s in schemes]
     
-    # 提取数据
-    tracking_probs = [exp6["schemes"][s]["tracking_probability"] * 100 for s in schemes]  # 转为百分比
+          
+    tracking_probs = [exp6["schemes"][s]["tracking_probability"] * 100 for s in schemes]         
     anonymity_sets = [exp6["schemes"][s]["anonymity_set_size"] for s in schemes]
     
-    # Panel (a): 被追踪概率
+                      
     x = np.arange(len(schemes))
     colors = ['#E74C3C', '#F39C12', '#F39C12', '#E67E22', '#E67E22', '#27AE60']
     bars1 = ax1.bar(x, tracking_probs, color=colors, edgecolor='black', linewidth=1.2)
     
-    # 高亮PCVCS柱子（最后一个）
+                     
     bars1[-1].set_color('#2ECC71')
     bars1[-1].set_linewidth(2.5)
     bars1[-1].set_edgecolor('#196F3D')
@@ -513,7 +513,7 @@ def generate_fig7_anonymity_strength(data, output_dir):
     ax1.set_ylim(0, max(tracking_probs) * 1.15)
     ax1.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 标注数值
+          
     for i, (bar, val) in enumerate(zip(bars1, tracking_probs)):
         if val >= 10:
             ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height()/2,
@@ -524,15 +524,15 @@ def generate_fig7_anonymity_strength(data, output_dir):
                     f'{val:.0f}%', ha='center', va='bottom',
                     fontsize=11, fontweight='bold')
     
-    # 添加注释
+          
     ax1.text(0.5, 0.97, '(更低更好)', transform=ax1.transAxes,
             ha='center', va='top', fontsize=10, style='italic',
             bbox=dict(boxstyle='round,pad=0.4', facecolor='lightyellow', alpha=0.8))
     
-    # Panel (b): 匿名集合大小
+                       
     bars2 = ax2.bar(x, anonymity_sets, color=colors, edgecolor='black', linewidth=1.2)
     
-    # 高亮PCVCS柱子
+               
     bars2[-1].set_color('#2ECC71')
     bars2[-1].set_linewidth(2.5)
     bars2[-1].set_edgecolor('#196F3D')
@@ -544,7 +544,7 @@ def generate_fig7_anonymity_strength(data, output_dir):
     ax2.set_ylim(0, max(anonymity_sets) * 1.15)
     ax2.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 标注数值
+          
     for i, (bar, val) in enumerate(zip(bars2, anonymity_sets)):
         if val >= 10:
             ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height()/2,
@@ -555,12 +555,12 @@ def generate_fig7_anonymity_strength(data, output_dir):
                     f'{val}', ha='center', va='bottom',
                     fontsize=11, fontweight='bold')
     
-    # 添加注释
+          
     ax2.text(0.5, 0.97, '(更大更好)', transform=ax2.transAxes,
             ha='center', va='top', fontsize=10, style='italic',
             bbox=dict(boxstyle='round,pad=0.4', facecolor='lightyellow', alpha=0.8))
     
-    # 添加说明文字
+            
     explanation = (
         "指标定义: 最坏情况下，攻击者成功把一条上报链接到具体车辆的概率\n"
         "PCVCS使用LSAG环签名（环大小=50），提供最大匿名集合和最低被追踪概率"
@@ -577,7 +577,7 @@ def generate_fig7_anonymity_strength(data, output_dir):
 
 
 def main():
-    # 查找最新的结果目录
+               
     results_base = Path("performance_evaluation_results")
     latest_dir = max(results_base.iterdir(), key=lambda p: p.stat().st_mtime)
     
@@ -592,10 +592,10 @@ def main():
     print(f"输出目录: {output_dir}")
     print()
     
-    # 加载数据
+          
     data = load_data(data_dir)
     
-    # 生成所有图表
+            
     generate_fig1_client_breakdown(data, output_dir)
     generate_fig2_server_breakdown(data, output_dir)
     generate_fig3_communication(data, output_dir)

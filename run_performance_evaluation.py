@@ -1,5 +1,5 @@
-﻿#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+﻿                      
+                       
 """
 VI. PERFORMANCE EVALUATION - 瀹為獙璇勪及鏂规瀹炴柦
 涓ユ牸鎸夌収璁烘枃绗叚閮ㄥ垎鐨勫疄楠岃璁℃墽琛?
@@ -35,10 +35,10 @@ from typing import Dict, Any, List, Tuple
 from dataclasses import dataclass, asdict
 from math import sqrt, ceil, log
 
-# Default to real crypto backend unless overridden by CLI.
+                                                          
 os.environ.setdefault("USE_REAL_CRYPTO", "1")
 
-# 娣诲姞椤圭洰璺緞
+           
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
@@ -57,9 +57,9 @@ from common.kem_layer import kem_keygen, kem_encaps, kem_decaps
 class PerformanceResult:
     """鎬ц兘娴嬭瘯缁撴灉"""
     config: str
-    t_client_ms: float  # 杞﹁締绔敓鎴愭椂闂?
-    t_server_ms: float  # 鏈嶅姟鍣ㄧ楠岃瘉鏃堕棿
-    message_size_kb: float  # 娑堟伅澶у皬
+    t_client_ms: float               
+    t_server_ms: float                
+    message_size_kb: float          
     
     def to_dict(self):
         return asdict(self)
@@ -86,25 +86,25 @@ class PerformanceEvaluator:
         self.output_dir = Path(output_dir) / timestamp
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-        # 鍒涘缓瀛愮洰褰?
+                  
         self.data_dir = self.output_dir / "raw_data"
         self.figures_dir = self.output_dir / "figures"
         for d in [self.data_dir, self.figures_dir]:
             d.mkdir(exist_ok=True)
         
-        # 鏃ュ織
+             
         self.logger = ExperimentLogger(log_file=self.output_dir / "experiment.log")
         
-        # Track seen link tags for duplicate-report detection.
+                                                              
         self._seen_link_tags = set()
-        # Optimized PCVCS evaluation settings.
+                                              
         self.pcvcs_ring_size = 16
         self.pcvcs_reports_per_session = 20
 
-        # 鐜/鍙傛暟蹇収锛屼繚璇佸彲杩芥函澶嶇幇
+                                
         self._write_environment_snapshot()
 
-        # 绯荤粺淇℃伅
+                
         self._log_system_info()
         self._init_pcvcs_eval_context()
         self._init_literature_baseline_profiles()
@@ -165,7 +165,7 @@ class PerformanceEvaluator:
         self._pcvcs_session_counter_client = 0
         self._pcvcs_session_counter_server = 0
 
-        # One sample to calibrate compact serialized lengths.
+                                                             
         sample_sig = lrs_sign(b"msg", self._pcvcs_ring_pubkeys, 0, self._pcvcs_signer_sk, b"ctx")
         sig_hex = sample_sig.get("sig", "")
         link_hex = sample_sig.get("link_tag", "")
@@ -179,26 +179,26 @@ class PerformanceEvaluator:
         Build baseline profiles from paper-reported numbers/formulas.
         All non-PCVCS entries remain literature_estimated by design.
         """
-        # ASR-WS (IEEE TVT 2024): worker-upload overhead formula in Sec. VII-A.
-        # eta = ceil(|S(A)| * m / ln(2)); upload bits ~= H * eta + 2048.
+                                                                               
+                                                                        
         asr_defaults = {"m": 20, "spatial_range_cardinality": 5, "H": 5}
         asr_eta = int(ceil(asr_defaults["spatial_range_cardinality"] * asr_defaults["m"] / log(2)))
         asr_upload_bits = asr_defaults["H"] * asr_eta + 2048
 
-        # P-SimiDedup (IEEE IoTJ 2024): report-generation communication values in Fig. 4(d-f).
-        # Normalize to per-data report bits by averaging reported points.
+                                                                                              
+                                                                         
         psimidedup_bits_per_data_samples = [
-            78064.0 / 100.0,   # cr=10%, 100 data
-            390784.0 / 500.0,  # cr=10%, 500 data
-            77344.0 / 100.0,   # cr=20%, 100 data
-            353184.0 / 500.0,  # cr=20%, 500 data
-            68704.0 / 100.0,   # cr=40%, 100 data
-            313984.0 / 500.0   # cr=40%, 500 data
+            78064.0 / 100.0,                     
+            390784.0 / 500.0,                    
+            77344.0 / 100.0,                     
+            353184.0 / 500.0,                    
+            68704.0 / 100.0,                     
+            313984.0 / 500.0                     
         ]
         psimidedup_report_bits = int(round(sum(psimidedup_bits_per_data_samples) / len(psimidedup_bits_per_data_samples)))
 
-        # pFind (WWW 2024): Table 2 + Fig. 8(g).
-        # ReqGen bits = m + n + l + 1200 with (m,n,l)=(24,43,16), plus one detector-tag exchange (~22.75 bytes).
+                                                
+                                                                                                                
         pfind_req_bits = 24 + 43 + 16 + 1200
         pfind_exchange_bits = int(round(22.75 * 8))
         pfind_report_bits = pfind_req_bits + pfind_exchange_bits
@@ -276,7 +276,7 @@ class PerformanceEvaluator:
         except OSError:
             return
 
-        # Match \cite{...}, \citep{...}, \citet{...}, etc.
+                                                          
         cite_pattern = re.compile(r"\\cite[a-zA-Z*]*\{([^}]*)\}")
         citation_order = {}
         next_index = 1
@@ -300,9 +300,9 @@ class PerformanceEvaluator:
         suffix = getattr(self, "_scheme_citation_tags", {}).get(scheme, "")
         return f"{scheme}{suffix}"
     
-    # ====================
-    # 瀹為獙1: PCVCS鍐呴儴鎬ц兘鍒嗚В (Micro-benchmark)
-    # ====================
+                          
+                                            
+                          
     def experiment1_micro_benchmark(self, ring_sizes: List[int] = None) -> Dict[str, Any]:
         """
         瀹為獙1: PCVCS鍐呴儴鎬ц兘鍒嗚В
@@ -323,17 +323,17 @@ class PerformanceEvaluator:
             "experiment": "Experiment1_Micro_Benchmark",
             "description": "PCVCS鍐呴儴鎬ц兘鍒嗚В: 閲忓寲姣忎釜瀵嗙爜瀛︽楠ょ殑璐＄尞",
             "ring_sizes": ring_sizes,
-            "client_breakdown": [],  # 杞﹁締绔垎瑙?
-            "server_breakdown": []   # 鏈嶅姟鍣ㄧ鍒嗚В
+            "client_breakdown": [],            
+            "server_breakdown": []              
         }
         
         for n_R in ring_sizes:
             self.logger.info(f"\n娴嬭瘯鐜ぇ灏?n_R = {n_R}...")
             
-            # === 杞﹁締绔垎瑙?===
+                             
             client_times = self._measure_client_breakdown(n_R, iterations=100)
             
-            # === 鏈嶅姟鍣ㄧ鍒嗚В ===
+                               
             server_times = self._measure_server_breakdown(n_R, iterations=100)
             
             results["client_breakdown"].append({
@@ -346,13 +346,13 @@ class PerformanceEvaluator:
                 **server_times
             })
             
-            # 姹囨€荤粺璁?
+                     
             total_client = sum(client_times.values())
             total_server = sum(server_times.values())
             self.logger.info(f"  杞﹁締绔€昏€楁椂: {total_client:.3f} ms")
             self.logger.info(f"  鏈嶅姟鍣ㄧ鎬昏€楁椂: {total_server:.3f} ms")
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment1_micro_benchmark.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -369,44 +369,44 @@ class PerformanceEvaluator:
             "ml_kem_encryption": []
         }
         
-        # 鍑嗗鐜?
+               
         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
         ring_pubkeys = [pk for _, pk in ring_keys]
         signer_sk = ring_keys[0][0]
         
-        # 鍑嗗Merkle鐧藉悕鍗?
+                        
         whitelist = [f"geohash_{i}" for i in range(16)]
         root = merkle_root(whitelist)
         proof = merkle_proof(whitelist, 0)
         kem_pk, _ = kem_keygen()
         
         for _ in range(iterations):
-            # 1. Commitments & Setup (闈炲父蹇?
+                                           
             start = time.perf_counter()
             _ = pedersen_commit(42, 12345)
             times["commitments_setup"].append((time.perf_counter() - start) * 1000)
             
-            # 2. Spatio-Temporal ZK Proofs (Bulletproofs + Merkle Path)
+                                                                       
             start = time.perf_counter()
-            # Task-level Merkle artifacts are precomputed and reused.
+                                                                     
             _ = root
             _ = proof
-            # Bulletproofs鑼冨洿璇佹槑
+                                
             rp = range_proof_prove(1234567890, 0, 2**32-1, 42)
             times["spatio_temporal_zk"].append((time.perf_counter() - start) * 1000)
             
-            # 3. LSAG Signing (闅忕幆澶у皬绾挎€у闀?
+                                            
             start = time.perf_counter()
             message = b"test_message_for_lsag"
             sig = lrs_sign(message, ring_pubkeys, 0, signer_sk, b"context")
             times["lsag_signing"].append((time.perf_counter() - start) * 1000)
             
-            # 4. ML-KEM/Encryption (session-amortized)
+                                                      
             start = time.perf_counter()
             ct, ss = kem_encaps(kem_pk)
             times["ml_kem_encryption"].append(((time.perf_counter() - start) * 1000) / self.pcvcs_reports_per_session)
         
-        # 璁＄畻骞冲潎鍊?
+                  
         avg_times = {
             key: sum(vals) / len(vals) for key, vals in times.items()
         }
@@ -421,7 +421,7 @@ class PerformanceEvaluator:
             "kem_decapsulation": []
         }
         
-        # 鍑嗗鏁版嵁
+                
         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
         ring_pubkeys = [pk for _, pk in ring_keys]
         signer_sk = ring_keys[0][0]
@@ -436,34 +436,34 @@ class PerformanceEvaluator:
         ct, ss_expected = kem_encaps(kem_pk)
         
         for _ in range(iterations):
-            # 1. ZK Verification (Bulletproofs + Merkle)
+                                                        
             start = time.perf_counter()
-            # Merkle楠岃瘉
+                       
             _ = merkle_verify(whitelist[0], proof, root, 0)
-            # Bulletproofs楠岃瘉
+                             
             _ = range_proof_verify(rp)
             times["zk_verification"].append((time.perf_counter() - start) * 1000)
             
-            # 2. LRS Verification
+                                 
             start = time.perf_counter()
             _ = lrs_verify(message, sig, ring_pubkeys)
             times["lrs_verification"].append((time.perf_counter() - start) * 1000)
             
-            # 3. KEM Decapsulation (session-amortized)
+                                                      
             start = time.perf_counter()
             _ = kem_decaps(kem_sk, ct)
             times["kem_decapsulation"].append(((time.perf_counter() - start) * 1000) / self.pcvcs_reports_per_session)
         
-        # 璁＄畻骞冲潎鍊?
+                  
         avg_times = {
             key: sum(vals) / len(vals) for key, vals in times.items()
         }
         
         return avg_times
     
-    # ====================
-    # 瀹為獙2: 閫氫俊寮€閿€鍒嗘瀽
-    # ====================
+                          
+                      
+                          
     def experiment2_communication_overhead(self, merkle_heights: List[int] = None) -> Dict[str, Any]:
         """
         瀹為獙2: 閫氫俊寮€閿€鍒嗘瀽
@@ -491,7 +491,7 @@ class PerformanceEvaluator:
             leaf_count = 2 ** h
             self.logger.info(f"\nMerkle楂樺害 h = {h} (鍙跺瓙鏁?= {leaf_count})...")
             
-            # 鐢熸垚瀹屾暣鎶ュ憡
+                       
             report_size = self._generate_full_report(leaf_count)
             
             results["report_sizes"].append({
@@ -503,7 +503,7 @@ class PerformanceEvaluator:
             
             self.logger.info(f"  鎶ュ憡澶у皬: {report_size} bytes ({report_size/1024:.2f} KB)")
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment2_communication.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -513,10 +513,10 @@ class PerformanceEvaluator:
     
     def _generate_full_report(self, leaf_count: int) -> int:
         """鐢熸垚瀹屾暣鐨凱roof-Carrying Report骞惰绠楀ぇ灏?"""
-        # Compact encoding model:
-        # 1) ring is pre-registered (ring_id sent, not full pubkey list)
-        # 2) KEM is session-level and amortized by reports/session
-        # 3) cryptographic objects use binary length rather than JSON-string inflation
+                                 
+                                                                        
+                                                                  
+                                                                                      
         depth = max(1, int(ceil(log(max(leaf_count, 2), 2))))
         merkle_root_bytes = 32
         merkle_path_bytes = 32 * depth
@@ -543,8 +543,8 @@ class PerformanceEvaluator:
         )
         return total
     
-    # ====================
-    # 瀹為獙3: 瀹夊叏鎬ч獙璇?    # ====================
+                          
+                                              
     def experiment3_security_effectiveness(self, samples_per_attack: int = 500) -> Dict[str, Any]:
         """
         瀹為獙3: 瀹夊叏鎬ч獙璇?
@@ -566,7 +566,7 @@ class PerformanceEvaluator:
             "Double Report": "generate_duplicate_report_attack() and submit the second report as duplicate"
         }
 
-        # Reuse the existing security sample generator to avoid hardcoded rates.
+                                                                                
         from experiments.modules.security_tester import SecurityTester
         tester = SecurityTester(logger=None)
         
@@ -586,7 +586,7 @@ class PerformanceEvaluator:
             }
         }
         
-        # Panel (a): acceptance rates by report type
+                                                    
         self.logger.info("\nPanel (a): test acceptance rates by report category...")
         for attack_type in attack_types:
             self._seen_link_tags = set()
@@ -607,7 +607,7 @@ class PerformanceEvaluator:
                 f"(accepted={accept_count}/{samples_per_attack}, 95%CI=[{low*100:.2f}%, {high*100:.2f}%])"
             )
         
-        # Panel (b): 妫€娴嬬巼鍜岃鎶ョ巼
+                                
         self.logger.info("\nPanel (b): 娴嬭瘯閾炬帴鏍囩妫€娴嬫満鍒?..")
         detection, false_positive = self._test_linkability_detection_by_samples(tester, samples_per_attack)
         results["detection_metrics"]["duplicate_report"] = detection
@@ -624,7 +624,7 @@ class PerformanceEvaluator:
             f"(95%CI=[{false_positive['ci95_pct'][0]:.2f}%, {false_positive['ci95_pct'][1]:.2f}%])"
         )
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment3_security.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -652,7 +652,7 @@ class PerformanceEvaluator:
         if attack_type == "Fake Token":
             return tester.generate_token_abuse_attack()
         if attack_type == "Double Report":
-            # Double-report is handled by pair-wise logic in _test_acceptance_by_samples.
+                                                                                         
             return {}
         raise ValueError(f"Unsupported attack type: {attack_type}")
 
@@ -680,7 +680,7 @@ class PerformanceEvaluator:
                 pair = tester.generate_duplicate_report_attack()
                 if len(pair) < 2:
                     continue
-                # Submit the first one as history, and test acceptance of the duplicate.
+                                                                                        
                 _ = self._accept_report(tester, pair[0])
                 if self._accept_report(tester, pair[1]):
                     accepted += 1
@@ -714,7 +714,7 @@ class PerformanceEvaluator:
             "ci95_pct": [det_low * 100.0, det_high * 100.0]
         }
 
-        # Track seen link tags for duplicate-report detection.
+                                                              
         self._seen_link_tags = set()
         false_positive = 0
         for _ in range(samples):
@@ -732,9 +732,9 @@ class PerformanceEvaluator:
 
         return detection, false_positive_result
     
-    # ====================
-    # 瀹為獙4: 瀵规瘮鏂规鎬ц兘
-    # ====================
+                          
+                     
+                          
     def experiment4_comparative_performance(self, iterations: int = 100) -> Dict[str, Any]:
         """
         瀹為獙4: 瀵规瘮鏂规鎬ц兘
@@ -772,7 +772,7 @@ class PerformanceEvaluator:
             }
             self.logger.info(f"  杞﹁締绔€楁椂: {t_client:.3f} ms")
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment4_comparative.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -798,7 +798,7 @@ class PerformanceEvaluator:
         """PCVCS瀹屾暣鎿嶄綔"""
         start = time.perf_counter()
         
-        # Merkle + Bulletproofs + LSAG + (session-amortized) KEM
+                                                                
         _ = self._pcvcs_root
         _ = self._pcvcs_proof
         rp = range_proof_prove(12345, 0, 100000, 42)
@@ -811,7 +811,7 @@ class PerformanceEvaluator:
     
     def _bilinear_pairing_mock(self):
         """妯℃嫙鍙岀嚎鎬у杩愮畻 (~15-25ms)"""
-        # 浣跨敤閲嶅鍝堝笇妯℃嫙
+                      
         data = b"bilinear_pairing_simulation"
         for _ in range(10000):
             data = hashlib.sha256(data).digest()
@@ -869,9 +869,9 @@ class PerformanceEvaluator:
         }
         return descriptions.get(scheme, "")
     
-    # ====================
-    # 瀹為獙5: 閫氫俊寮€閿€瀵规瘮
-    # ====================
+                          
+                      
+                          
     def experiment5_communication_comparison(self) -> Dict[str, Any]:
         """
         瀹為獙5: 閫氫俊寮€閿€瀵规瘮
@@ -889,14 +889,14 @@ class PerformanceEvaluator:
             "description": "瀵规瘮鍚勬柟妗堝崟鏉℃姤鍛婂ぇ灏?(鍩轰簬鍗忚鏍煎紡闈欐€佸垎鏋?",
             "measurement_type": "mixed",
             "security_parameters": {
-                "ec_signature": 64,  # 妞渾鏇茬嚎绛惧悕 (bytes)
-                "hash": 32,  # SHA-256鍝堝笇
-                "pubkey_ec": 32,  # EC鍏挜
-                "pubkey_rsa": 256,  # RSA-2048鍏挜
-                "pairing_element": 96,  # 鍙岀嚎鎬у鍏冪礌 (G1/G2)
-                "he_ciphertext": 512,  # 鍚屾€佸姞瀵嗗瘑鏂?(Paillier-2048)
-                "kem_ciphertext": 1088,  # ML-KEM-768瀵嗘枃
-                "aes_ciphertext_per_kb": 1024 + 16  # AES-GCM (鏁版嵁+tag)
+                "ec_signature": 64,                     
+                "hash": 32,              
+                "pubkey_ec": 32,         
+                "pubkey_rsa": 256,               
+                "pairing_element": 96,                     
+                "he_ciphertext": 512,                             
+                "kem_ciphertext": 1088,                 
+                "aes_ciphertext_per_kb": 1024 + 16                     
             },
             "schemes": {}
         }
@@ -920,7 +920,7 @@ class PerformanceEvaluator:
             self.logger.info(f"  鎶ュ憡澶у皬: {size_bytes} bytes ({size_bytes/1024:.2f} KB)")
             self.logger.info(f"  缁勬垚: {breakdown}")
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment5_communication_comparison.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -935,7 +935,7 @@ class PerformanceEvaluator:
         breakdown = {}
 
         if scheme == "ASR-WS":
-            # From ASR-WS paper: upload bits ~= H*eta + 2048.
+                                                             
             profile = self._baseline_profile("ASR-WS")
             reported_bits = int(profile.get("report_size_bits", 0))
             h = 5
@@ -945,12 +945,12 @@ class PerformanceEvaluator:
             bf_bits = h * eta
             breakdown["bloom_payload_bits"] = int(ceil(bf_bits / 8.0))
             breakdown["hybrid_ciphertext"] = int(ceil(2048 / 8.0))
-            # Keep the final total aligned with paper formula after byte conversion.
+                                                                                    
             total_size = int(ceil(reported_bits / 8.0))
             return total_size, breakdown
 
         elif scheme == "P-SimiDedup":
-            # Mean per-data report bits derived from Fig. 4(d-f) reported points.
+                                                                                 
             profile = self._baseline_profile("P-SimiDedup")
             reported_bits = int(profile.get("report_size_bits", 0))
             breakdown["compressed_report_payload"] = int(ceil(reported_bits / 8.0))
@@ -958,7 +958,7 @@ class PerformanceEvaluator:
             return total_size, breakdown
 
         elif scheme == "VMDA":
-            # From VMDA paper Sec. VII-B: TEV->RSU communication is 4320 bits.
+                                                                              
             profile = self._baseline_profile("VMDA")
             reported_bits = int(profile.get("report_size_bits", 0))
             breakdown["id"] = int(ceil(32 / 8.0))
@@ -972,7 +972,7 @@ class PerformanceEvaluator:
             return total_size, breakdown
 
         elif scheme == "pFind":
-            # pFind Table 2 + Fig. 8(g): ReqGen plus one detector-tag exchange.
+                                                                               
             profile = self._baseline_profile("pFind")
             reported_bits = int(profile.get("report_size_bits", 0))
             breakdown["reqgen_ciphertext"] = int(ceil((24 + 43 + 16 + 1200) / 8.0))
@@ -981,10 +981,10 @@ class PerformanceEvaluator:
             return total_size, breakdown
 
         elif scheme == "PCVCS":
-            # Proposed optimized engineering profile:
-            # - pre-registered ring (ring_id instead of full ring list)
-            # - compact LSAG payload
-            # - session-amortized KEM ciphertext
+                                                     
+                                                                       
+                                    
+                                                
             breakdown["merkle_root"] = params["hash"]
             breakdown["merkle_proof"] = params["hash"] * 8
             breakdown["bulletproof"] = self._pcvcs_rangeproof_bytes
@@ -1000,9 +1000,9 @@ class PerformanceEvaluator:
         total_size = sum(breakdown.values())
         return total_size, breakdown
 
-    # ====================
-    # 瀹為獙6: 鍖垮悕鎬у己搴﹀姣?
-    # ====================
+                          
+                       
+                          
     def experiment6_security_privacy_comparison(self) -> Dict[str, Any]:
         """
         Experiment 6: anonymity-strength comparison across baselines.
@@ -1093,9 +1093,9 @@ class PerformanceEvaluator:
         self.logger.info(f"\n瀹為獙6鏁版嵁宸蹭繚瀛? {output_path}")
         return results
 
-    # ====================
-    # 瀹為獙4(鏂?: 璁＄畻寮€閿€ vs 杞﹁締鏁帮紙鎶樼嚎鍥撅級
-    # ====================
+                          
+                                      
+                          
     def experiment4_scalability_compute_vs_vehicles(self, vehicle_counts: List[int] = None, iterations: int = 50) -> Dict[str, Any]:
         """
         姣旇緝6绉嶆柟妗堝湪涓嶅悓鍙備笌杞﹁締鏁颁笅鐨勬€昏绠楀紑閿€锛堝鎴风鎬绘椂闂淬€佹湇鍔″櫒绔€绘椂闂达級銆?
@@ -1111,7 +1111,7 @@ class PerformanceEvaluator:
         self.logger.info("瀹為獙4(鏂?: 璁＄畻寮€閿€ vs 杞﹁締鏁?(Scalability - Compute)")
         self.logger.info("=" * 70)
         
-        # 鍏堟祴鍚勬柟妗堝崟杞﹀钩鍧囧紑閿€锛堝鎴风/鏈嶅姟鍣ㄧ锛?
+                                          
         avg_client = {}
         avg_server = {}
         for scheme in schemes:
@@ -1121,7 +1121,7 @@ class PerformanceEvaluator:
             avg_server[scheme] = t_server
             self.logger.info(f"  {scheme}: 鍗曡溅T_Client={t_client:.2f}ms, 鍗曡溅T_Server={t_server:.2f}ms")
         
-        # 璁＄畻鎬诲紑閿€: Total = Nv * 鍗曡溅骞冲潎
+                                       
         results = {
             "experiment": "Experiment4_Scalability_Compute_vs_Vehicles",
             "vehicle_counts": vehicle_counts,
@@ -1140,7 +1140,7 @@ class PerformanceEvaluator:
                 "normalization_note": profile.get("normalization", "") if scheme != "PCVCS" else ""
             }
         
-        # 淇濆瓨鏁版嵁
+                
         output_path = self.data_dir / "experiment4_scalability_compute.json"
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -1151,7 +1151,7 @@ class PerformanceEvaluator:
         """Measure per-report server-side verification time (ms)."""
         if scheme == "PCVCS":
             times = []
-            # Pre-generate one valid report artifact; verifier measures only verification work.
+                                                                                               
             rp = range_proof_prove(12345, 0, 100000, 42)
             sig = lrs_sign(b"msg", self._pcvcs_ring_pubkeys, 0, self._pcvcs_signer_sk, b"ctx")
             ct, _ = kem_encaps(self._pcvcs_kem_pk)
@@ -1172,9 +1172,9 @@ class PerformanceEvaluator:
 
         return 0.0
 
-    # ====================
-    # 瀹為獙5(鏂?: 閫氫俊寮€閿€ vs 杞﹁締鏁帮紙鎶樼嚎鍥撅級
-    # ====================
+                          
+                                      
+                          
     def experiment5_traffic_vs_vehicles(self, vehicle_counts: List[int] = None) -> Dict[str, Any]:
         """
         姣旇緝涓嶅悓鏂规鍦ㄦ€讳笂琛屾祦閲忔柟闈㈢殑鎵╁睍鎬с€?
@@ -1188,7 +1188,7 @@ class PerformanceEvaluator:
         self.logger.info("瀹為獙5(鏂?: 閫氫俊寮€閿€ vs 杞﹁締鏁?(Scalability - Traffic)")
         self.logger.info("=" * 70)
         
-        # 鍗曟潯鎶ュ憡澶у皬
+                   
         size_params = {
             "ec_signature": 64,
             "hash": 32,
@@ -1227,9 +1227,9 @@ class PerformanceEvaluator:
         self.logger.info(f"\n瀹為獙5(鏂?鏁版嵁宸蹭繚瀛? {output_path}")
         return results
     
-    # ====================
-    # 瀹為獙6(鏂? 鍙€?: 鍖垮悕鎬?vs 鍖垮悕闆嗗ぇ灏忥紙鎶樼嚎鍥撅級
-    # ====================
+                          
+                                           
+                          
     def experiment6_anonymity_vs_setsize(self) -> Dict[str, Any]:
         """
         Plot anonymity strength versus anonymity-set size.
@@ -1265,43 +1265,43 @@ class PerformanceEvaluator:
         self.logger.info(f"\n瀹為獙6(鏂?鏁版嵁宸蹭繚瀛? {output_path}")
         return results
 
-    # ====================
-    # 涓绘墽琛屾祦绋?
-    # ====================
+                          
+              
+                          
     def run_all_experiments(self):
         """杩愯鎵€鏈夊疄楠?"""
         self.logger.info("\n" + "=" * 70)
         self.logger.info("寮€濮嬫墽琛?VI. PERFORMANCE EVALUATION 瀹屾暣瀹為獙鏂规")
         self.logger.info("=" * 70)
         
-        # 瀹為獙1
+              
         exp1_results = self.experiment1_micro_benchmark([10, 20, 50, 100])
         
-        # 瀹為獙2
+              
         exp2_results = self.experiment2_communication_overhead([4, 8, 12, 16])
         
-        # 瀹為獙3
+              
         exp3_results = self.experiment3_security_effectiveness(samples_per_attack=self.samples_per_attack)
         
-        # 瀹為獙4
+              
         exp4_results = self.experiment4_comparative_performance(iterations=100)
         
-        # 瀹為獙5 (鏂板)
+                    
         exp5_results = self.experiment5_communication_comparison()
         
-        # 瀹為獙6 (鏂板)
+                    
         exp6_results = self.experiment6_security_privacy_comparison()
         
-        # 瀹為獙4(鏂?: 璁＄畻寮€閿€ vs 杞﹁締鏁?
+                                   
         exp4n_results = self.experiment4_scalability_compute_vs_vehicles([200, 400, 600, 800, 1000], iterations=50)
         
-        # 瀹為獙5(鏂?: 閫氫俊寮€閿€ vs 杞﹁締鏁?
+                                   
         exp5n_results = self.experiment5_traffic_vs_vehicles([200, 400, 600, 800, 1000])
         
-        # 瀹為獙6(鏂?: 鍖垮悕鎬?vs 鍖垮悕闆嗗ぇ灏忥紙鍙€夛級
+                                         
         exp6n_results = self.experiment6_anonymity_vs_setsize()
         
-        # 鐢熸垚鍥捐〃
+                
         self.logger.info("\n" + "=" * 70)
         self.logger.info("鐢熸垚瀹為獙鍥捐〃...")
         self.logger.info("=" * 70)
@@ -1310,9 +1310,9 @@ class PerformanceEvaluator:
                                  exp4_results, exp5_results, exp6_results, 
                                  exp4n_results, exp5n_results, exp6n_results)
         
-        # 鐢熸垚鎶ュ憡 (鏆傛椂绂佺敤锛岄渶鏇存柊瀹為獙6鏍煎紡)
-        # self.generate_report(exp1_results, exp2_results, exp3_results, 
-        #                    exp4_results, exp5_results, exp6_results)
+                                      
+                                                                         
+                                                                      
         
         self.logger.info("\n" + "=" * 70)
         self.logger.info("VI. PERFORMANCE EVALUATION 鎵€鏈夊疄楠屽畬鎴?")
@@ -1326,31 +1326,31 @@ class PerformanceEvaluator:
         
         plt.rcParams['font.size'] = 10
         
-        # 鍥捐〃1: 瀹為獙1 - 杞﹁締绔€ц兘鍒嗚В (鍫嗗彔鏌辩姸鍥?
+                                            
         self._generate_fig_exp1_client(exp1)
         
-        # 鍥捐〃2: 瀹為獙1 - 鏈嶅姟鍣ㄧ鎬ц兘鍒嗚В
+                                   
         self._generate_fig_exp1_server(exp1)
         
-        # 鍥捐〃3: 瀹為獙2 - 閫氫俊寮€閿€ (鎶樼嚎鍥?
+                                     
         self._generate_fig_exp2_comm(exp2)
         
-        # 鍥捐〃4: 瀹為獙3 - 瀹夊叏鎬ч獙璇?(2x1闈㈡澘)
+                                       
         self._generate_fig_exp3_security(exp3)
         
-        # 鍥捐〃5: 瀹為獙4 - 瀵规瘮鎬ц兘 (鏌辩姸鍥?
+                                    
         self._generate_fig_exp4_comparative(exp4)
         
-        # 鍥捐〃6: 瀹為獙5 - 閫氫俊寮€閿€瀵规瘮 (鏌辩姸鍥? [鏂板]
+                                              
         self._generate_fig_exp5_communication_comparison(exp5)
         
-        # 鍥捐〃7: (鏂? 璁＄畻寮€閿€ vs 杞﹁締鏁帮紙鍙屾姌绾块潰鏉匡級
+                                              
         self._generate_fig_exp7_compute_vs_vehicles(exp4n)
         
-        # 鍥捐〃8: (鏂? 閫氫俊寮€閿€ vs 杞﹁締鏁帮紙鎶樼嚎鍥撅級
+                                           
         self._generate_fig_exp8_traffic_vs_vehicles(exp5n)
         
-        # 鍥捐〃9: (鏂? 鍖垮悕鎬?vs 鍖垮悕闆嗗ぇ灏忥紙鎶樼嚎鍥撅級
+                                           
         self._generate_fig_exp9_anonymity_vs_setsize(exp6n)
         
         self.logger.info("All figures generated.")
@@ -1370,11 +1370,11 @@ class PerformanceEvaluator:
         lsag = [item["lsag_signing"] for item in breakdown]
         kem = [item["ml_kem_encryption"] for item in breakdown]
         
-        # 鍒嗙粍鏌辩姸鍥捐缃?
+                     
         x = np.arange(len(ring_sizes))
-        width = 0.2  # 姣忕粍鏌卞瓙鐨勫搴?
+        width = 0.2               
         
-        # 缁樺埗4缁勬煴瀛愶紝骞跺姞鍏?hatch 鏉＄汗浠ヤ究榛戠櫧鎵撳嵃鍖哄垎
+                                              
         bars1 = ax.bar(x - 1.5*width, setup, width, label='Commitments & Setup', 
                    color='#FFC000', edgecolor='black', linewidth=1, hatch='/')
         bars2 = ax.bar(x - 0.5*width, zk, width, label='Spatio-Temporal ZK', 
@@ -1384,16 +1384,16 @@ class PerformanceEvaluator:
         bars4 = ax.bar(x + 1.5*width, kem, width, label='ML-KEM Encryption', 
                    color='#70AD47', edgecolor='black', linewidth=1, hatch='.')
         
-        # 鍦ㄦ瘡缁勬煴瀛愰《閮ㄦ爣娉ㄦ暟鍊?
+                           
         for i, (s, z, l, k) in enumerate(zip(setup, zk, lsag, kem)):
-            # 濮嬬粓鏄剧ず Commitments & Setup 鐨勬爣娉紙鍊艰緝灏忎絾闈為浂锛夛紝骞朵负灏忓€间娇鐢ㄥ浐瀹氬亸绉?
+                                                                           
             setup_offset = 0.2 if s < 0.5 else 0.2
             ax.text(i - 1.5*width, s + setup_offset, f'{s:.1f}', ha='center', va='bottom', fontsize=7)
             ax.text(i - 0.5*width, z + 0.2, f'{z:.1f}', ha='center', va='bottom', fontsize=7)
             ax.text(i + 0.5*width, l + 0.2, f'{l:.1f}', ha='center', va='bottom', fontsize=7)
             ax.text(i + 1.5*width, k + 0.2, f'{k:.1f}', ha='center', va='bottom', fontsize=7)
         
-        # 鍦ㄥ浘琛ㄤ笂鏂规爣娉ㄦ€昏€楁椂锛堢◢鍚庢牴鎹?y 杞磋寖鍥存斁缃紝浠ュ噺灏戜笌鍥句緥鍐茬獊锛?
+                                                           
         totals = [sum([s, z, l, k]) for s, z, l, k in zip(setup, zk, lsag, kem)]
 
         ax.set_xlabel('Ring Size $n_R$', fontsize=11)
@@ -1401,13 +1401,13 @@ class PerformanceEvaluator:
         ax.set_title('Vehicle-side Computation Time Breakdown (Grouped Comparison)', fontsize=12, fontweight='bold')
         ax.set_xticks(x)
         ax.set_xticklabels(ring_sizes)
-        # 鍐呴儴鍥句緥锛氬彸涓婅锛屼娇鐢ㄤ袱鍒楀噺灏戞í鍚戠┖闂村崰鐢?
+                                          
         ax.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98), ncol=2, framealpha=0.9,
               fontsize=10, edgecolor='black', fancybox=True)
         ax.grid(True, alpha=0.3, axis='y', linestyle='--')
         ax.set_ylim(0, max(max(zk), max(lsag), max(kem)) * 1.25)
 
-        # 鏍规嵁褰撳墠 y 杞磋寖鍥磋绠椾竴涓浉瀵瑰亸绉婚噺锛岀‘淇?Total 鏍囨敞涓嶄細涓庡浘渚嬮噸鍙?
+                                                              
         y_min, y_max = ax.get_ylim()
         y_offset = 0.03 * (y_max - y_min)
         for i, total in enumerate(totals):
@@ -1434,11 +1434,11 @@ class PerformanceEvaluator:
         lrs_ver = [item["lrs_verification"] for item in breakdown]
         kem_dec = [item["kem_decapsulation"] for item in breakdown]
         
-        # 鍒嗙粍鏌辩姸鍥捐缃?
+                     
         x = np.arange(len(ring_sizes))
         width = 0.25
         
-        # 缁樺埗3缁勬煴瀛愶紝骞跺姞鍏?hatch 鏉＄汗浠ヤ究榛戠櫧鎵撳嵃鍖哄垎
+                                              
         bars1 = ax.bar(x - width, zk_ver, width, label='ZK Verification', 
                    color='#4472C4', edgecolor='black', linewidth=1, hatch='\\')
         bars2 = ax.bar(x, lrs_ver, width, label='Ring Signature Verification', 
@@ -1446,13 +1446,13 @@ class PerformanceEvaluator:
         bars3 = ax.bar(x + width, kem_dec, width, label='KEM Decapsulation', 
                    color='#70AD47', edgecolor='black', linewidth=1, hatch='.')
         
-        # 鍦ㄦ瘡缁勬煴瀛愰《閮ㄦ爣娉ㄦ暟鍊?
+                           
         for i, (z, l, k) in enumerate(zip(zk_ver, lrs_ver, kem_dec)):
             ax.text(i - width, z + 0.15, f'{z:.1f}', ha='center', va='bottom', fontsize=8)
             ax.text(i, l + 0.15, f'{l:.1f}', ha='center', va='bottom', fontsize=8)
             ax.text(i + width, k + 0.15, f'{k:.1f}', ha='center', va='bottom', fontsize=8)
         
-        # 鍦ㄥ浘琛ㄤ笂鏂规爣娉ㄦ€昏€楁椂锛堢◢鍚庢牴鎹?y 杞磋寖鍥存斁缃級
+                                             
         totals = [sum([z, l, k]) for z, l, k in zip(zk_ver, lrs_ver, kem_dec)]
 
         ax.set_xlabel('Ring Size $n_R$', fontsize=11)
@@ -1460,13 +1460,13 @@ class PerformanceEvaluator:
         ax.set_title('Server-side Computation Time Breakdown (Grouped Comparison)', fontsize=12, fontweight='bold')
         ax.set_xticks(x)
         ax.set_xticklabels(ring_sizes)
-        # 鍐呴儴鍥句緥锛屽彸涓婅锛?鍒?
+                          
         ax.legend(loc='upper right', bbox_to_anchor=(0.98, 0.98), ncol=2, framealpha=0.9,
               fontsize=10, edgecolor='black', fancybox=True)
         ax.grid(True, alpha=0.3, axis='y', linestyle='--')
         ax.set_ylim(0, max(max(zk_ver), max(lrs_ver), max(kem_dec)) * 1.25)
 
-        # 鏍规嵁 y 杞磋寖鍥磋缃?Total 鏍囨敞浣嶇疆锛岄伩鍏嶄笌鍥句緥閲嶅彔
+                                                
         y_min, y_max = ax.get_ylim()
         y_offset = 0.03 * (y_max - y_min)
         for i, total in enumerate(totals):
@@ -1489,28 +1489,28 @@ class PerformanceEvaluator:
         heights = data["merkle_heights"]
         sizes_kb = [item["size_kb"] for item in data["report_sizes"]]
         
-        # 鏍规嵁 Merkle 楂樺害璁＄畻鎺堟潈鍖哄煙鏁?|A_tau| = 2^h
-        num_cells = [2**h for h in heights[:3]]  # 鍙娇鐢ㄥ墠3涓珮搴? [4, 8, 12] -> [16, 256, 4096]
-        sizes_kb = sizes_kb[:3]  # 瀵瑰簲鐨勫墠3涓ぇ灏忓€?
+                                                
+        num_cells = [2**h for h in heights[:3]]                                              
+        sizes_kb = sizes_kb[:3]                  
         
-        # PCVCS (Merkle-based) 鐨勭湡瀹炴暟鎹?
+                                       
         ax.plot(num_cells, sizes_kb, marker='o', linewidth=2.5, markersize=10, 
                 color='#4472C4', markerfacecolor='white', markeredgewidth=2.5, 
                 label='PCVCS (Merkle Tree)', zorder=3)
         
-        # Naive list encoding 鐨勭悊璁虹嚎 (姣忎釜cell ID鍗?8瀛楄妭)
-        c0 = 6.0  # 鍩虹寮€閿€ (KB): 绛惧悕銆並EM銆佸叾浠栧厓鏁版嵁
-        naive_sizes_kb = [c0 + (8 * n / 1024) for n in num_cells]  # 8B per cell ID
+                                                       
+        c0 = 6.0                                  
+        naive_sizes_kb = [c0 + (8 * n / 1024) for n in num_cells]                  
         
         ax.plot(num_cells, naive_sizes_kb, marker='s', linewidth=2.5, markersize=9,
                 color='#FF6B35', linestyle='--', markerfacecolor='white', 
                 markeredgewidth=2.5, markeredgecolor='#FF6B35', 
                 label='Naive (List Encoding)', alpha=0.9, zorder=2)
         
-        # 璁剧疆瀵规暟鍧愭爣杞?
+                     
         ax.set_xscale('log', base=2)
         
-        # 璁剧疆 x 杞村埢搴﹀拰鏍囩
+                         
         ax.set_xticks(num_cells)
         ax.set_xticklabels([f'{n:,}' for n in num_cells], fontsize=10)
         
@@ -1518,19 +1518,19 @@ class PerformanceEvaluator:
         ax.set_ylabel('Report Size (KB)', fontsize=12, fontweight='bold')
         ax.set_title('Report Size vs. Number of Authorized Cells', fontsize=13, fontweight='bold')
         
-        # 鍥句緥
+             
         ax.legend(loc='upper left', framealpha=0.95, fontsize=11, 
                   edgecolor='black', fancybox=True)
         
         ax.grid(True, alpha=0.3, linestyle='--', which='both')
         ax.set_ylim(0, max(max(sizes_kb), max(naive_sizes_kb)) * 1.15)
         
-        # 鏍囨敞 PCVCS 鏁版嵁鐐?
+                         
         for n, s in zip(num_cells, sizes_kb):
             ax.text(n, s + max(naive_sizes_kb)*0.015, f'{s:.2f}', ha='center', va='bottom', 
                     fontsize=10, color='#4472C4', fontweight='bold')
         
-        # 鏍囨敞 Naive 鐨勬墍鏈夌偣
+                          
         for i, (n, s) in enumerate(zip(num_cells, naive_sizes_kb)):
             if i == 0:
                 ax.text(n, s + max(naive_sizes_kb)*0.025, f'{s:.1f}', ha='center', va='bottom', 
@@ -1542,7 +1542,7 @@ class PerformanceEvaluator:
                 ax.text(n, s + max(naive_sizes_kb)*0.02, f'{s:.1f}', ha='center', va='bottom', 
                         fontsize=10, color='#FF6B35', fontweight='bold')
         
-        # 娣诲姞璇存槑
+                
         fig.text(
             0.5, 0.015,
             'PCVCS: O(log n) growth (Merkle proof) | Naive: O(n) growth (list storage)',
@@ -1562,11 +1562,11 @@ class PerformanceEvaluator:
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
         
-        # Panel (a): 鎺ュ彈鐜?
+                          
         categories = list(data["acceptance_rates"].keys())
         rates = list(data["acceptance_rates"].values())
         
-        # 涓烘樉绀虹洰鐨勶紝灏?%璁句负鏈€灏忓彲瑙佸€?%
+                                   
         display_rates = [r if r > 0 else 4 for r in rates]
         
         colors = ['#4CAF50' if c == 'Honest' else '#E57373' for c in categories]
@@ -1574,7 +1574,7 @@ class PerformanceEvaluator:
         x = np.arange(len(categories))
         bars1 = ax1.bar(x, display_rates, color=colors, alpha=0.8, edgecolor='black', linewidth=1.2)
         
-        # 涓?%鐨勬煴瀛愭坊鍔犳枩绾垮～鍏呮晥鏋?
+                              
         for i, r in enumerate(rates):
             if r == 0:
                 bars1[i].set_hatch('////')
@@ -1588,7 +1588,7 @@ class PerformanceEvaluator:
         ax1.set_ylim(0, 110)
         ax1.grid(True, alpha=0.3, axis='y', linestyle='--')
         
-        # 鏍囨敞鏁板€?
+                 
         for i, (v, dv) in enumerate(zip(rates, display_rates)):
             if v > 5:
                 ax1.text(i, dv/2, f'{v:.1f}%', ha='center', va='center', 
@@ -1597,27 +1597,27 @@ class PerformanceEvaluator:
                 ax1.text(i, dv + 2, f'{v:.2f}%', ha='center', va='bottom', 
                         fontsize=11, fontweight='bold')
             else:
-                # 0%鐨勬儏鍐碉紝鏄剧ず鍦ㄦ煴瀛愪笂鏂?
+                                     
                 ax1.text(i, dv + 1.5, '0.00%\n(Rejected)', ha='center', va='bottom', 
                         fontsize=10, fontweight='bold', color='#E74C3C',
                         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
                                  edgecolor='#E74C3C', linewidth=1.5))
         
-        # Panel (b): 妫€娴嬬巼鍜岃鎶ョ巼
+                                
         metrics = ['Detection Rate', 'False Positive\nRate']
         values = [
             data["detection_metrics"]["detection_rate"],
             data["detection_metrics"]["false_positive_rate"]
         ]
         
-        # 涓烘樉绀虹洰鐨勶紝灏?%璁句负4%
+                           
         display_values = [v if v > 0 else 4 for v in values]
         
         x2 = np.arange(len(metrics))
         colors2 = ['#4CAF50', '#FFA726']
         bars2 = ax2.bar(x2, display_values, color=colors2, alpha=0.8, edgecolor='black', linewidth=1.2)
         
-        # 涓?%鐨勬煴瀛愭坊鍔犳枩绾垮～鍏?
+                           
         for i, v in enumerate(values):
             if v == 0:
                 bars2[i].set_hatch('////')
@@ -1631,7 +1631,7 @@ class PerformanceEvaluator:
         ax2.set_ylim(0, 110)
         ax2.grid(True, alpha=0.3, axis='y', linestyle='--')
         
-        # 鏍囨敞鏁板€?
+                 
         for i, (v, dv) in enumerate(zip(values, display_values)):
             if v > 10:
                 ax2.text(i, dv/2, f'{v:.1f}%', ha='center', va='center', 
@@ -1645,7 +1645,7 @@ class PerformanceEvaluator:
                         bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
                                  edgecolor='#4CAF50', linewidth=1.5))
         
-        # 娣诲姞璇存槑
+                
         fig.text(0.5, 0.02, 
                 '* Hatched bars with 0% represent rejected/blocked reports\n'
                 '* Detection Rate: Successfully detected double-reporting attacks', 
@@ -1669,12 +1669,12 @@ class PerformanceEvaluator:
         
         x = np.arange(len(schemes))
         
-        # 楂樹寒PCVCS锛堢涓€涓級
+                          
         colors = ['#70AD47' if s == 'PCVCS' else '#4472C4' for s in schemes]
         
         bars = ax.bar(x, vehicle_times, color=colors, alpha=0.85, edgecolor='black', linewidth=1.2)
         
-        # PCVCS浣跨敤绮楄竟妗?
+                       
         bars[0].set_edgecolor('#196F3D')
         bars[0].set_linewidth(2.5)
         
@@ -1685,16 +1685,16 @@ class PerformanceEvaluator:
         ax.set_xticklabels(schemes, rotation=20, ha='right', fontsize=10)
         ax.grid(True, alpha=0.3, axis='y', linestyle='--')
         
-        # 鏍囨敞鏁板€?
+                 
         for i, v in enumerate(vehicle_times):
-            if v > 3:  # 澶у€兼樉绀哄湪鏌卞瓙鍐?
+            if v > 3:                 
                 ax.text(i, v/2, f'{v:.1f}', ha='center', va='center', 
                        fontsize=11, fontweight='bold', color='white')
-            else:  # 灏忓€兼樉绀哄湪鏌卞瓙涓婃柟
+            else:                  
                 ax.text(i, v + max(vehicle_times)*0.02, f'{v:.2f}', 
                        ha='center', va='bottom', fontsize=10, fontweight='bold')
         
-        # 娣诲姞娉ㄩ噴
+                
         ax.text(0.98, 0.95, 
                 '* PCVCS highlighted in green\n'
                 '* Times measured per participation', 
@@ -1719,21 +1719,21 @@ class PerformanceEvaluator:
         
         x = np.arange(len(schemes))
         
-        # 棰滆壊: PCVCS楂樹寒
+                       
         colors = []
         for s, size in zip(schemes, sizes_kb):
             if s == 'PCVCS':
-                colors.append('#C55A11')  # 姗欒壊楂樹寒
-            elif size < 2:  # 鏋佽交閲忕骇
-                colors.append('#70AD47')  # 缁胯壊
-            elif size > 5:  # 閲嶉噺绾?
-                colors.append('#ED7D31')  # 姗欑孩
+                colors.append('#C55A11')          
+            elif size < 2:          
+                colors.append('#70AD47')       
+            elif size > 5:         
+                colors.append('#ED7D31')       
             else:
-                colors.append('#4472C4')  # 钃濊壊
+                colors.append('#4472C4')       
         
         bars = ax.bar(x, sizes_kb, color=colors, alpha=0.85, edgecolor='black', linewidth=1.2, width=0.7)
         
-        # 楂樹寒PCVCS
+                  
         for i, s in enumerate(schemes):
             if s == 'PCVCS':
                 bars[i].set_linewidth(3)
@@ -1747,12 +1747,12 @@ class PerformanceEvaluator:
         ax.grid(True, alpha=0.3, axis='y', linestyle='--')
         ax.set_ylim(0, max(sizes_kb) * 1.2)
         
-        # 鏍囨敞鏁板€?
+                 
         for i, v in enumerate(sizes_kb):
             ax.text(i, v + max(sizes_kb)*0.02, f'{v:.2f}', ha='center', va='bottom', 
                     fontsize=10, fontweight='bold')
         
-        # 娣诲姞璇存槑
+                
         ax.text(0.98, 0.97, '* PCVCS is the proposed scheme\n* Lower is better', 
                 transform=ax.transAxes, fontsize=9, 
                 verticalalignment='top', horizontalalignment='right',
@@ -1772,11 +1772,11 @@ class PerformanceEvaluator:
         
         schemes = list(data["schemes"].keys())
         
-        # 鎻愬彇鏁版嵁
-        tracking_probs = [data["schemes"][s]["tracking_probability"] * 100 for s in schemes]  # 鐧惧垎姣?
+                
+        tracking_probs = [data["schemes"][s]["tracking_probability"] * 100 for s in schemes]         
         anonymity_sets = [data["schemes"][s]["anonymity_set_size"] for s in schemes]
         
-        # Panel (a): 琚拷韪鐜?
+                             
         x = np.arange(len(schemes))
         color_map = {
             "ASR-WS": "#E74C3C",
@@ -1788,7 +1788,7 @@ class PerformanceEvaluator:
         colors = [color_map.get(s, "#7F8C8D") for s in schemes]
         bars1 = ax1.bar(x, tracking_probs, color=colors, edgecolor='black', linewidth=1.2)
         
-        # 楂樹寒PCVCS
+                  
         bars1[-1].set_color('#2ECC71')
         bars1[-1].set_linewidth(2.5)
         bars1[-1].set_edgecolor('#196F3D')
@@ -1800,7 +1800,7 @@ class PerformanceEvaluator:
         ax1.set_ylim(0, max(tracking_probs) * 1.15)
         ax1.grid(axis='y', alpha=0.3, linestyle='--')
         
-        # 鏍囨敞鏁板€?
+                 
         for i, (bar, val) in enumerate(zip(bars1, tracking_probs)):
             if val >= 10:
                 ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height()/2,
@@ -1815,7 +1815,7 @@ class PerformanceEvaluator:
                 ha='center', va='top', fontsize=10, style='italic',
                 bbox=dict(boxstyle='round,pad=0.4', facecolor='lightyellow', alpha=0.8))
         
-        # Panel (b): 鍖垮悕闆嗗悎澶у皬
+                              
         bars2 = ax2.bar(x, anonymity_sets, color=colors, edgecolor='black', linewidth=1.2)
         
         bars2[-1].set_color('#2ECC71')
@@ -1843,7 +1843,7 @@ class PerformanceEvaluator:
                 ha='center', va='top', fontsize=10, style='italic',
                 bbox=dict(boxstyle='round,pad=0.4', facecolor='lightyellow', alpha=0.8))
         
-        # 娣诲姞璇存槑
+                
         explanation = (
             "Metric: Worst-case probability that an attacker successfully links a report to a specific vehicle\\n"
             "PCVCS uses LSAG ring signature (ring size=50), providing the largest anonymity set and lowest tracking probability"
@@ -1986,7 +1986,7 @@ class PerformanceEvaluator:
             
             f.write("## C. Experimental Results\n\n")
             
-            # 瀹為獙1
+                  
             f.write("### 瀹為獙1: PCVCS鍐呴儴鎬ц兘鍒嗚В\n\n")
             f.write("**杞﹁締绔€楁椂 (ms) - 鎸夌幆澶у皬**:\n\n")
             f.write("| Ring Size | Setup | ZK Proofs | LSAG | ML-KEM | Total |\n")
@@ -1999,7 +1999,7 @@ class PerformanceEvaluator:
                        f"{item['ml_kem_encryption']:.3f} | {total:.3f} |\n")
             f.write("\n")
             
-            # 瀹為獙2
+                  
             f.write("### 瀹為獙2: 閫氫俊寮€閿€鍒嗘瀽\n\n")
             f.write("| Merkle Height | Leaf Count | Report Size (KB) |\n")
             f.write("|---------------|------------|------------------|\n")
@@ -2007,7 +2007,7 @@ class PerformanceEvaluator:
                 f.write(f"| {item['merkle_height']} | {item['leaf_count']} | {item['size_kb']:.2f} |\n")
             f.write("\n")
             
-            # 瀹為獙3
+                  
             f.write("### 瀹為獙3: 瀹夊叏鎬ч獙璇乗n\n")
             f.write("**鎺ュ彈鐜?*:\n\n")
             for attack, rate in exp3["acceptance_rates"].items():
@@ -2016,7 +2016,7 @@ class PerformanceEvaluator:
             f.write(f"- Detection Rate: {exp3['detection_metrics']['detection_rate']:.2f}%\n")
             f.write(f"- False Positive Rate: {exp3['detection_metrics']['false_positive_rate']:.2f}%\n\n")
             
-            # 瀹為獙4
+                  
             f.write("### 瀹為獙4: 瀵规瘮鏂规鎬ц兘\n\n")
             f.write("| Scheme | Vehicle Time (ms) | Description |\n")
             f.write("|--------|-------------------|-------------|\n")
@@ -2024,7 +2024,7 @@ class PerformanceEvaluator:
                 f.write(f"| {scheme} | {data['vehicle_time_ms']:.3f} | {data['description']} |\n")
             f.write("\n")
             
-            # 瀹為獙5
+                  
             f.write("### 瀹為獙5: 閫氫俊寮€閿€瀵规瘮\n\n")
             f.write("| Scheme | Report Size (KB) | Report Size (Bytes) |\n")
             f.write("|--------|------------------|---------------------|\n")
@@ -2032,7 +2032,7 @@ class PerformanceEvaluator:
                 f.write(f"| {scheme} | {data['size_kb']:.2f} | {data['size_bytes']} |\n")
             f.write("\n")
             
-            # 瀹為獙6
+                  
             f.write("### 瀹為獙6: 瀹夊叏涓庨殣绉佽兘鍔涘姣擻n\n")
             f.write("| Scheme | Location Privacy | Temporal Privacy | Verifiable Compliance | Linkability Detection | Anti-replay | Post-quantum |\n")
             f.write("|--------|-----------------|------------------|----------------------|----------------------|-------------|--------------|\n")
@@ -2084,7 +2084,7 @@ def ensure_crypto_backend(use_real_crypto: bool):
         return
 
     if os.environ.get("_PERF_EVAL_REEXEC", "") == "1":
-        # Already re-executed once; keep running to avoid loops.
+                                                                
         return
 
     env = os.environ.copy()

@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 图表生成模块 - IEEE标准图表
 """
 
 import matplotlib
-matplotlib.use('Agg')  # 非交互式后端
+matplotlib.use('Agg')          
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import matplotlib.ticker as mticker
@@ -14,13 +14,13 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 import json
 
-# 设置中文字体
+        
 plt.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
-# IEEE标准配置
-IEEE_COLUMN_WIDTH = 3.5  # inches
-IEEE_PAGE_WIDTH = 7.16  # inches
+          
+IEEE_COLUMN_WIDTH = 3.5          
+IEEE_PAGE_WIDTH = 7.16          
 IEEE_DPI = 300
 
 
@@ -41,14 +41,14 @@ class IEEEChartGenerator:
         self.language = language
         self.dpi = dpi
         
-        # 配置IEEE样式
+                  
         self._setup_ieee_style()
         
     def _setup_ieee_style(self):
         """设置IEEE图表样式"""
         plt.style.use('seaborn-v0_8-paper')
         
-        # 字体设置
+              
         plt.rcParams.update({
             'font.size': 10,
             'axes.labelsize': 10,
@@ -111,7 +111,7 @@ class IEEEChartGenerator:
         """
         fig, ax = plt.subplots(figsize=(IEEE_PAGE_WIDTH, 3.5))
         
-        # 提取数据
+              
         operations = []
         gen_times = []
         verify_times = []
@@ -124,7 +124,7 @@ class IEEEChartGenerator:
             elif "Verify" in op_name:
                 verify_times.append(result.get("avg_time_ms", 0))
         
-        # 调整数据长度
+                
         min_len = min(len(gen_times), len(verify_times))
         operations = operations[:min_len]
         gen_times = gen_times[:min_len]
@@ -152,7 +152,7 @@ class IEEEChartGenerator:
         
         plt.tight_layout()
         
-        # 保存
+            
         output_path = self.output_dir / "fig1_crypto_primitives.pdf"
         plt.savefig(output_path, dpi=self.dpi, bbox_inches='tight')
         plt.savefig(output_path.with_suffix('.png'), dpi=self.dpi, bbox_inches='tight')
@@ -169,7 +169,7 @@ class IEEEChartGenerator:
         
         categories = [self._get_labels("vehicle_side"), self._get_labels("server_side")]
         
-        # 提取数据 (需要从实验结果中获取)
+                           
         vehicle_times = data.get("vehicle_avg_time", 50.0)
         server_times = data.get("server_avg_time", 30.0)
         
@@ -197,7 +197,7 @@ class IEEEChartGenerator:
         """
         fig, ax = plt.subplots(figsize=(IEEE_COLUMN_WIDTH, 3))
         
-        # 提取数据（优先使用真实数据）
+                        
         schemes = data.get("schemes", ["PPRM", "LMDA-VCS", "Proposed"])
         concurrency_levels = data.get("concurrency_levels", [50, 100, 200, 500])
         
@@ -206,12 +206,12 @@ class IEEEChartGenerator:
         
         has_real_data = False
         for idx, scheme in enumerate(schemes):
-            # 尝试从基线对比数据中获取真实吞吐量
+                               
             if scheme in data and "throughput" in data[scheme]:
                 throughput_data = data[scheme]["throughput"]
                 has_real_data = True
             else:
-                # 回退到默认值
+                        
                 throughput_data = [100, 150, 180, 200]
             
             ax.plot(concurrency_levels[:len(throughput_data)], throughput_data, 
@@ -223,7 +223,7 @@ class IEEEChartGenerator:
         ax.legend()
         ax.grid(True, alpha=0.3)
         
-        # 如果使用了真实数据，添加标题
+                        
         if has_real_data:
             title = "Baseline Throughput Comparison" if self.language == "en" else "基线方案吞吐量对比"
             ax.set_title(title, fontsize=10)
@@ -291,7 +291,7 @@ class IEEEChartGenerator:
         ax.bar(x + width/2, naive_tpr, width, label='Naive Scheme',
                color='#ED7D31', edgecolor='black', linewidth=0.5)
         
-        # 添加目标线
+               
         ax.axhline(y=99, color='red', linestyle='--', linewidth=1, label='Target (99%)')
         
         ax.set_ylabel(self._get_labels("detection_rate"))
@@ -299,11 +299,11 @@ class IEEEChartGenerator:
         ax.set_xticks(x)
         ax.set_xticklabels(attack_types, rotation=45, ha='right')
         ax.set_ylim(0, 105)
-        # 将图例移到图表右侧外部，避免遮挡柱状图
+                             
         ax.legend(loc='center left', bbox_to_anchor=(1.02, 0.5), ncol=1, frameon=True, fancybox=True)
         ax.grid(True, alpha=0.3, axis='y')
         
-        # 为右侧外放图例预留空间，避免被裁剪
+                           
         plt.tight_layout(rect=[0, 0, 0.85, 1])
         
         output_path = self.output_dir / "fig5_security_detection.pdf"
@@ -328,7 +328,7 @@ class IEEEChartGenerator:
         x = np.arange(len(schemes))
         width = 0.4
         
-        # 子图1: 时间对比
+                   
         ax1.bar(x - width/2, gen_times, width, label=self._get_labels("generation"),
                 color='#4472C4', edgecolor='black', linewidth=0.5)
         ax1.bar(x + width/2, verify_times, width, label=self._get_labels("verification"),
@@ -340,7 +340,7 @@ class IEEEChartGenerator:
         ax1.legend()
         ax1.grid(True, alpha=0.3, axis='y')
         
-        # 子图2: 大小对比
+                   
         ax2.bar(x, report_sizes, color='#70AD47', edgecolor='black', linewidth=0.5)
         ax2.set_ylabel(self._get_labels("size_bytes"))
         ax2.set_xlabel(self._get_labels("scheme"))
@@ -370,8 +370,8 @@ class IEEEChartGenerator:
             figures.append(self.figure2_e2e_latency(all_data["e2e_latency"]))
         
         print("Skipping Figure 3: Throughput comparison removed." if self.language == "en" else "跳过Figure 3: 已移除吞吐量对比")
-        # if "throughput" in all_data:
-        #     pass
+                                      
+                  
         
         print("Generating Figure 4: Scalability..." if self.language == "en" else "生成Figure 4: 可扩展性...")
         if "scalability" in all_data:
@@ -389,11 +389,11 @@ class IEEEChartGenerator:
 
 
 if __name__ == "__main__":
-    # 测试
+        
     output_dir = Path("./test_charts")
     generator = IEEEChartGenerator(output_dir, language="en")
     
-    # 测试数据
+          
     test_data = {
         "crypto_benchmark": {
             "results": [

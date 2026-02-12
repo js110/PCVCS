@@ -5,7 +5,7 @@ Kyber/ML-KEM 密钥封装机制层
 import hashlib
 import os
 
-# 尝试导入Kyber库
+            
 _kyber_lib = None
 try:
     from kyber_py.kyber import Kyber512
@@ -20,7 +20,7 @@ class KEMServer:
     def __init__(self):
         self.pk = None
         self.sk = None
-        # 使用全局Kyber实例
+                     
         self.kyber = _kyber_lib
     
     def setup_keys(self):
@@ -28,13 +28,13 @@ class KEMServer:
         生成KEM密钥对
         """
         if self.kyber:
-            # 使用真实的Kyber实现
+                          
             self.pk, self.sk = self.kyber.keygen()
             return self.pk, self.sk
         else:
-            # 占位符实现
-            self.pk = os.urandom(800)  # Kyber512公钥长度
-            self.sk = os.urandom(1632)  # Kyber512私钥长度
+                   
+            self.pk = os.urandom(800)                
+            self.sk = os.urandom(1632)                
             return self.pk, self.sk
     
     def finish_handshake(self, ct):
@@ -48,18 +48,18 @@ class KEMServer:
             bytes: 服务器端的共享密钥
         """
         if self.kyber:
-            # 使用真实的Kyber实现
+                          
             try:
-                ss_server = self.kyber.decaps(self.sk, ct)  # 修正参数顺序
+                ss_server = self.kyber.decaps(self.sk, ct)          
             except Exception as e:
-                # 如果解封装失败，回退到占位符实现
+                                  
                 print(f"Kyber解封装失败，回退到占位符实现: {e}")
                 ss_server = hashlib.sha256(ct + self.sk).digest()
         else:
-            # 占位符实现
+                   
             ss_server = hashlib.sha256(ct + self.sk).digest()
         
-        # 从共享密钥派生会话密钥
+                     
         key = hashlib.sha256(ss_server).digest()
         return key
 
@@ -68,7 +68,7 @@ class KEMClient:
     KEM客户端实现
     """
     def __init__(self):
-        # 使用全局Kyber实例
+                     
         self.kyber = _kyber_lib
     
     def handshake(self, pk):
@@ -82,20 +82,20 @@ class KEMClient:
             tuple: (ct, key) 密文和客户端的共享密钥
         """
         if self.kyber:
-            # 使用真实的Kyber实现
+                          
             try:
-                ss_client, ct = self.kyber.encaps(pk)  # 修正返回值顺序
+                ss_client, ct = self.kyber.encaps(pk)           
             except Exception as e:
-                # 如果封装失败，回退到占位符实现
+                                 
                 print(f"Kyber封装失败，回退到占位符实现: {e}")
-                ct = os.urandom(32)  # Kyber512密文长度
+                ct = os.urandom(32)                
                 ss_client = hashlib.sha256(ct + pk).digest()
         else:
-            # 占位符实现
-            ct = os.urandom(32)  # Kyber512密文长度
+                   
+            ct = os.urandom(32)                
             ss_client = hashlib.sha256(ct + pk).digest()
         
-        # 从共享密钥派生会话密钥
+                     
         key = hashlib.sha256(ss_client).digest()
         return ct, key
 
@@ -137,7 +137,7 @@ def server_finish(ct, sk):
     server.sk = sk
     return server.finish_handshake(ct)
 
-# 网络层集成示例
+         
 def example_server_handshake(conn):
     """
     服务器端握手示例
@@ -148,16 +148,16 @@ def example_server_handshake(conn):
     Returns:
         bytes: 会话密钥
     """
-    # 1. 生成密钥对
+              
     pk, sk = server_setup_keys()
     
-    # 2. 发送公钥给客户端
+                 
     conn.sendall(pk)
     
-    # 3. 接收客户端发送的密文
+                   
     ct = conn.recv(1024)
     
-    # 4. 完成握手并获取会话密钥
+                    
     session_key = server_finish(ct, sk)
     
     return session_key
@@ -172,18 +172,18 @@ def example_client_handshake(conn):
     Returns:
         bytes: 会话密钥
     """
-    # 1. 接收服务器公钥
+                
     pk = conn.recv(1024)
     
-    # 2. 执行握手
+             
     ct, session_key = client_handshake(pk)
     
-    # 3. 发送密文给服务器
+                 
     conn.sendall(ct)
     
     return session_key
 
-# 兼容性函数别名（用于baseline_comparison）
+                                
 def kem_keygen():
     """
     KEM密钥生成
@@ -218,7 +218,7 @@ def kem_decaps(sk, ct):
     """
     return server_finish(ct, sk)
 
-# 实际使用示例（需要替换为真实的Kyber实现）
+                         
 """
 要使用真实的Kyber/ML-KEM实现，您需要：
 

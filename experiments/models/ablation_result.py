@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 消融实验结果数据模型
 """
@@ -13,10 +13,10 @@ from dataclasses import dataclass, field, asdict
 @dataclass
 class VariantResult:
     """方案变体结果数据结构"""
-    variant_name: str  # 变体名称
-    avg_time_ms: float  # 平均处理时间（毫秒）
-    avg_size_bytes: float  # 平均消息大小（字节）
-    capabilities: Dict[str, bool] = field(default_factory=dict)  # 安全能力
+    variant_name: str        
+    avg_time_ms: float              
+    avg_size_bytes: float              
+    capabilities: Dict[str, bool] = field(default_factory=dict)        
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典"""
@@ -62,10 +62,10 @@ class VariantResult:
 @dataclass
 class SensitivityResult:
     """参数敏感性结果数据结构"""
-    parameter_name: str  # 参数名称
-    parameter_value: Any  # 参数值
-    performance_metrics: Dict[str, float] = field(default_factory=dict)  # 性能指标
-    security_metrics: Dict[str, float] = field(default_factory=dict)  # 安全指标
+    parameter_name: str        
+    parameter_value: Any       
+    performance_metrics: Dict[str, float] = field(default_factory=dict)        
+    security_metrics: Dict[str, float] = field(default_factory=dict)        
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典"""

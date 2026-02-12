@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 端到端仿真模块 - 集成真实SUMO仿真
 """
@@ -23,7 +23,7 @@ from experiments.models.simulation_result import (
 )
 from experiments.logger import ExperimentLogger
 
-# 导入密码学组件用于直接生成证明
+                 
 from common.crypto import merkle_root, merkle_proof
 from common.crypto_adapters import (
     ed25519_generate_keypair, ed25519_sign,
@@ -48,19 +48,19 @@ class EndToEndSimulator:
         self.process = psutil.Process()
         self.sumo_home = Path(sumo_home)
         
-        # 设置SUMO环境变量
+                    
         os.environ["SUMO_HOME"] = str(self.sumo_home)
         if (self.sumo_home / "tools").exists():
             sys.path.insert(0, str(self.sumo_home / "tools"))
         
-        # SUMO配置文件路径 - 使用新的网络文件
+                               
         self.sumo_config_dir = project_root / "sumo"
-        self.sumo_cfg = self.sumo_config_dir / "simple_test.cfg"  # 使用简单的测试配置
+        self.sumo_cfg = self.sumo_config_dir / "simple_test.cfg"             
         
-        # RSU位置（网格中的RSU）
+                        
         self.rsu_positions = "100,100; 200,200; 300,300; 400,400"
         
-        # 数据目录
+              
         self.data_dir = project_root / "data"
         self.data_dir.mkdir(exist_ok=True)
     
@@ -101,21 +101,21 @@ class EndToEndSimulator:
         """
         trips_file = self.sumo_config_dir / f"trips_{vehicle_count}v.trips.xml"
         
-        # 生成trips XML
+                     
         trips_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
         trips_xml += '<routes>\n'
         trips_xml += '  <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="5" maxSpeed="50"/>\n'
         
-        # 定义可能的起点和终点边
+                     
         edges = ["gneE0", "gneE1", "gneE2", "gneE3", "gneE4", "gneE5", "gneE6", "gneE7", "gneE8",
                 "gneE9", "gneE10", "gneE11", "gneE12", "gneE13", "gneE14", "gneE15", "gneE16", "gneE17"]
         
-        # 为每辆车生成一个trip
+                      
         import random
-        random.seed(42)  # 固定随机种子以保证可复现性
+        random.seed(42)                 
         
         for i in range(vehicle_count):
-            depart_time = random.uniform(0, duration * 0.3)  # 在前30%的时间内出发
+            depart_time = random.uniform(0, duration * 0.3)               
             from_edge = random.choice(edges)
             to_edge = random.choice([e for e in edges if e != from_edge])
             
@@ -140,13 +140,13 @@ class EndToEndSimulator:
         """
         self._log(f"运行SUMO仿真: {scenario['name']}")
         
-        # 生成trips文件
+                   
         trips_file = self.generate_trips_file(scenario['vehicles'], scenario['duration'])
         
-        # 输出文件
+              
         events_file = self.data_dir / f"scenario_{scenario['name']}_events.json"
         
-        # 构建命令
+              
         run_sumo_script = project_root / "sim" / "run_sumo_traci.py"
         
         cmd = [
@@ -163,16 +163,16 @@ class EndToEndSimulator:
         self._log(f"执行命令: {' '.join(cmd)}")
         
         try:
-            # 设置环境变量，确保子进程能找到项目模块
+                                 
             env = os.environ.copy()
             env['PYTHONPATH'] = str(project_root)
             
-            # 运行SUMO仿真
+                      
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=scenario['duration'] + 300,  # 额外5分钟超时
+                timeout=scenario['duration'] + 300,           
                 env=env
             )
             
@@ -203,7 +203,7 @@ class EndToEndSimulator:
         """
         self._log(f"测量性能 (ZKP: {use_zkp})")
         
-        # 加载事件数据
+                
         with open(events_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
@@ -217,10 +217,10 @@ class EndToEndSimulator:
                 "failure_count": 0
             }
         
-        # 白名单文件
+               
         whitelist_file = self.data_dir / "whitelist_geohash.txt"
         
-        # 加载白名单
+               
         if whitelist_file.exists():
             with open(whitelist_file, 'r', encoding='utf-8') as f:
                 whitelist = [line.strip() for line in f if line.strip()]
@@ -232,18 +232,18 @@ class EndToEndSimulator:
         success_count = 0
         failure_count = 0
         
-        # 采样测试（避免测试所有事件）
+                        
         import random
         sample_size = min(100, len(events))
         sampled_events = random.sample(events, sample_size)
         
         for i, event in enumerate(sampled_events):
             try:
-                # 创建临时事件文件
+                          
                 temp_events_file = self.data_dir / f"temp_event_{i}.json"
                 temp_packet_file = self.data_dir / f"temp_packet_{i}.json"
                 
-                # 保存单个事件
+                        
                 temp_data = {
                     "rsus": data["rsus"],
                     "events": [event]
@@ -251,19 +251,19 @@ class EndToEndSimulator:
                 with open(temp_events_file, 'w', encoding='utf-8') as f:
                     json.dump(temp_data, f)
                 
-                # 测量证明生成时间
+                          
                 gen_start = time.perf_counter()
                 
                 if use_zkp:
-                    # 直接生成ZKP证明（不调用外部函数）
+                                        
                     try:
-                        # 1. Ed25519签名（RSU Token）
+                                                 
                         rsu_sk, rsu_pk = ed25519_generate_keypair()
                         token_msg = f"window_{int(event['timestamp']) // 60}".encode()
                         token_sig = ed25519_sign(rsu_sk, token_msg)
                         
-                        # 2. Merkle证明
-                        # 使用event中的geohash，如果不在白名单中，使用第一个
+                                     
+                                                         
                         geohash = event.get('geohash', whitelist[0] if whitelist else 'wtw3s8n')
                         if geohash not in whitelist:
                             geohash = whitelist[0] if whitelist else 'wtw3s8n'
@@ -272,13 +272,13 @@ class EndToEndSimulator:
                         geohash_index = whitelist.index(geohash)
                         merkle_path = merkle_proof(whitelist, geohash_index)
                         
-                        # 3. Bulletproofs范围证明
+                                             
                         timestamp = int(event['timestamp'])
                         window_id = timestamp // 60
                         blinding = random.randint(1, 1000000)
                         range_proof = range_proof_prove(timestamp, window_id * 60, (window_id + 1) * 60, blinding)
                         
-                        # 4. LSAG环签名
+                                    
                         ring_size = 8
                         ring_keys = [ed25519_generate_keypair() for _ in range(ring_size)]
                         ring_pubkeys = [pk for _, pk in ring_keys]
@@ -286,7 +286,7 @@ class EndToEndSimulator:
                         message = f"{geohash}|{timestamp}".encode()
                         lsag_sig = lrs_sign(message, ring_pubkeys, 0, signer_sk, b"context")
                         
-                        # 将证明保存为JSON
+                                    
                         packet = {
                             "token": {"signature": token_sig.hex(), "window_id": window_id},
                             "geohash": geohash,
@@ -304,7 +304,7 @@ class EndToEndSimulator:
                         failure_count += 1
                         continue
                 else:
-                    # 朴素方案：仅生成基本数据包
+                                   
                     packet = {
                         "token": event["token"],
                         "lat": event["lat"],
@@ -315,18 +315,18 @@ class EndToEndSimulator:
                         json.dump(packet, f)
                 
                 gen_end = time.perf_counter()
-                gen_time = (gen_end - gen_start) * 1000  # 转换为毫秒
+                gen_time = (gen_end - gen_start) * 1000         
                 
-                # 测量验证时间
+                        
                 verify_start = time.perf_counter()
                 
                 if use_zkp and temp_packet_file.exists():
-                    # 使用真实的验证
+                             
                     try:
                         with open(temp_packet_file, 'r', encoding='utf-8') as f:
                             packet = json.load(f)
                         
-                        # 验证范围证明
+                                
                         if range_proof_verify(packet['range_proof']):
                             success_count += 1
                         else:
@@ -335,22 +335,22 @@ class EndToEndSimulator:
                         self._log(f"ZKP验证失败: {e}", "warning")
                         failure_count += 1
                 else:
-                    # 朴素方案：简单验证
+                               
                     success_count += 1
                 
                 verify_end = time.perf_counter()
                 verify_time = (verify_end - verify_start) * 1000
                 
-                # 总延迟
+                     
                 total_latency = gen_time + verify_time
                 latencies.append(total_latency)
                 
-                # 测量数据包大小
+                         
                 if temp_packet_file.exists():
                     packet_size = temp_packet_file.stat().st_size
                     packet_sizes.append(packet_size)
                 
-                # 清理临时文件
+                        
                 if temp_events_file.exists():
                     temp_events_file.unlink()
                 if temp_packet_file.exists():
@@ -400,34 +400,34 @@ class EndToEndSimulator:
         
         sim_start = time.time()
         
-        # 1. 运行SUMO仿真生成事件
+                         
         events_file = self.run_sumo_simulation(scenario)
         
-        # 2. 测量证明生成和验证性能
+                        
         perf_metrics = self.measure_proof_generation_and_verification(events_file, use_zkp)
         
-        # 注意：不再测量CPU使用率，因为粒度太粗无意义
+                                 
         
         sim_end = time.time()
         duration = sim_end - sim_start
         
-        # 3. 计算指标
+                 
         latencies = perf_metrics["latencies"]
         packet_sizes = perf_metrics["packet_sizes"]
         success_count = perf_metrics["success_count"]
         failure_count = perf_metrics["failure_count"]
         total_packets = success_count + failure_count
         
-        # 注意：不再计算吞吐量，避免误导性数据
+                            
         
-        # 创建结果（移除resource_metrics）
+                                  
         result = SimulationResult(
             scenario_name=scenario['name'],
             vehicle_count=scenario['vehicles'],
             total_packets=total_packets,
             latency_metrics=LatencyMetrics.from_measurements(latencies) if latencies else LatencyMetrics(),
-            throughput_qps=0.0,  # 不再报告吞吐量
-            resource_metrics=ResourceMetrics(),  # 空的资源指标
+            throughput_qps=0.0,           
+            resource_metrics=ResourceMetrics(),          
             communication_metrics=CommunicationMetrics.from_measurements(packet_sizes) if packet_sizes else CommunicationMetrics(),
             use_zkp=use_zkp,
             duration_seconds=duration,
@@ -446,20 +446,20 @@ class EndToEndSimulator:
         self._log("开始运行所有端到端仿真场景")
         self._log("=" * 60)
         
-        # 验证SUMO安装
+                  
         if not self.verify_sumo_installation():
             self._log("SUMO未正确安装，跳过仿真", "error")
             return self.results
         
         for scenario in scenarios:
             try:
-                # 运行ZKP方案
+                         
                 self._log(f"\n{'='*60}")
                 self._log(f"场景: {scenario['name']} - ZKP方案")
                 self._log(f"{'='*60}")
                 self.run_simulation(scenario, use_zkp=True)
                 
-                # 运行朴素方案
+                        
                 self._log(f"\n{'='*60}")
                 self._log(f"场景: {scenario['name']} - 朴素方案")
                 self._log(f"{'='*60}")

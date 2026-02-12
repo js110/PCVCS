@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 审计机构工具 - 受控去匿名化
 用于在争议场景中追溯车辆真实身份
@@ -19,12 +19,12 @@ def load_lrs_verifier(state_file: str = "lrs_verifier_state.json") -> LinkableRi
     """
     lrs = LinkableRingSignature()
     
-    # 如果状态文件存在，加载之前的审计记录
+                        
     state_path = Path(state_file)
     if state_path.exists():
         try:
             state = json.loads(state_path.read_text(encoding='utf-8'))
-            # 恢复审计数据库（简化版）
+                          
             print(f"✓ 已加载 {len(state.get('audit_records', []))} 条审计记录")
         except Exception as e:
             print(f"⚠ 加载状态文件失败: {e}")
@@ -47,10 +47,10 @@ def deanonymize(link_tag: str, task_id: str, authority_sk_hex: str, lrs: Linkabl
     print(f"链接标签: {link_tag}")
     
     try:
-        # 转换追踪密钥
+                
         authority_sk = bytes.fromhex(authority_sk_hex)
         
-        # 执行去匿名化
+                
         audit_record = lrs.controlled_deanonymization(
             link_tag=link_tag,
             task_id=task_id,
@@ -98,10 +98,10 @@ def export_task_report(task_id: str, authority_sk_hex: str, lrs: LinkableRingSig
     try:
         authority_sk = bytes.fromhex(authority_sk_hex)
         
-        # 导出报告
+              
         report = lrs.export_audit_report(task_id, authority_sk)
         
-        # 保存到文件
+               
         output_path = Path(output_file)
         output_path.write_text(
             json.dumps(report, indent=2, ensure_ascii=False, default=bytes_to_hex),
@@ -151,12 +151,12 @@ def analyze_duplicate_submissions(lrs: LinkableRingSignature):
     print(f"提交总数: {total_submissions}")
     print(f"唯一提交者: {unique_submitters}")
     
-    # 查找重复提交
+            
     duplicates = [(key, records) for key, records in lrs.link_tag_db.items() if len(records) > 1]
     
     if duplicates:
         print(f"\n⚠ 检测到 {len(duplicates)} 个重复提交者：")
-        for key, records in duplicates[:10]:  # 只显示前10个
+        for key, records in duplicates[:10]:           
             task_id, link_tag = key.split(":", 1)
             print(f"  - 任务: {task_id}, link_tag: {link_tag[:16]}..., 提交次数: {len(records)}")
     else:
@@ -168,21 +168,21 @@ def main():
     
     subparsers = parser.add_subparsers(dest="command", help="可用命令")
     
-    # 子命令1: 去匿名化
+                
     deanon_parser = subparsers.add_parser("deanonymize", help="追溯车辆真实身份")
     deanon_parser.add_argument("--link-tag", required=True, help="链接标签（十六进制）")
     deanon_parser.add_argument("--task-id", required=True, help="任务ID")
     deanon_parser.add_argument("--authority-sk", required=True, help="审计机构追踪密钥（十六进制）")
     deanon_parser.add_argument("--state-file", default="lrs_verifier_state.json", help="LRS状态文件")
     
-    # 子命令2: 导出报告
+                
     report_parser = subparsers.add_parser("export-report", help="导出任务审计报告")
     report_parser.add_argument("--task-id", required=True, help="任务ID")
     report_parser.add_argument("--authority-sk", required=True, help="审计机构追踪密钥（十六进制）")
     report_parser.add_argument("--output", required=True, help="输出文件路径")
     report_parser.add_argument("--state-file", default="lrs_verifier_state.json", help="LRS状态文件")
     
-    # 子命令3: 分析重复提交
+                  
     analyze_parser = subparsers.add_parser("analyze-duplicates", help="分析重复提交情况")
     analyze_parser.add_argument("--state-file", default="lrs_verifier_state.json", help="LRS状态文件")
     
@@ -192,10 +192,10 @@ def main():
         parser.print_help()
         return
     
-    # 加载LRS验证器
+              
     lrs = load_lrs_verifier(args.state_file if hasattr(args, 'state_file') else "lrs_verifier_state.json")
     
-    # 执行对应命令
+            
     if args.command == "deanonymize":
         deanonymize(args.link_tag, args.task_id, args.authority_sk, lrs)
     

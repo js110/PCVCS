@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 仿真结果数据模型
 """
@@ -14,12 +14,12 @@ from dataclasses import dataclass, field, asdict
 @dataclass
 class LatencyMetrics:
     """延迟指标"""
-    avg_ms: float = 0.0  # 平均延迟（毫秒）
-    p50_ms: float = 0.0  # 50%分位延迟
-    p95_ms: float = 0.0  # 95%分位延迟
-    p99_ms: float = 0.0  # 99%分位延迟
-    max_ms: float = 0.0  # 最大延迟
-    min_ms: float = 0.0  # 最小延迟
+    avg_ms: float = 0.0            
+    p50_ms: float = 0.0           
+    p95_ms: float = 0.0           
+    p99_ms: float = 0.0           
+    max_ms: float = 0.0        
+    min_ms: float = 0.0        
     
     @classmethod
     def from_measurements(cls, latencies_ms: List[float]) -> 'LatencyMetrics':
@@ -50,10 +50,10 @@ class LatencyMetrics:
 @dataclass
 class ResourceMetrics:
     """资源占用指标"""
-    avg_cpu_percent: float = 0.0  # 平均CPU使用率（%）
-    max_cpu_percent: float = 0.0  # 最大CPU使用率（%）
-    avg_memory_mb: float = 0.0  # 平均内存占用（MB）
-    max_memory_mb: float = 0.0  # 最大内存占用（MB）
+    avg_cpu_percent: float = 0.0               
+    max_cpu_percent: float = 0.0               
+    avg_memory_mb: float = 0.0              
+    max_memory_mb: float = 0.0              
     
     @classmethod
     def from_measurements(cls, cpu_percents: List[float], memory_mbs: List[float]) -> 'ResourceMetrics':
@@ -84,9 +84,9 @@ class ResourceMetrics:
 @dataclass
 class CommunicationMetrics:
     """通信开销指标"""
-    avg_packet_size_bytes: float = 0.0  # 平均数据包大小（字节）
-    total_data_kb: float = 0.0  # 总数据量（KB）
-    packet_count: int = 0  # 数据包数量
+    avg_packet_size_bytes: float = 0.0               
+    total_data_kb: float = 0.0            
+    packet_count: int = 0         
     
     @classmethod
     def from_measurements(cls, packet_sizes_bytes: List[int]) -> 'CommunicationMetrics':
@@ -116,22 +116,22 @@ class CommunicationMetrics:
 @dataclass
 class SimulationResult:
     """仿真结果数据结构"""
-    scenario_name: str  # 场景名称
-    vehicle_count: int  # 车辆数量
-    total_packets: int  # 总数据包数
+    scenario_name: str        
+    vehicle_count: int        
+    total_packets: int         
     latency_metrics: LatencyMetrics = field(default_factory=LatencyMetrics)
-    throughput_qps: float = 0.0  # 吞吐量（QPS）
+    throughput_qps: float = 0.0            
     resource_metrics: ResourceMetrics = field(default_factory=ResourceMetrics)
     communication_metrics: CommunicationMetrics = field(default_factory=CommunicationMetrics)
-    use_zkp: bool = True  # 是否使用零知识证明
-    duration_seconds: float = 0.0  # 仿真时长（秒）
-    success_count: int = 0  # 成功验证数量
-    failure_count: int = 0  # 失败验证数量
+    use_zkp: bool = True             
+    duration_seconds: float = 0.0           
+    success_count: int = 0          
+    failure_count: int = 0          
     
     def to_dict(self) -> Dict[str, Any]:
         """转换为字典"""
         data = asdict(self)
-        # 确保嵌套对象也被正确序列化
+                       
         data['latency_metrics'] = self.latency_metrics.to_dict()
         data['resource_metrics'] = self.resource_metrics.to_dict()
         data['communication_metrics'] = self.communication_metrics.to_dict()
@@ -140,7 +140,7 @@ class SimulationResult:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'SimulationResult':
         """从字典创建实例"""
-        # 处理嵌套对象
+                
         if 'latency_metrics' in data and isinstance(data['latency_metrics'], dict):
             data['latency_metrics'] = LatencyMetrics.from_dict(data['latency_metrics'])
         if 'resource_metrics' in data and isinstance(data['resource_metrics'], dict):
@@ -176,12 +176,12 @@ class SimulationResult:
         summary += f"  总数据包: {self.total_packets}\n"
         summary += f"  成功/失败: {self.success_count}/{self.failure_count}\n"
         summary += f"  成功率: {self.get_success_rate()*100:.2f}%\n"
-        # 注意：不再报告吞吐量，避免误导
+                         
         summary += f"  平均延迟: {self.latency_metrics.avg_ms:.4f} ms\n"
         summary += f"  95%分位延迟: {self.latency_metrics.p95_ms:.4f} ms\n"
         summary += f"  99%分位延迟: {self.latency_metrics.p99_ms:.4f} ms\n"
         summary += f"  平均消息大小: {self.communication_metrics.avg_packet_size_bytes:.0f} bytes\n"
-        # 注意：CPU监控粒度太粗，不再报告
+                           
         summary += f"  平均内存: {self.resource_metrics.avg_memory_mb:.2f} MB\n"
         return summary
     

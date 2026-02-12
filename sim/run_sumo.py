@@ -1,7 +1,7 @@
 
-# sim/run_sumo.py
-# If SUMO & traci are available, this script can attach to SUMO and simulate RSU token broadcast.
-# For environments without SUMO, we generate synthetic vehicle passes and RSU tokens.
+                 
+                                                                                                 
+                                                                                     
 
 import os, json, time, random, math, argparse
 from pathlib import Path
@@ -9,19 +9,19 @@ from datetime import datetime, timedelta
 from common.crypto import ed25519_generate_keypair, ed25519_sign, geohash_encode
 
 def synthetic_sim(num_rsus=3, num_events=200, window_len=60, token_expiry=3600, region_id="ROAD_SEG_A"):
-    # Create RSU keys
+                     
     rsus = []
     for i in range(num_rsus):
         sk, pk = ed25519_generate_keypair()
         rsus.append({"rsu_id": i+1, "sk": sk, "pk": pk})
-    # Generate tokens per window
+                                
     now = int(time.time())
     events = []
     for e in range(num_events):
         rsu = random.choice(rsus)
         window_id = (e % 1000) + 1
         nonce = random.getrandbits(64)
-        # 使用动态配置的过期时间
+                     
         expiry = now + token_expiry
         msg = f"{1}|{region_id}|{window_id}|{nonce}|{expiry}|{rsu['rsu_id']}".encode()
         sig = ed25519_sign(rsu["sk"], msg)
@@ -34,7 +34,7 @@ def synthetic_sim(num_rsus=3, num_events=200, window_len=60, token_expiry=3600, 
             "rsu_id": rsu["rsu_id"],
             "signature_hex": sig.hex()
         }
-        # Synthetic vehicle position near some lat/lon box (Shanghai center approx.)
+                                                                                    
         lat = 31.23 + random.uniform(-0.01, 0.01)
         lon = 121.47 + random.uniform(-0.01, 0.01)
         g7 = geohash_encode(lat, lon, precision=7)

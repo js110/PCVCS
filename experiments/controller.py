@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 实验控制器
 """
@@ -31,21 +31,21 @@ class ExperimentController:
         """
         self.config = config
         
-        # 创建输出目录
+                
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         self.output_dir = Path(config.output_dir) / timestamp
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
-        # 创建子目录
+               
         (self.output_dir / "raw_data").mkdir(exist_ok=True)
         (self.output_dir / "charts").mkdir(exist_ok=True)
         (self.output_dir / "reports").mkdir(exist_ok=True)
         
-        # 设置日志
+              
         log_file = self.output_dir / "reports" / config.log_file
         self.logger = setup_logger("experiment", log_file, config.log_level)
         
-        # 保存配置
+              
         config.to_json(self.output_dir / "config.json")
         
         self.logger.info(f"实验输出目录: {self.output_dir}")
@@ -55,7 +55,7 @@ class ExperimentController:
         self.logger.section("验证实验环境")
         
         try:
-            # 检查Python版本
+                        
             import sys
             python_version = sys.version_info
             self.logger.info(f"Python版本: {python_version.major}.{python_version.minor}.{python_version.micro}")
@@ -64,7 +64,7 @@ class ExperimentController:
                 self.logger.error("需要Python 3.8或更高版本")
                 return False
             
-            # 检查必要的库
+                    
             required_libs = ["numpy", "matplotlib", "psutil"]
             for lib in required_libs:
                 try:
@@ -74,7 +74,7 @@ class ExperimentController:
                     self.logger.error(f"✗ {lib} 未安装")
                     return False
             
-            # 检查密码学库
+                    
             try:
                 import nacl
                 self.logger.info("✓ PyNaCl 已安装")
@@ -198,7 +198,7 @@ class ExperimentController:
         self.logger.section("开始综合实验")
         self.logger.info(f"配置: {self.config}")
         
-        # 验证环境
+              
         if not self.verify_environment():
             self.logger.error("环境验证失败，终止实验")
             return {"success": False, "error": "environment_verification_failed"}
@@ -208,12 +208,12 @@ class ExperimentController:
             "modules": {}
         }
         
-        # 确定要运行的模块
+                  
         all_modules = ["crypto_benchmark", "end_to_end", "security", "ablation"]
         if modules is None:
             modules = all_modules
         
-        # 运行各个模块
+                
         if "crypto_benchmark" in modules:
             results["modules"]["crypto_benchmark"] = self.run_crypto_benchmark()
         
@@ -226,10 +226,10 @@ class ExperimentController:
         if "ablation" in modules:
             results["modules"]["ablation"] = self.run_ablation_experiments()
         
-        # 生成摘要
+              
         self.generate_summary(results)
         
-        # 输出结果
+              
         self.logger.section("实验完成")
         for module, success in results["modules"].items():
             status = "✓ 成功" if success else "✗ 失败"

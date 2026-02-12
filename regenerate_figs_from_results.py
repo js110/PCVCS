@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 Regenerate figures from an existing performance_evaluation_results run
 Usage: python regenerate_figs_from_results.py <results_dir>
@@ -49,7 +49,7 @@ def generate_client_breakdown(data, out_path):
     ax.grid(True, alpha=0.3, axis='y', linestyle='--')
     ax.set_ylim(0, max(max(zk), max(lsag), max(kem)) * 1.25)
 
-    # Totals removed per user request
+                                     
 
     plt.tight_layout()
     out_path.mkdir(parents=True, exist_ok=True)
@@ -91,7 +91,7 @@ def generate_server_breakdown(data, out_path):
     ax.grid(True, alpha=0.3, axis='y', linestyle='--')
     ax.set_ylim(0, max(max(zk_ver), max(lrs_ver), max(kem_dec)) * 1.25)
 
-    # Totals removed per user request
+                                     
 
     plt.tight_layout()
     out_path.mkdir(parents=True, exist_ok=True)

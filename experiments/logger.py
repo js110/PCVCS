@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 日志系统模块
 提供统一的日志记录功能
@@ -29,16 +29,16 @@ class ExperimentLogger:
         self.logger = logging.getLogger(name)
         self.logger.setLevel(getattr(logging, level.upper()))
         
-        # 清除已有的处理器
+                  
         self.logger.handlers.clear()
         
-        # 创建格式化器
+                
         formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         
-        # 添加控制台处理器
+                  
         if hasattr(sys.stdout, "buffer"):
             safe_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
         else:
@@ -48,7 +48,7 @@ class ExperimentLogger:
         console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
         
-        # 添加文件处理器
+                 
         if log_file is not None:
             log_file.parent.mkdir(parents=True, exist_ok=True)
             file_handler = logging.FileHandler(log_file, encoding='utf-8')

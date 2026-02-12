@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 基准测试结果数据模型
 """
@@ -15,14 +15,14 @@ from dataclasses import dataclass, field, asdict
 class BenchmarkResult:
     """基准测试结果数据结构"""
     
-    operation: str  # 操作名称（如"Ed25519签名"）
-    avg_time_ms: float  # 平均时间（毫秒）
-    std_time_ms: float = 0.0  # 标准差（毫秒）
-    min_time_ms: float = 0.0  # 最小时间（毫秒）
-    max_time_ms: float = 0.0  # 最大时间（毫秒）
-    size_bytes: int = 0  # 大小（字节）
-    iterations: int = 1  # 迭代次数
-    parameters: Dict[str, Any] = field(default_factory=dict)  # 额外参数
+    operation: str                      
+    avg_time_ms: float            
+    std_time_ms: float = 0.0           
+    min_time_ms: float = 0.0            
+    max_time_ms: float = 0.0            
+    size_bytes: int = 0          
+    iterations: int = 1        
+    parameters: Dict[str, Any] = field(default_factory=dict)        
     
     @classmethod
     def from_measurements(cls, operation: str, times_ms: List[float],

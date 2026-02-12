@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 生成新实验方案的图表 - 中文版（供检查）
 按照"新的实验计划.md"的要求生成5张图和2张表
@@ -12,11 +12,11 @@ from pathlib import Path
 import matplotlib
 from typing import Dict, List
 
-# 设置matplotlib支持中文
+                  
 matplotlib.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'DejaVu Sans']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-# IEEE论文风格设置
+            
 plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 300
 plt.rcParams['font.size'] = 10
@@ -27,7 +27,7 @@ plt.rcParams['ytick.labelsize'] = 9
 plt.rcParams['legend.fontsize'] = 9
 plt.rcParams['figure.titlesize'] = 12
 
-# 数据目录
+      
 DATA_DIR = Path("new_experiment_results/20251129_151922/raw_data")
 OUTPUT_DIR = Path("new_experiment_results/20251129_151922/figures_cn")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -55,7 +55,7 @@ def generate_fig1(security_data: Dict):
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
     
-    # Fig.1(a) - Acceptance rate per category
+                                             
     categories = ['诚实', '位置伪造', '时间伪造', 'Token篡改', '重放攻击']
     accept_rates = [security_data[cat]['accept_rate'] for cat in ['honest', 'fake_location', 'fake_time', 'fake_token', 'replay']]
     
@@ -67,20 +67,20 @@ def generate_fig1(security_data: Dict):
     ax1.set_ylim([0, 110])
     ax1.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 添加数值标签
+            
     for bar, rate in zip(bars, accept_rates):
         height = bar.get_height()
         ax1.text(bar.get_x() + bar.get_width()/2., height + 2,
                 f'{rate:.1f}%', ha='center', va='bottom', fontsize=8)
     
-    # Fig.1(b) - Replay detection vs False positive
-    # 改为对比：重放攻击的检测率 vs 诚实报告的误报率
+                                                   
+                               
     metrics = ['重放攻击\n检测率', '诚实报告\n误报率']
     values = [
-        security_data['replay']['duplicate_detection_rate'],  # 99.9%
-        security_data['honest']['false_positive']  # 0%
+        security_data['replay']['duplicate_detection_rate'],         
+        security_data['honest']['false_positive']      
     ]
-    colors_b = ['#e74c3c', '#2ecc71']  # 红色表示攻击被检测，绿色表示诚实无误报
+    colors_b = ['#e74c3c', '#2ecc71']                       
     
     bars = ax2.bar(metrics, values, width=0.5, color=colors_b, alpha=0.7, 
                    edgecolor='black', linewidth=1)
@@ -90,13 +90,13 @@ def generate_fig1(security_data: Dict):
     ax2.set_ylim([0, 110])
     ax2.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 添加数值标签
+            
     for bar, val in zip(bars, values):
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width()/2., height + 2,
                 f'{val:.1f}%', ha='center', va='bottom', fontsize=9, fontweight='bold')
     
-    # 添加参考线：理想情况是检测率100%、误报率0%
+                              
     ax2.axhline(y=100, color='gray', linestyle='--', linewidth=1, alpha=0.5)
     ax2.axhline(y=0, color='gray', linestyle='--', linewidth=1, alpha=0.5)
     
@@ -112,7 +112,7 @@ def generate_fig2(privacy_data: Dict):
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
     
-    # Fig.2(a) - Location inference success vs |A_tau|
+                                                      
     location_data = privacy_data['location_inference']
     area_sizes = [int(k) for k in location_data.keys()]
     plain_success = [location_data[str(size)]['Plain']/100.0 for size in area_sizes]
@@ -129,7 +129,7 @@ def generate_fig2(privacy_data: Dict):
     ax1.grid(True, alpha=0.3, linestyle='--')
     ax1.set_ylim([0, 1.1])
     
-    # Fig.2(b) - Time inference MAE vs window length
+                                                    
     time_data = privacy_data['time_inference']
     window_lengths = [int(k) for k in time_data.keys()]
     plain_mae = [time_data[str(w)]['Plain'] for w in window_lengths]
@@ -156,7 +156,7 @@ def generate_fig3(performance_data: Dict):
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
     
-    # Fig.3(a) - Average latency vs N
+                                     
     vehicle_counts = [10, 50, 100, 200, 500]
     
     plain_latencies = [performance_data[str(n)]['Plain']['avg_latency_ms'] for n in vehicle_counts]
@@ -176,10 +176,10 @@ def generate_fig3(performance_data: Dict):
     ax1.legend()
     ax1.grid(True, alpha=0.3, linestyle='--')
     
-    # Fig.3(b) - CDF of latency at N=200
+                                        
     n_ref = 200
     
-    # 模拟CDF曲线（基于均值和P95）
+                       
     plain_avg = performance_data[str(n_ref)]['Plain']['avg_latency_ms']
     plain_p95 = performance_data[str(n_ref)]['Plain']['p95_latency_ms']
     
@@ -189,7 +189,7 @@ def generate_fig3(performance_data: Dict):
     zkpq_avg = performance_data[str(n_ref)]['ZK+LRS+PQ']['avg_latency_ms']
     zkpq_p95 = performance_data[str(n_ref)]['ZK+LRS+PQ']['p95_latency_ms']
     
-    # 生成近似CDF数据点
+                
     def create_cdf_points(avg, p95):
         std = (p95 - avg) / 1.645
         latencies = np.linspace(max(0, avg - 3*std), avg + 3*std, 100)
@@ -225,7 +225,7 @@ def generate_fig4(performance_data: Dict):
     
     vehicle_counts = [10, 50, 100, 200, 500]
     
-    # Fig.4(a) - Message size comparison
+                                        
     plain_sizes = [performance_data[str(n)]['Plain']['avg_report_size_bytes'] for n in vehicle_counts]
     zk_sizes = [performance_data[str(n)]['ZK+LRS']['avg_report_size_bytes'] for n in vehicle_counts]
     zkpq_sizes = [performance_data[str(n)]['ZK+LRS+PQ']['avg_report_size_bytes'] for n in vehicle_counts]
@@ -240,8 +240,8 @@ def generate_fig4(performance_data: Dict):
     ax1.legend()
     ax1.grid(True, alpha=0.3, linestyle='--')
     
-    # Fig.4(b) - Uplink bandwidth (only for Ours scheme)
-    T_period = 60  # seconds
+                                                        
+    T_period = 60           
     ours_bandwidth = []
     
     for n in vehicle_counts:
@@ -258,7 +258,7 @@ def generate_fig4(performance_data: Dict):
     ax2.legend()
     ax2.grid(True, alpha=0.3, linestyle='--')
     
-    # 添加参考线
+           
     ax2.axhline(y=1000, color='r', linestyle='--', linewidth=1, alpha=0.5, label='V2I链路容量 (1 Mbps)')
     ax2.legend()
     
@@ -274,16 +274,16 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
     
-    # 使用N=100的数据作为代表
+                    
     n_ref = 100
     
-    # Fig.5(a) - Latency breakdown (堆叠柱状图)
+                                          
     schemes = ['Plain', 'ZK+LRS\n(非PQ)', 'ZK+LRS+PQ\n(本文)']
     
-    # 基于密码学微基准估算各部分开销
+                     
     plain_base = performance_data[str(n_ref)]['Plain']['avg_latency_ms']
     
-    # Plain方案分解
+               
     plain_network = plain_base
     plain_breakdown = {
         '网络+队列': plain_network,
@@ -291,19 +291,19 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
         'ZK证明+环签名': 0
     }
     
-    # ZK+LRS方案分解
+                
     bulletproof_time = crypto_data['Bulletproofs_Prove']['avg_time_ms'] + crypto_data['Bulletproofs_Verify']['avg_time_ms']
     merkle_time = crypto_data['Merkle_Proof_Gen']['avg_time_ms'] + crypto_data['Merkle_Proof_Verify']['avg_time_ms']
     lrs_time = crypto_data['LSAG_Sign']['avg_time_ms'] + crypto_data['LSAG_Verify']['avg_time_ms']
     
-    # 将LRS合并到ZK证明中（因为LRS只有0.03ms，单独显示看不见）
+                                         
     zk_lrs_breakdown = {
         '网络+队列': plain_network,
         'ML-KEM/密码': 0,
         'ZK证明+环签名': bulletproof_time + merkle_time + lrs_time
     }
     
-    # ZK+LRS+PQ方案分解
+                   
     kyber_time = crypto_data['Kyber_KeyGen']['avg_time_ms'] + crypto_data['Kyber_Encaps']['avg_time_ms'] + crypto_data['Kyber_Decaps']['avg_time_ms']
     
     zkpq_breakdown = {
@@ -312,7 +312,7 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
         'ZK证明+环签名': bulletproof_time + merkle_time + lrs_time
     }
     
-    # 堆叠数据（简化为3个组件）
+                   
     network_queue = [plain_breakdown['网络+队列'], 
                      zk_lrs_breakdown['网络+队列'], 
                      zkpq_breakdown['网络+队列']]
@@ -338,7 +338,7 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
     ax1.legend(loc='upper left')
     ax1.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # Fig.5(b) - Relative overhead
+                                  
     plain_avg = performance_data[str(n_ref)]['Plain']['avg_latency_ms']
     zk_lrs_avg = performance_data[str(n_ref)]['ZK+LRS']['avg_latency_ms']
     zkpq_avg = performance_data[str(n_ref)]['ZK+LRS+PQ']['avg_latency_ms']
@@ -357,7 +357,7 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
     ax2.axhline(y=1, color='r', linestyle='--', linewidth=1, alpha=0.5)
     ax2.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 添加数值标签
+            
     for bar, overhead in zip(bars, relative_overheads):
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width()/2., height + 1,
@@ -373,7 +373,7 @@ def generate_table1(crypto_data: Dict):
     """Table I - 密码原语微基准（图表版）"""
     print("生成 Table I: 密码原语微基准...")
     
-    # 生成图表
+          
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
     
     operations = [
@@ -391,11 +391,11 @@ def generate_table1(crypto_data: Dict):
     avg_times = [crypto_data[op[1]]['avg_time_ms'] for op in operations]
     std_times = [crypto_data[op[1]]['std_time_ms'] for op in operations]
     
-    # 根据操作类型设置颜色
-    colors = ['#3498db', '#3498db',  # Merkle (蓝色)
-              '#e74c3c', '#e74c3c',  # Bulletproof (红色)
-              '#2ecc71', '#2ecc71',  # LRS (绿色)
-              '#f39c12', '#f39c12']  # ML-KEM (橙色)
+                
+    colors = ['#3498db', '#3498db',               
+              '#e74c3c', '#e74c3c',                    
+              '#2ecc71', '#2ecc71',            
+              '#f39c12', '#f39c12']               
     
     x = np.arange(len(op_names))
     bars = ax.bar(x, avg_times, yerr=std_times, capsize=5, 
@@ -407,7 +407,7 @@ def generate_table1(crypto_data: Dict):
     ax.set_xticklabels(op_names, rotation=15, ha='right')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
-    # 添加图例
+          
     from matplotlib.patches import Patch
     legend_elements = [
         Patch(facecolor='#3498db', edgecolor='black', label='Merkle树证明'),
@@ -417,7 +417,7 @@ def generate_table1(crypto_data: Dict):
     ]
     ax.legend(handles=legend_elements, loc='upper left')
     
-    # 添加数值标签（仅显示>0.1ms的）
+                        
     for i, (bar, val) in enumerate(zip(bars, avg_times)):
         if val > 0.1:
             ax.text(bar.get_x() + bar.get_width()/2., val + std_times[i] + 0.3,
@@ -428,7 +428,7 @@ def generate_table1(crypto_data: Dict):
     plt.close()
     print(f"  ✓ 已保存: {OUTPUT_DIR / 'Table1_密码原语微基准.png'}")
     
-    # 同时保留Markdown表格版本
+                      
     md_table = "# Table I: 密码原语微基准测试\n\n"
     md_table += "| 操作 | 参数 | 平均时间 (ms) | 标准差 (ms) |\n"
     md_table += "|------|------|---------------|-------------|\n"
@@ -459,10 +459,10 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
     """Table II - 链接性 & 重放检测结果（图表版）"""
     print("生成 Table II: 链接性与重放检测结果...")
     
-    # 生成图表
+          
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     
-    # 子图1：功能正确性（接受率）
+                    
     scenarios_1 = ['诚实报告', '重放攻击']
     accept_rates = [
         security_data['honest']['accept_rate'],
@@ -481,7 +481,7 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
         ax1.text(bar.get_x() + bar.get_width()/2., val + 2,
                 f'{val:.1f}%', ha='center', va='bottom', fontsize=9, fontweight='bold')
     
-    # 子图2：隐私保护（链接性 + 重放检测）
+                          
     linkability = privacy_data.get('linkability', {})
     scenarios_2 = ['重放检测率', '跨任务链接\n(Plain)', '跨任务链接\n(本文)']
     values_2 = [
@@ -507,7 +507,7 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
     plt.close()
     print(f"  ✓ 已保存: {OUTPUT_DIR / 'Table2_链接性与重放检测.png'}")
     
-    # 同时保留Markdown表格版本
+                      
     md_table = "# Table II: 链接性与重放检测结果\n\n"
     md_table += "| 场景 | 总数 | 接受数 | 接受率 (%) | 重复检测数 | 重复检测率 (%) |\n"
     md_table += "|------|------|--------|------------|------------|----------------|\n"
@@ -527,7 +527,7 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
         
         md_table += f"| {scenario_name} | {total} | {accepted} | {accept_rate:.1f} | {dup_detected} | {dup_rate:.1f} |\n"
     
-    # 添加跨任务链接性
+              
     if linkability:
         plain_link = linkability.get('Plain', 95.0)
         ours_link = linkability.get('Ours', 2.0)
@@ -548,12 +548,12 @@ def main():
     print("生成新实验方案的图表和表格 - 中文版（供检查）")
     print("="*70)
     
-    # 加载数据
+          
     print("\n加载实验数据...")
     performance, crypto, security, privacy = load_data()
     print("  ✓ 数据加载完成")
     
-    # 生成图表
+          
     print("\n开始生成图表...")
     generate_fig1(security)
     generate_fig2(privacy)
@@ -561,7 +561,7 @@ def main():
     generate_fig4(performance)
     generate_fig5(performance, crypto)
     
-    # 生成表格（图表+Markdown）
+                       
     print("\n开始生成表格（图表+Markdown）...")
     generate_table1(crypto)
     generate_table2(security, privacy)
@@ -571,7 +571,7 @@ def main():
     print(f"✓ 输出目录: {OUTPUT_DIR}")
     print("="*70)
     
-    # 列出所有生成的文件
+               
     print("\n生成的文件列表:")
     for file in sorted(OUTPUT_DIR.glob("*")):
         print(f"  - {file.name}")

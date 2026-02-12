@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 Regenerate security figures (acceptance rates & detection metrics)
 from an existing results folder (black-and-white / IEEE friendly).
@@ -36,7 +36,7 @@ def generate_acceptance_rate(data, out_path):
     fig, ax = plt.subplots(figsize=(6, 4))
 
     x = np.arange(len(labels))
-    # colored fills: green for honest, red-ish hatched for rejected
+                                                                   
     fills = ['#4CAF50' if v >= 50 else '#E57373' for v in values]
     hatches = ['' if v >= 50 else '///' for v in values]
 
@@ -45,14 +45,14 @@ def generate_acceptance_rate(data, out_path):
         bar = ax.bar(xi, v, color=fc, edgecolor='black', linewidth=0.8, hatch=hatch)
         bars.append(bar)
 
-    # Labels and annotations: place inside tall bars, above small/zero bars
+                                                                           
     ylim_top = max(105, max(values) * 1.12)
     ax.set_ylim(0, ylim_top)
     for xi, v in zip(x, values):
         if v >= 8:
             ax.text(xi, v/2, f'{v:.1f}%', ha='center', va='center', color='white', fontsize=9, fontweight='bold')
         else:
-            # for small/zero values, put label above the bar with boxed style
+                                                                             
             y_text = v + 0.03 * (ylim_top)
             ax.text(xi, y_text, f'{v:.2f}%\n(Rejected)', ha='center', va='bottom', fontsize=8, color='black', bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='black'))
 
@@ -78,20 +78,20 @@ def generate_detection_metrics(data, out_path):
     fig, ax = plt.subplots(figsize=(6, 4))
 
     x = np.arange(len(labels))
-    # use color for detection and lighter color for FPR; keep hatch for FPR
+                                                                           
     fills = ['#388E3C', '#BDBDBD']
     hatches = ['', '///']
     bars = []
     for xi, v, fc, hatch in zip(x, values, fills, hatches):
         bars.append(ax.bar(xi, v, color=fc, edgecolor='black', linewidth=0.8, hatch=hatch))
 
-    # set ylim with extra headroom to avoid label overlap
+                                                         
     ylim_top = max(105, max(values) * 1.12)
     ax.set_ylim(0, ylim_top)
 
-    # show values as percent with appropriate formatting and avoid overlapping top border
+                                                                                         
     for xi, v in zip(x, values):
-        # choose text placement: inside bar for tall, above for short
+                                                                     
         if v >= 8:
             ax.text(xi, v/2, f'{v:.1f}%', ha='center', va='center', fontsize=10, fontweight='bold', color='white')
         else:
@@ -122,7 +122,7 @@ def generate_security_combined(data, out_path):
     style_for_ieee()
     fig, axs = plt.subplots(1, 2, figsize=(10, 4.5))
 
-    # Left: Acceptance rates
+                            
     ax = axs[0]
     x = np.arange(len(acc_labels))
     fills = ['#4CAF50' if v >= 50 else '#E57373' for v in acc_values]
@@ -144,7 +144,7 @@ def generate_security_combined(data, out_path):
     ax.set_ylabel('Acceptance Rate (%)')
     ax.text(-0.12, 1.06, '(a)', transform=ax.transAxes, fontsize=12, fontweight='bold')
 
-    # Right: Detection metrics
+                              
     ax = axs[1]
     x = np.arange(len(det_labels))
     fills = ['#388E3C', '#BDBDBD']
@@ -189,9 +189,9 @@ def main():
     with open(raw_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    # generate_acceptance_rate(data, out_dir)
-    # generate_detection_metrics(data, out_dir)
-    # produce a single combined figure with (a)/(b) subplots
+                                             
+                                               
+                                                            
     generate_security_combined(data, out_dir)
     print(f'Generated security figures in: {out_dir}')
 

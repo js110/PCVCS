@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+                      
+                       
 """
 安全检测结果数据模型
 """
@@ -13,13 +13,13 @@ from dataclasses import dataclass, asdict
 @dataclass
 class DetectionResult:
     """攻击检测结果数据结构"""
-    attack_type: str  # 攻击类型
-    total_samples: int  # 总样本数
-    detected_count: int  # 检测到的数量
-    detection_rate: float  # 检测率
-    false_positive_count: int = 0  # 误报数量
-    false_negative_count: int = 0  # 漏报数量
-    use_zkp: bool = True  # 是否使用零知识证明
+    attack_type: str        
+    total_samples: int        
+    detected_count: int          
+    detection_rate: float       
+    false_positive_count: int = 0        
+    false_negative_count: int = 0        
+    use_zkp: bool = True             
     
     @classmethod
     def from_counts(cls, attack_type: str, total_samples: int, detected_count: int,
