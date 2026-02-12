@@ -1,9 +1,5 @@
                       
                        
-"""
-生成中文版性能评估图表
-用于论文第六部分 (VI. PERFORMANCE EVALUATION)
-"""
 
 import json
 import numpy as np
@@ -24,7 +20,6 @@ plt.rcParams.update({
 
 
 def load_data(data_dir: Path):
-    """加载实验数据"""
     data = {}
     for exp_file in data_dir.glob("experiment*.json"):
         with open(exp_file, 'r', encoding='utf-8') as f:
@@ -34,7 +29,6 @@ def load_data(data_dir: Path):
 
 
 def generate_fig1_client_breakdown(data, output_dir):
-    """图1: 车辆端性能分解 (分组柱状图)"""
     fig, ax = plt.subplots(figsize=(12, 6))
     
     exp1 = data['experiment1_micro_benchmark']
@@ -93,7 +87,6 @@ def generate_fig1_client_breakdown(data, output_dir):
 
 
 def generate_fig2_server_breakdown(data, output_dir):
-    """图2: 服务器端性能分解 (分组柱状图)"""
     fig, ax = plt.subplots(figsize=(11, 6))
     
     exp1 = data['experiment1_micro_benchmark']
@@ -147,7 +140,6 @@ def generate_fig2_server_breakdown(data, output_dir):
 
 
 def generate_fig3_communication(data, output_dir):
-    """图3: 通信开销分析 (对比折线图)"""
     fig, ax = plt.subplots(figsize=(9, 6))
     
     exp2 = data['experiment2_communication']
@@ -224,7 +216,6 @@ def generate_fig3_communication(data, output_dir):
 
 
 def generate_fig4_security(data, output_dir):
-    """图4: 安全性验证 (2x1面板图)"""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
     
     exp3 = data['experiment3_security']
@@ -337,7 +328,6 @@ def generate_fig4_security(data, output_dir):
 
 
 def generate_fig5_comparative(data, output_dir):
-    """图5: 对比方案性能 (柱状图)"""
     fig, ax = plt.subplots(figsize=(10, 6))
     
     exp4 = data['experiment4_comparative']
@@ -402,7 +392,6 @@ def generate_fig5_comparative(data, output_dir):
 
 
 def generate_fig6_communication_comparison(data, output_dir):
-    """图6: 通信开销对比 (新增)"""
     import matplotlib.pyplot as plt
     import numpy as np
     
@@ -472,7 +461,6 @@ def generate_fig6_communication_comparison(data, output_dir):
 
 
 def generate_fig7_anonymity_strength(data, output_dir):
-    """图7: 匿名性强度对比 (柱状图)"""
     import matplotlib.pyplot as plt
     import numpy as np
     

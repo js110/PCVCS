@@ -1,9 +1,5 @@
                       
                        
-"""
-Regenerate communication/report-size figure (improved styling, no title).
-Usage: python regenerate_comm_fig.py <results_dir>
-"""
 import sys
 import json
 from pathlib import Path

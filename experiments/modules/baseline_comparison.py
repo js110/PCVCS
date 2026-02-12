@@ -1,9 +1,5 @@
                       
                        
-"""
-基线方案对比模块
-实现PPRM和LMDA-VCS方案的简化版本用于性能对比
-"""
 
 import os
 import sys
@@ -25,7 +21,6 @@ from common.crypto_adapters import (
 
 @dataclass
 class BaselineResult:
-    """基线方案测试结果"""
     scheme_name: str                            
     vehicle_gen_time_ms: float
     server_verify_time_ms: float
@@ -39,13 +34,11 @@ class BaselineResult:
 
 
 class PPRMScheme:
-    """PPRM方案简化实现"""
     
     def __init__(self):
         self.name = "PPRM"
         
     def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """生成报告"""
                              
         sk, pk = ed25519_generate_keypair()
         pseudonym = hashlib.sha256(bytes(pk)).hexdigest()
@@ -82,7 +75,6 @@ class PPRMScheme:
         return report
     
     def verify_report(self, report: Dict[str, Any]) -> bool:
-        """验证报告"""
         try:
                      
             message = f"{report['pseudonym']}|{report['grid_lat']}|{report['grid_lon']}".encode()
@@ -96,13 +88,11 @@ class PPRMScheme:
 
 
 class LMDAVCSScheme:
-    """LMDA-VCS方案简化实现"""
     
     def __init__(self):
         self.name = "LMDA-VCS"
         
     def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """生成报告"""
                
         sk, pk = ed25519_generate_keypair()
         pseudonym = hashlib.sha256(bytes(pk)).hexdigest()
@@ -132,7 +122,6 @@ class LMDAVCSScheme:
         return report
     
     def verify_report(self, report: Dict[str, Any]) -> bool:
-        """验证报告"""
         try:
                   
             return True
@@ -141,7 +130,6 @@ class LMDAVCSScheme:
 
 
 class ProposedScheme:
-    """本方案 (使用现有完整实现)"""
     
     def __init__(self):
         self.name = "Proposed"
@@ -161,7 +149,6 @@ class ProposedScheme:
         self.whitelist = ["wtw3s8n", "wtw3s8p", "wtw3s8q", "wtw3s8r"]
         
     def generate_report(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """生成完整报告"""
                       
         sk, pk = ed25519_generate_keypair()
         window_id = int(time.time()) // 60
@@ -204,13 +191,11 @@ class ProposedScheme:
         return report
     
     def verify_report(self, report: Dict[str, Any]) -> bool:
-        """验证报告"""
                    
         return True
 
 
 class BaselineComparison:
-    """基线方案对比测试"""
     
     def __init__(self, logger: Optional[ExperimentLogger] = None):
         self.logger = logger
@@ -222,14 +207,12 @@ class BaselineComparison:
         self.results = []
         
     def _log(self, message: str, level: str = "info") -> None:
-        """记录日志"""
         if self.logger:
             getattr(self.logger, level)(message)
         else:
             print(f"[{level.upper()}] {message}")
     
     def test_single_report_performance(self, scheme_name: str, iterations: int = 100) -> BaselineResult:
-        """测试单报告性能"""
         self._log(f"测试{scheme_name}单报告性能 (迭代{iterations}次)...")
         
         scheme = self.schemes[scheme_name]
@@ -288,7 +271,6 @@ class BaselineComparison:
         return result
     
     def run_all_comparisons(self, iterations: int = 100, concurrency_levels: List[int] = None) -> List[Dict[str, Any]]:
-        """运行所有对比测试"""
         self._log("=" * 60)
         self._log("开始基线方案对比实验")
         self._log("=" * 60)
@@ -313,7 +295,6 @@ class BaselineComparison:
         return results
     
     def save_results(self, output_path: Path) -> None:
-        """保存结果"""
         import json
         
         results_list = [result.to_dict() for result in self.results]

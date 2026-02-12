@@ -2,11 +2,6 @@
 
                        
 
-"""
-
-消融实验模块 - 使用真实性能测试
-
-"""
 
 
 
@@ -56,13 +51,11 @@ from common.crypto_adapters import (
 
 class AblationExperiment:
 
-    """消融实验器 - 测试各模块的独立贡献"""
 
     
 
     def __init__(self, logger: Optional[ExperimentLogger] = None):
 
-        """初始化实验器"""
 
         self.logger = logger
 
@@ -80,7 +73,6 @@ class AblationExperiment:
 
     def _log(self, message: str, level: str = "info") -> None:
 
-        """记录日志"""
 
         if self.logger:
 
@@ -90,7 +82,6 @@ class AblationExperiment:
 
     def _load_whitelist(self) -> List[str]:
 
-        """加载地理哈希白名单"""
 
         whitelist_file = self.data_dir / "whitelist_geohash.txt"
 
@@ -106,7 +97,6 @@ class AblationExperiment:
 
     def test_full_scheme(self, iterations: int = 100) -> VariantResult:
 
-        """测试完整方案"""
 
         self._log("测试完整方案（所有组件）...")
 
@@ -250,7 +240,6 @@ class AblationExperiment:
 
     def test_variant_no_bulletproofs(self, iterations: int = 100) -> VariantResult:
 
-        """测试去掉Bulletproofs的变体"""
 
         self._log("测试变体：去掉Bulletproofs...")
 
@@ -378,7 +367,6 @@ class AblationExperiment:
 
     def test_variant_no_lsag(self, iterations: int = 100) -> VariantResult:
 
-        """测试去掉LSAG的变体（使用普通签名）"""
 
         self._log("测试变体：去掉LSAG（使用普通签名）...")
 
@@ -514,7 +502,6 @@ class AblationExperiment:
 
     def test_variant_no_kyber(self, iterations: int = 100) -> VariantResult:
 
-        """测试去掉Kyber的变体（使用传统对称密钥）"""
 
         self._log("测试变体：去掉Kyber（使用传统密钥）...")
 
@@ -658,7 +645,6 @@ class AblationExperiment:
 
     def test_geohash_sensitivity(self, precisions: List[int] = None) -> List[SensitivityResult]:
 
-        """测试Geohash精度敏感性"""
 
         if precisions is None:
 
@@ -806,7 +792,6 @@ class AblationExperiment:
 
     def test_ring_size_sensitivity(self, ring_sizes: List[int] = None) -> List[SensitivityResult]:
 
-        """测试环大小敏感性"""
 
         if ring_sizes is None:
 
@@ -936,7 +921,6 @@ class AblationExperiment:
 
     def run_all_experiments(self) -> AblationResultCollection:
 
-        """运行所有消融实验"""
 
         self._log("=" * 60)
 
@@ -988,7 +972,6 @@ class AblationExperiment:
 
     def save_results(self, output_path: Path) -> None:
 
-        """保存结果"""
 
         self.results.to_json(output_path)
 

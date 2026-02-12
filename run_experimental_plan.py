@@ -1,9 +1,5 @@
                       
                        
-"""
-实验方案执行主脚本
-根据设计文档执行完整的实验计划
-"""
 
 import os
 import sys
@@ -28,15 +24,8 @@ from experiments.modules.baseline_comparison import BaselineComparison
 
 
 class ExperimentalPlanExecutor:
-    """实验方案执行器"""
     
     def __init__(self, config_path: Path):
-        """
-        初始化执行器
-        
-        Args:
-            config_path: 配置文件路径
-        """
               
         with open(config_path, 'r', encoding='utf-8') as f:
             self.plan_config = json.load(f)
@@ -73,7 +62,6 @@ class ExperimentalPlanExecutor:
         }
     
     def run_experiment_1a(self) -> Dict[str, Any]:
-        """运行实验1A：合规报告接受率测试"""
         self.logger.section("=" * 60)
         self.logger.section("实验1A：合规报告接受率测试")
         self.logger.section("=" * 60)
@@ -153,7 +141,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_1b(self) -> Dict[str, Any]:
-        """运行实验1B：攻击阻断率测试"""
         self.logger.section("=" * 60)
         self.logger.section("实验1B：攻击阻断率测试")
         self.logger.section("=" * 60)
@@ -234,7 +221,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_3a(self) -> Dict[str, Any]:
-        """运行实验3A：密码学原语微基准测试"""
         self.logger.section("=" * 60)
         self.logger.section("实验3A：密码学原语微基准测试")
         self.logger.section("=" * 60)
@@ -277,7 +263,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_2a(self) -> Dict[str, Any]:
-        """运行实验2A：位置隐私推断攻击"""
         self.logger.section("=" * 60)
         self.logger.section("实验2A：位置隐私推断攻击")
         self.logger.section("=" * 60)
@@ -335,7 +320,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_2b(self) -> Dict[str, Any]:
-        """运行实验2B：时间隐私推断攻击"""
         self.logger.section("=" * 60)
         self.logger.section("实验2B：时间隐私推断攻击")
         self.logger.section("=" * 60)
@@ -387,7 +371,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_2c(self) -> Dict[str, Any]:
-        """运行实验2C：可链接性与匿名性测试"""
         self.logger.section("=" * 60)
         self.logger.section("实验2C：可链接性与匿名性测试")
         self.logger.section("=" * 60)
@@ -433,7 +416,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_3b(self) -> Dict[str, Any]:
-        """运行实验3B：端到端延迟测试"""
         self.logger.section("=" * 60)
         self.logger.section("实验3B：端到端延迟测试")
         self.logger.section("=" * 60)
@@ -491,7 +473,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_3c(self) -> Dict[str, Any]:
-        """运行实验3C：通信开销与带宽估算"""
         self.logger.section("=" * 60)
         self.logger.section("实验3C：通信开销与带宽估算")
         self.logger.section("=" * 60)
@@ -577,7 +558,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_4a(self) -> Dict[str, Any]:
-        """运行实验4A：消融实验"""
         self.logger.section("=" * 60)
         self.logger.section("实验4A：消融实验")
         self.logger.section("=" * 60)
@@ -651,7 +631,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def run_experiment_4b(self) -> Dict[str, Any]:
-        """运行实验4B：基线方案对比"""
         self.logger.section("=" * 60)
         self.logger.section("实验4B：基线方案对比")
         self.logger.section("=" * 60)
@@ -726,15 +705,6 @@ class ExperimentalPlanExecutor:
             return {"error": str(e)}
     
     def _verify_report(self, report: Dict[str, Any]) -> bool:
-        """
-        简化的报告验证逻辑
-        
-        Args:
-            report: 报告数据
-        
-        Returns:
-            是否通过验证
-        """
         try:
                     
             required_fields = ['geohash', 'timestamp', 'token', 'merkle_proof', 'lsag_signature']
@@ -754,7 +724,6 @@ class ExperimentalPlanExecutor:
             return False
     
     def generate_charts(self):
-        """生成所有图表"""
         self.logger.section("=" * 60)
         self.logger.section("生成实验图表")
         self.logger.section("=" * 60)
@@ -850,7 +819,6 @@ class ExperimentalPlanExecutor:
             self.results_summary['errors'].append(f"Chart generation: {str(e)}")
     
     def _generate_figure1_functional_security(self, all_data: Dict[str, Any], chart_dir: Path) -> Path:
-        """生成图表1：功能与安全性验证（改进版）"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -958,7 +926,6 @@ class ExperimentalPlanExecutor:
         return output_path
     
     def _generate_figure2_privacy(self, all_data: Dict[str, Any], chart_dir: Path) -> Path:
-        """生成图表2：隐私保护强度评估"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1043,7 +1010,6 @@ class ExperimentalPlanExecutor:
         return output_path
     
     def _generate_figure4_e2e_communication(self, all_data: Dict[str, Any], chart_dir: Path) -> Path:
-        """生成图表4：端到端性能与通信开销（简化版 - 只保留折线图）"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1101,7 +1067,6 @@ class ExperimentalPlanExecutor:
         return output_path
     
     def _generate_figure5_ablation(self, all_data: Dict[str, Any], chart_dir: Path) -> Path:
-        """生成图表5：消融实验与隐私-性能权衡"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1166,7 +1131,6 @@ class ExperimentalPlanExecutor:
         return output_path
     
     def _generate_figure6_baseline(self, all_data: Dict[str, Any], chart_dir: Path) -> Path:
-        """生成图表6：基线方案综合对比"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1247,7 +1211,6 @@ class ExperimentalPlanExecutor:
         return output_path
     
     def generate_report(self):
-        """生成实验报告"""
         self.logger.section("=" * 60)
         self.logger.section("生成实验报告")
         self.logger.section("=" * 60)
@@ -1280,7 +1243,6 @@ class ExperimentalPlanExecutor:
             self.logger.exception(f"报告生成失败: {e}")
     
     def run_all(self):
-        """运行所有实验"""
         self.logger.section("=" * 60)
         self.logger.section("开始执行实验方案")
         self.logger.section("=" * 60)
@@ -1362,7 +1324,6 @@ class ExperimentalPlanExecutor:
 
 
 def main():
-    """主函数"""
     print("=" * 60)
     print("Zero-Knowledge Proof Vehicular Crowdsensing")
     print("Experimental Plan Executor")

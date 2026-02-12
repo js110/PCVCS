@@ -1,13 +1,5 @@
                       
                        
-"""
-Regenerate security figures (acceptance rates & detection metrics)
-from an existing results folder (black-and-white / IEEE friendly).
-
-Usage:
-    python regenerate_security_figs.py <results_dir>
-If no dir is given, defaults to `performance_evaluation_results/20251206_153158`.
-"""
 import sys
 import json
 from pathlib import Path

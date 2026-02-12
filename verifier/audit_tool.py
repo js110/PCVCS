@@ -1,9 +1,5 @@
                       
                        
-"""
-审计机构工具 - 受控去匿名化
-用于在争议场景中追溯车辆真实身份
-"""
 
 import json
 import argparse
@@ -12,11 +8,6 @@ from common.linkable_ring_signature import LinkableRingSignature
 
 
 def load_lrs_verifier(state_file: str = "lrs_verifier_state.json") -> LinkableRingSignature:
-    """
-    加载LRS验证器状态（包含审计数据库）
-    
-    实际部署中，审计数据库应存储在安全的后端数据库中
-    """
     lrs = LinkableRingSignature()
     
                         
@@ -33,15 +24,6 @@ def load_lrs_verifier(state_file: str = "lrs_verifier_state.json") -> LinkableRi
 
 
 def deanonymize(link_tag: str, task_id: str, authority_sk_hex: str, lrs: LinkableRingSignature):
-    """
-    执行受控去匿名化
-    
-    Args:
-        link_tag: 要追溯的链接标签
-        task_id: 任务ID
-        authority_sk_hex: 审计机构追踪密钥（十六进制）
-        lrs: LRS系统实例
-    """
     print(f"\n=== 审计机构 - 受控去匿名化 ===")
     print(f"任务ID: {task_id}")
     print(f"链接标签: {link_tag}")
@@ -83,15 +65,6 @@ def deanonymize(link_tag: str, task_id: str, authority_sk_hex: str, lrs: Linkabl
 
 
 def export_task_report(task_id: str, authority_sk_hex: str, lrs: LinkableRingSignature, output_file: str):
-    """
-    导出任务审计报告
-    
-    Args:
-        task_id: 任务ID
-        authority_sk_hex: 审计机构追踪密钥
-        lrs: LRS系统实例
-        output_file: 输出文件路径
-    """
     print(f"\n=== 导出任务审计报告 ===")
     print(f"任务ID: {task_id}")
     
@@ -124,19 +97,12 @@ def export_task_report(task_id: str, authority_sk_hex: str, lrs: LinkableRingSig
 
 
 def bytes_to_hex(obj):
-    """JSON序列化辅助函数"""
     if isinstance(obj, bytes):
         return obj.hex()
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
 
 def analyze_duplicate_submissions(lrs: LinkableRingSignature):
-    """
-    分析重复提交情况
-    
-    Args:
-        lrs: LRS系统实例
-    """
     print(f"\n=== 重复提交分析 ===")
     
     if not lrs.link_tag_db:

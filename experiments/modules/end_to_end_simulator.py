@@ -1,8 +1,5 @@
                       
                        
-"""
-端到端仿真模块 - 集成真实SUMO仿真
-"""
 
 import os
 import sys
@@ -33,16 +30,8 @@ from common.crypto_adapters import (
 
 
 class EndToEndSimulator:
-    """端到端仿真器 - 集成SUMO"""
     
     def __init__(self, logger: Optional[ExperimentLogger] = None, sumo_home: str = "D:/sumo"):
-        """
-        初始化仿真器
-        
-        Args:
-            logger: 日志记录器
-            sumo_home: SUMO安装路径
-        """
         self.logger = logger
         self.results = SimulationResultCollection()
         self.process = psutil.Process()
@@ -65,12 +54,10 @@ class EndToEndSimulator:
         self.data_dir.mkdir(exist_ok=True)
     
     def _log(self, message: str, level: str = "info") -> None:
-        """记录日志"""
         if self.logger:
             getattr(self.logger, level)(message)
     
     def verify_sumo_installation(self) -> bool:
-        """验证SUMO安装"""
         try:
             if not self.sumo_home.exists():
                 self._log(f"SUMO路径不存在: {self.sumo_home}", "error")
@@ -89,16 +76,6 @@ class EndToEndSimulator:
             return False
     
     def generate_trips_file(self, vehicle_count: int, duration: int) -> Path:
-        """
-        生成SUMO trips文件
-        
-        Args:
-            vehicle_count: 车辆数量
-            duration: 仿真时长（秒）
-        
-        Returns:
-            trips文件路径
-        """
         trips_file = self.sumo_config_dir / f"trips_{vehicle_count}v.trips.xml"
         
                      
@@ -129,15 +106,6 @@ class EndToEndSimulator:
         return trips_file
     
     def run_sumo_simulation(self, scenario: Dict[str, Any]) -> Path:
-        """
-        运行SUMO仿真并生成RSU事件
-        
-        Args:
-            scenario: 场景配置
-        
-        Returns:
-            RSU事件文件路径
-        """
         self._log(f"运行SUMO仿真: {scenario['name']}")
         
                    
@@ -191,16 +159,6 @@ class EndToEndSimulator:
             raise
     
     def measure_proof_generation_and_verification(self, events_file: Path, use_zkp: bool = True) -> Dict[str, Any]:
-        """
-        测量证明生成和验证性能
-        
-        Args:
-            events_file: RSU事件文件
-            use_zkp: 是否使用零知识证明
-        
-        Returns:
-            性能指标字典
-        """
         self._log(f"测量性能 (ZKP: {use_zkp})")
         
                 
@@ -369,7 +327,6 @@ class EndToEndSimulator:
         }
     
     def measure_resource_usage(self) -> ResourceMetrics:
-        """测量资源占用"""
         try:
             cpu_percent = self.process.cpu_percent(interval=0.1)
             memory_info = self.process.memory_info()
@@ -386,16 +343,6 @@ class EndToEndSimulator:
             return ResourceMetrics()
     
     def run_simulation(self, scenario: Dict[str, Any], use_zkp: bool = True) -> SimulationResult:
-        """
-        运行完整的端到端仿真
-        
-        Args:
-            scenario: 场景配置
-            use_zkp: 是否使用零知识证明
-        
-        Returns:
-            SimulationResult实例
-        """
         self._log(f"开始端到端仿真: {scenario['name']} (ZKP: {use_zkp})")
         
         sim_start = time.time()
@@ -441,7 +388,6 @@ class EndToEndSimulator:
         return result
     
     def run_all_scenarios(self, scenarios: List[Dict[str, Any]]) -> SimulationResultCollection:
-        """运行所有场景"""
         self._log("=" * 60)
         self._log("开始运行所有端到端仿真场景")
         self._log("=" * 60)
@@ -476,6 +422,5 @@ class EndToEndSimulator:
         return self.results
     
     def save_results(self, output_path: Path) -> None:
-        """保存结果"""
         self.results.to_json(output_path)
         self._log(f"仿真结果已保存到: {output_path}")

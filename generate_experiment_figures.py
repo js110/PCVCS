@@ -1,9 +1,5 @@
                       
                        
-"""
-生成新实验方案的图表
-按照"新的实验计划.md"的要求生成5张图和2张表
-"""
 
 import json
 import numpy as np
@@ -33,7 +29,6 @@ OUTPUT_DIR = Path("new_experiment_results/20251129_151922/figures")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 def load_data():
-    """加载所有实验数据"""
     with open(DATA_DIR / "performance.json", 'r', encoding='utf-8') as f:
         performance = json.load(f)
     
@@ -50,7 +45,6 @@ def load_data():
 
 
 def generate_fig1(security_data: Dict):
-    """Fig.1 功能与攻击阻断（正确性 & 安全性）"""
     print("生成 Fig.1: Functional correctness and attack blocking rates...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -115,7 +109,6 @@ def generate_fig1(security_data: Dict):
 
 
 def generate_fig2(privacy_data: Dict):
-    """Fig.2 隐私保护强度（位置 + 时间推断）"""
     print("生成 Fig.2: Privacy protection strength against inference attacks...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -160,7 +153,6 @@ def generate_fig2(privacy_data: Dict):
 
 
 def generate_fig3(performance_data: Dict):
-    """Fig.3 性能：端到端延迟 & 延迟分布"""
     print("生成 Fig.3: End-to-end latency under varying load...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -231,7 +223,6 @@ def generate_fig3(performance_data: Dict):
 
 
 def generate_fig4(performance_data: Dict):
-    """Fig.4 性能：吞吐量 & 带宽（注意：根据用户记忆，避免强调吞吐量）"""
     print("生成 Fig.4: System scalability and communication overhead...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -285,7 +276,6 @@ def generate_fig4(performance_data: Dict):
 
 
 def generate_fig5(performance_data: Dict, crypto_data: Dict):
-    """Fig.5 Ablation：性能对比和延迟分解"""
     print("生成 Fig.5: Ablation study of protocol components...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -395,7 +385,6 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
 
 
 def generate_table1(crypto_data: Dict):
-    """Table I - Micro-benchmarks of cryptographic primitives (with figure)"""
     print("生成 Table I: Micro-benchmarks of cryptographic primitives...")
     
                      
@@ -507,7 +496,6 @@ def generate_table1(crypto_data: Dict):
 
 
 def generate_table2(security_data: Dict, privacy_data: Dict):
-    """Table II - 链接性 & 重放检测结果"""
     print("生成 Table II: Linkability and replay detection results...")
     
                  
@@ -587,7 +575,6 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
 
 
 def main():
-    """主函数"""
     print("="*70)
     print("生成新实验方案的图表和表格")
     print("="*70)

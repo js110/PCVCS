@@ -1,10 +1,5 @@
                       
                        
-"""
-Regenerate figures from an existing performance_evaluation_results run
-Usage: python regenerate_figs_from_results.py <results_dir>
-If no dir is given, defaults to `performance_evaluation_results/20251206_153158`.
-"""
 import sys
 import json
 from pathlib import Path

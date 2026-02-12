@@ -2,11 +2,6 @@
 
                        
 
-"""
-
-密码学原语基准测试模块
-
-"""
 
 
 
@@ -62,23 +57,11 @@ from common.crypto import merkle_root, merkle_proof, merkle_verify
 
 class CryptoBenchmark:
 
-    """密码学原语基准测试类"""
 
     
 
     def __init__(self, logger: Optional[ExperimentLogger] = None):
 
-        """
-
-        初始化基准测试器
-
-        
-
-        Args:
-
-            logger: 日志记录器
-
-        """
 
         self.logger = logger
 
@@ -88,7 +71,6 @@ class CryptoBenchmark:
 
     def _log(self, message: str, level: str = "info") -> None:
 
-        """记录日志"""
 
         if self.logger:
 
@@ -98,23 +80,6 @@ class CryptoBenchmark:
 
     def benchmark_ed25519(self, iterations: int = 100) -> BenchmarkResult:
 
-        """
-
-        测试Ed25519签名和验证性能
-
-        
-
-        Args:
-
-            iterations: 迭代次数
-
-        
-
-        Returns:
-
-            BenchmarkResult实例
-
-        """
 
         self._log("开始Ed25519签名和验证基准测试...")
 
@@ -216,23 +181,6 @@ class CryptoBenchmark:
 
     def benchmark_merkle_tree(self, leaf_counts: List[int] = None) -> List[BenchmarkResult]:
 
-        """
-
-        测试Merkle树生成和验证性能
-
-        
-
-        Args:
-
-            leaf_counts: 叶子数量列表
-
-        
-
-        Returns:
-
-            BenchmarkResult列表
-
-        """
 
         if leaf_counts is None:
 
@@ -394,23 +342,6 @@ class CryptoBenchmark:
 
     def benchmark_bulletproofs(self, batch_sizes: List[int] = None) -> List[BenchmarkResult]:
 
-        """
-
-        测试Bulletproofs范围证明性能
-
-        
-
-        Args:
-
-            batch_sizes: 批量大小列表
-
-        
-
-        Returns:
-
-            BenchmarkResult列表
-
-        """
 
         if batch_sizes is None:
 
@@ -538,23 +469,6 @@ class CryptoBenchmark:
 
     def benchmark_lsag(self, ring_sizes: List[int] = None) -> List[BenchmarkResult]:
 
-        """
-
-        测试LSAG环签名性能
-
-        
-
-        Args:
-
-            ring_sizes: 环大小列表
-
-        
-
-        Returns:
-
-            BenchmarkResult列表
-
-        """
 
         if ring_sizes is None:
 
@@ -698,23 +612,6 @@ class CryptoBenchmark:
 
     def benchmark_kyber(self, iterations: int = 100) -> BenchmarkResult:
 
-        """
-
-        测试Kyber密钥协商性能
-
-        
-
-        Args:
-
-            iterations: 迭代次数
-
-        
-
-        Returns:
-
-            BenchmarkResult实例
-
-        """
 
         self._log("开始Kyber密钥协商基准测试...")
 
@@ -900,23 +797,6 @@ class CryptoBenchmark:
 
     def benchmark_naive_scheme(self, iterations: int = 100) -> BenchmarkResult:
 
-        """
-
-        测试朴素方案（仅RSU Token + 普通签名）
-
-        
-
-        Args:
-
-            iterations: 迭代次数
-
-        
-
-        Returns:
-
-            BenchmarkResult实例
-
-        """
 
         self._log("开始朴素方案基准测试...")
 
@@ -1024,23 +904,6 @@ class CryptoBenchmark:
 
     def run_all(self, config: dict = None) -> BenchmarkResultCollection:
 
-        """
-
-        运行所有基准测试
-
-        
-
-        Args:
-
-            config: 配置字典
-
-        
-
-        Returns:
-
-            BenchmarkResultCollection实例
-
-        """
 
         self._log("=" * 60)
 
@@ -1100,17 +963,6 @@ class CryptoBenchmark:
 
     def save_results(self, output_path: Path) -> None:
 
-        """
-
-        保存测试结果
-
-        
-
-        Args:
-
-            output_path: 输出文件路径
-
-        """
 
         self.results.to_json(output_path)
 

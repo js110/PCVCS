@@ -1,9 +1,5 @@
                       
                        
-"""
-实验配置管理模块
-提供实验参数的配置和加载功能
-"""
 
 import json
 from pathlib import Path
@@ -13,7 +9,6 @@ from dataclasses import dataclass, field, asdict
 
 @dataclass
 class ExperimentConfig:
-    """实验配置类"""
     
            
     ring_sizes: List[int] = field(default_factory=lambda: [4, 8, 16])
@@ -56,19 +51,16 @@ class ExperimentConfig:
     
     @classmethod
     def from_json(cls, json_path: Path) -> 'ExperimentConfig':
-        """从JSON文件加载配置"""
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return cls(**data)
     
     def to_json(self, json_path: Path) -> None:
-        """保存配置到JSON文件"""
         json_path.parent.mkdir(parents=True, exist_ok=True)
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(asdict(self), f, indent=2, ensure_ascii=False)
     
     def validate(self) -> bool:
-        """验证配置参数的有效性"""
                
         if not all(size > 0 for size in self.ring_sizes):
             raise ValueError("Ring sizes must be positive")
@@ -111,24 +103,13 @@ class ExperimentConfig:
         return True
     
     def get_output_dir(self) -> Path:
-        """获取输出目录路径"""
         return Path(self.output_dir)
     
     def get_log_file(self) -> Path:
-        """获取日志文件路径"""
         return self.get_output_dir() / self.log_file
 
 
 def load_config(config_path: Optional[Path] = None) -> ExperimentConfig:
-    """
-    加载实验配置
-    
-    Args:
-        config_path: 配置文件路径，如果为None则使用默认配置
-    
-    Returns:
-        ExperimentConfig实例
-    """
     if config_path is None or not config_path.exists():
                 
         config = ExperimentConfig()
@@ -143,12 +124,6 @@ def load_config(config_path: Optional[Path] = None) -> ExperimentConfig:
 
 
 def create_default_config(output_path: Path) -> None:
-    """
-    创建默认配置文件
-    
-    Args:
-        output_path: 输出文件路径
-    """
     config = ExperimentConfig()
     config.to_json(output_path)
     print(f"Default configuration saved to: {output_path}")

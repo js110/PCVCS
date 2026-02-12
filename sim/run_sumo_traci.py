@@ -24,7 +24,6 @@ def parse_rsus(rsu_str):
     return pts
 
 def collect_vehicle_metrics():
-    """收集车辆指标数据"""
     metrics = {
         "timestamp": traci.simulation.getTime(),
         "vehicle_count": len(traci.vehicle.getIDList()),
@@ -63,7 +62,6 @@ def collect_vehicle_metrics():
     return metrics
 
 def get_geo_bounds_from_net(net_file):
-    """从网络文件获取地理边界"""
     try:
         import xml.etree.ElementTree as ET
         tree = ET.parse(net_file)
@@ -94,7 +92,6 @@ def get_geo_bounds_from_net(net_file):
     }
 
 def position_to_geo(position, geo_bounds):
-    """将网络坐标转换为地理坐标"""
             
     x, y = position
     lat_range = geo_bounds["max_lat"] - geo_bounds["min_lat"]

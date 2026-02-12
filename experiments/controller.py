@@ -1,8 +1,5 @@
                       
                        
-"""
-实验控制器
-"""
 
 import os
 import sys
@@ -20,15 +17,8 @@ from .modules.ablation_experiment import AblationExperiment
 
 
 class ExperimentController:
-    """实验控制器"""
     
     def __init__(self, config: ExperimentConfig):
-        """
-        初始化控制器
-        
-        Args:
-            config: 实验配置
-        """
         self.config = config
         
                 
@@ -51,7 +41,6 @@ class ExperimentController:
         self.logger.info(f"实验输出目录: {self.output_dir}")
     
     def verify_environment(self) -> bool:
-        """验证实验环境"""
         self.logger.section("验证实验环境")
         
         try:
@@ -89,7 +78,6 @@ class ExperimentController:
             return False
     
     def run_crypto_benchmark(self) -> bool:
-        """运行密码学基准测试"""
         self.logger.section("运行密码学基准测试")
         
         try:
@@ -112,7 +100,6 @@ class ExperimentController:
             return False
     
     def run_end_to_end_simulation(self) -> bool:
-        """运行端到端仿真"""
         self.logger.section("运行端到端仿真")
         
         try:
@@ -130,7 +117,6 @@ class ExperimentController:
             return False
     
     def run_security_tests(self) -> bool:
-        """运行安全性测试"""
         self.logger.section("运行安全性测试")
         
         try:
@@ -151,7 +137,6 @@ class ExperimentController:
             return False
     
     def run_ablation_experiments(self) -> bool:
-        """运行消融实验"""
         self.logger.section("运行消融实验")
         
         try:
@@ -169,7 +154,6 @@ class ExperimentController:
             return False
     
     def generate_summary(self, results: dict) -> None:
-        """生成实验摘要"""
         self.logger.section("生成实验摘要")
         
         summary = {
@@ -186,15 +170,6 @@ class ExperimentController:
         self.logger.info(f"实验摘要已保存到: {summary_path}")
     
     def run_all(self, modules: Optional[List[str]] = None) -> dict:
-        """
-        运行所有实验
-        
-        Args:
-            modules: 要运行的模块列表，None表示运行所有模块
-        
-        Returns:
-            结果字典
-        """
         self.logger.section("开始综合实验")
         self.logger.info(f"配置: {self.config}")
         

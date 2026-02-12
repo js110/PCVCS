@@ -1,25 +1,5 @@
-﻿                      
+                      
                        
-"""
-VI. PERFORMANCE EVALUATION - 瀹為獙璇勪及鏂规瀹炴柦
-涓ユ牸鎸夌収璁烘枃绗叚閮ㄥ垎鐨勫疄楠岃璁℃墽琛?
-
-瀹為獙璁剧疆(A. Experimental Setup):
-- 宸ヤ綔绔? AMD Ryzen 5 5500GT
-- Python/Rust 娣峰悎瀹炵幇
-- 鍩轰簬浠跨湡鐨勬€ц兘璇勪及
-
-璇勪及鎸囨爣(B. Metrics):
-- 璁＄畻寮€閿€: T_Client (ms), T_Server (ms)
-- 閫氫俊寮€閿€: Message Size (KB)
-- 瀹夊叏鏈夋晥鎬? Detection Rate (%), False Positive Rate (%)
-
-瀹為獙璁捐(C. Detailed Experimental Design):
-1. 瀹為獙1: PCVCS鍐呴儴鎬ц兘鍒嗚В (Micro-benchmark)
-2. 瀹為獙2: 閫氫俊寮€閿€鍒嗘瀽 (Report Size Analysis)
-3. 瀹為獙3: 瀹夊叏鎬ч獙璇?(Security Effectiveness)
-4. 瀹為獙4: 瀵规瘮鏂规鎬ц兘 (Comparative Performance)
-"""
 
 import os
 import sys
@@ -55,7 +35,6 @@ from common.kem_layer import kem_keygen, kem_encaps, kem_decaps
 
 @dataclass
 class PerformanceResult:
-    """鎬ц兘娴嬭瘯缁撴灉"""
     config: str
     t_client_ms: float               
     t_server_ms: float                
@@ -66,7 +45,6 @@ class PerformanceResult:
 
 
 class PerformanceEvaluator:
-    """鎬ц兘璇勪及鍣?"""
     
     def __init__(
         self,
@@ -75,7 +53,6 @@ class PerformanceEvaluator:
         samples_per_attack: int = 500,
         use_real_crypto: bool = True
     ):
-        """鍒濆鍖?"""
         self.seed = int(seed)
         self.samples_per_attack = int(samples_per_attack)
         self.use_real_crypto = bool(use_real_crypto)
@@ -111,7 +88,6 @@ class PerformanceEvaluator:
         self._init_scheme_citation_tags()
 
     def _write_environment_snapshot(self):
-        """淇濆瓨鐜涓庤繍琛屽弬鏁板揩鐓э紝渚夸簬澶嶇幇瀹為獙銆?"""
         snapshot = {
             "timestamp": datetime.now().isoformat(),
             "python_version": sys.version,
@@ -127,7 +103,6 @@ class PerformanceEvaluator:
             json.dump(snapshot, f, indent=2, ensure_ascii=False)
         
     def _log_system_info(self):
-        """璁板綍绯荤粺淇℃伅 - A. Experimental Setup"""
         self.logger.info("=" * 70)
         self.logger.info("VI. PERFORMANCE EVALUATION")
         self.logger.info("A. Experimental Setup")
@@ -149,12 +124,6 @@ class PerformanceEvaluator:
         self.logger.info("=" * 70)
 
     def _init_pcvcs_eval_context(self):
-        """
-        Build reusable PCVCS context so evaluation reflects deployable engineering:
-        - ring members pre-registered (no per-report ring key generation)
-        - RSU/edge static KEM key per session
-        - compact signature payload excludes full ring list in each report
-        """
         self._pcvcs_ring_keys = [ed25519_generate_keypair() for _ in range(self.pcvcs_ring_size)]
         self._pcvcs_ring_pubkeys = [pk for _, pk in self._pcvcs_ring_keys]
         self._pcvcs_signer_sk = self._pcvcs_ring_keys[0][0]
@@ -175,10 +144,6 @@ class PerformanceEvaluator:
         self._pcvcs_rangeproof_bytes = len(json.dumps(sample_rp, ensure_ascii=False).encode("utf-8"))
 
     def _init_literature_baseline_profiles(self):
-        """
-        Build baseline profiles from paper-reported numbers/formulas.
-        All non-PCVCS entries remain literature_estimated by design.
-        """
                                                                                
                                                                         
         asr_defaults = {"m": 20, "spatial_range_cardinality": 5, "H": 5}
@@ -251,14 +216,9 @@ class PerformanceEvaluator:
         }
 
     def _baseline_profile(self, scheme: str) -> Dict[str, Any]:
-        """Return calibrated baseline profile; empty dict if unavailable."""
         return self.baseline_profiles.get(scheme, {})
 
     def _init_scheme_citation_tags(self):
-        """
-        Build scheme->citation tag mapping from manuscript citation order.
-        IEEE numeric references are assigned by first citation appearance.
-        """
         self._scheme_citation_tags = {}
         scheme_bibkey_map = {
             "ASR-WS": "Yu2024ASRWS",
@@ -293,10 +253,6 @@ class PerformanceEvaluator:
                 self._scheme_citation_tags[scheme] = f"[{citation_order[bibkey]}]"
 
     def _legend_scheme_name(self, scheme: str) -> str:
-        """
-        Render scheme display name used in comparative-figure legends.
-        Baseline methods carry citation tags, e.g., ASR-WS[1].
-        """
         suffix = getattr(self, "_scheme_citation_tags", {}).get(scheme, "")
         return f"{scheme}{suffix}"
     
@@ -304,14 +260,6 @@ class PerformanceEvaluator:
                                             
                           
     def experiment1_micro_benchmark(self, ring_sizes: List[int] = None) -> Dict[str, Any]:
-        """
-        瀹為獙1: PCVCS鍐呴儴鎬ц兘鍒嗚В
-        
-        鐩殑: 绮剧‘閲忓寲鏂规涓瘡涓瘑鐮佸姝ラ鐨勮础鐚?
-        鍥捐〃: 鍫嗗彔鏌辩姸鍥?(Stacked Bar Chart)
-        鑷彉閲? 鐜ぇ灏?n_R [10, 20, 50, 100]
-        鍥犲彉閲? 鏃堕棿 (ms)
-        """
         if ring_sizes is None:
             ring_sizes = [10, 20, 50, 100]
         
@@ -361,7 +309,6 @@ class PerformanceEvaluator:
         return results
     
     def _measure_client_breakdown(self, ring_size: int, iterations: int = 100) -> Dict[str, float]:
-        """娴嬮噺杞﹁締绔悇姝ラ鑰楁椂"""
         times = {
             "commitments_setup": [],
             "spatio_temporal_zk": [],
@@ -414,7 +361,6 @@ class PerformanceEvaluator:
         return avg_times
     
     def _measure_server_breakdown(self, ring_size: int, iterations: int = 100) -> Dict[str, float]:
-        """娴嬮噺鏈嶅姟鍣ㄧ鍚勬楠よ€楁椂"""
         times = {
             "zk_verification": [],
             "lrs_verification": [],
@@ -465,14 +411,6 @@ class PerformanceEvaluator:
                       
                           
     def experiment2_communication_overhead(self, merkle_heights: List[int] = None) -> Dict[str, Any]:
-        """
-        瀹為獙2: 閫氫俊寮€閿€鍒嗘瀽
-        
-        鐩殑: 灞曠ず鎶ュ憡澶у皬鐨勮交閲忕骇鐗规€?
-        鍥捐〃: 鎶樼嚎鍥?(Line Plot)
-        鑷彉閲? Merkle Tree楂樺害 h [4, 8, 12, 16]
-        鍥犲彉閲? 鎶ュ憡鎬诲ぇ灏?(KB)
-        """
         if merkle_heights is None:
             merkle_heights = [4, 8, 12, 16]
         
@@ -512,7 +450,6 @@ class PerformanceEvaluator:
         return results
     
     def _generate_full_report(self, leaf_count: int) -> int:
-        """鐢熸垚瀹屾暣鐨凱roof-Carrying Report骞惰绠楀ぇ灏?"""
                                  
                                                                         
                                                                   
@@ -546,13 +483,6 @@ class PerformanceEvaluator:
                           
                                               
     def experiment3_security_effectiveness(self, samples_per_attack: int = 500) -> Dict[str, Any]:
-        """
-        瀹為獙3: 瀹夊叏鎬ч獙璇?
-        
-        鐩殑: 楠岃瘉PCVCS鐨勫畬澶囨€у拰鍙潬鎬?
-        鍥捐〃: 2x1闈㈡澘鍥?
-        Panel (a): 鎺ュ彈鐜囨煴鐘跺浘
-        Panel (b): 妫€娴嬬巼鏌辩姸鍥?        """
         self.logger.info("\n" + "=" * 70)
         self.logger.info("瀹為獙3: 瀹夊叏鎬ч獙璇?(Security Effectiveness)")
         self.logger.info("=" * 70)
@@ -633,7 +563,6 @@ class PerformanceEvaluator:
         return results
 
     def _wilson_ci(self, success: int, total: int, z: float = 1.96) -> Tuple[float, float]:
-        """Wilson score interval for binomial proportion."""
         if total <= 0:
             return 0.0, 0.0
         p = success / total
@@ -657,7 +586,6 @@ class PerformanceEvaluator:
         raise ValueError(f"Unsupported attack type: {attack_type}")
 
     def _accept_report(self, tester, sample: Dict[str, Any]) -> bool:
-        """瀹屾暣鎺ュ彈閫昏緫锛氬唴瀹归獙璇?+ link tag 鍘婚噸銆?"""
         if not sample:
             return False
         if not tester.verify_sample(sample, use_zkp=True):
@@ -672,7 +600,6 @@ class PerformanceEvaluator:
         return True
 
     def _test_acceptance_by_samples(self, tester, attack_type: str, samples: int) -> int:
-        """鍩轰簬鏍锋湰鐢熸垚涓庨獙璇佺粺璁℃帴鍙楁暟銆?"""
         accepted = 0
 
         if attack_type == "Double Report":
@@ -693,7 +620,6 @@ class PerformanceEvaluator:
         return accepted
 
     def _test_linkability_detection_by_samples(self, tester, samples: int) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        """缁熻閲嶅鎶ュ憡妫€娴嬬巼涓庤鎶ョ巼銆?"""
         self._seen_link_tags = set()
         detected = 0
 
@@ -736,14 +662,6 @@ class PerformanceEvaluator:
                      
                           
     def experiment4_comparative_performance(self, iterations: int = 100) -> Dict[str, Any]:
-        """
-        瀹為獙4: 瀵规瘮鏂规鎬ц兘
-        
-        鐩殑: 涓?涓熀绾挎柟妗堝姣旇溅杈嗙璁＄畻鏃堕棿
-        鍥捐〃: 鍨傜洿鏌辩姸鍥?(Bar Chart)
-        鏂规: PCVCS, ASR-WS, P-SimiDedup, VMDA, pFind
-        鎸囨爣: Vehicle-side Computation Time per Participation (ms)
-        """
         self.logger.info("\n" + "=" * 70)
         self.logger.info("瀹為獙4: 瀵规瘮鏂规鎬ц兘 (Comparative Performance)")
         self.logger.info("=" * 70)
@@ -781,7 +699,6 @@ class PerformanceEvaluator:
         return results
     
     def _measure_scheme_performance(self, scheme: str, iterations: int) -> float:
-        """Measure per-participation vehicle-side time for each scheme."""
         if scheme == "PCVCS":
             times = []
             for _ in range(iterations):
@@ -795,7 +712,6 @@ class PerformanceEvaluator:
         return 0.0
 
     def _pcvcs_operation(self) -> float:
-        """PCVCS瀹屾暣鎿嶄綔"""
         start = time.perf_counter()
         
                                                                 
@@ -810,56 +726,47 @@ class PerformanceEvaluator:
         return (time.perf_counter() - start) * 1000
     
     def _bilinear_pairing_mock(self):
-        """妯℃嫙鍙岀嚎鎬у杩愮畻 (~15-25ms)"""
                       
         data = b"bilinear_pairing_simulation"
         for _ in range(10000):
             data = hashlib.sha256(data).digest()
     
     def _paillier_encrypt_mock(self):
-        """妯℃嫙Paillier鍔犲瘑 (~10-20ms)"""
         data = b"paillier_encryption"
         for _ in range(8000):
             data = hashlib.sha256(data).digest()
     
     def _range_proof_heavy_mock(self):
-        """妯℃嫙閲嶅瀷鑼冨洿璇佹槑 (~15-30ms)"""
         data = b"range_proof"
         for _ in range(12000):
             data = hashlib.sha256(data).digest()
     
     def _data_aggregation_mock(self):
-        """妯℃嫙鏁版嵁鑱氬悎 (~5-10ms)"""
         data = b"aggregation"
         for _ in range(3000):
             data = hashlib.sha256(data).digest()
     
     def _ecdsa_sign_mock(self):
-        """妯℃嫙ECDSA绛惧悕 (~5-15ms)"""
         sk, pk = ed25519_generate_keypair()
         for _ in range(3):
             _ = ed25519_sign(sk, b"message" * 100)
     
     def _he_encrypt_mock(self):
-        """妯℃嫙鍚屾€佸姞瀵?(~30-50ms)"""
         data = b"homomorphic_encryption"
         for _ in range(20000):
             data = hashlib.sha256(data).digest()
     
     def _he_multiply_mock(self):
-        """妯℃嫙鍚屾€佷箻娉?(~20-40ms)"""
         data = b"he_multiply"
         for _ in range(15000):
             data = hashlib.sha256(data).digest()
     
     def _aes_encrypt_mock(self):
-        """妯℃嫙AES鍔犲瘑 (~0.5-1ms)"""
         data = b"aes_encryption"
         for _ in range(300):
             data = hashlib.sha256(data).digest()
     
     def _get_scheme_description(self, scheme: str) -> str:
-        """鑾峰彇鏂规鎻忚堪"""
         descriptions = {
             "PCVCS": "Proposed: ZK + LRS + PQ-KEM",
             "ASR-WS": "TVT 2024: Arbitrary-Range Worker Selection",
@@ -873,13 +780,6 @@ class PerformanceEvaluator:
                       
                           
     def experiment5_communication_comparison(self) -> Dict[str, Any]:
-        """
-        瀹為獙5: 閫氫俊寮€閿€瀵规瘮
-        
-        鐩殑: 瀵规瘮6涓柟妗堢殑鍗曟潯鎶ュ憡澶у皬
-        鍥捐〃: 鏌辩姸鍥?(Bar Chart)
-        鏂规硶: 鍩轰簬鍗忚鏍煎紡鐨勯潤鎬佸垎鏋愶紝浣跨敤鏍囧噯瀹夊叏鍙傛暟浼扮畻
-        """
         self.logger.info("\n" + "=" * 70)
         self.logger.info("瀹為獙5: 閫氫俊寮€閿€瀵规瘮 (Communication Overhead Comparison)")
         self.logger.info("=" * 70)
@@ -929,9 +829,6 @@ class PerformanceEvaluator:
         return results
     
     def _calculate_report_size(self, scheme: str, params: Dict[str, int]) -> Tuple[int, Dict[str, int]]:
-        """
-        Compute per-report payload size from protocol-field level estimation.
-        """
         breakdown = {}
 
         if scheme == "ASR-WS":
@@ -1004,9 +901,6 @@ class PerformanceEvaluator:
                        
                           
     def experiment6_security_privacy_comparison(self) -> Dict[str, Any]:
-        """
-        Experiment 6: anonymity-strength comparison across baselines.
-        """
         self.logger.info("\n" + "=" * 70)
         self.logger.info("瀹為獙6: 鍖垮悕鎬у己搴﹀姣?(Anonymity Strength Comparison)")
         self.logger.info("=" * 70)
@@ -1097,12 +991,6 @@ class PerformanceEvaluator:
                                       
                           
     def experiment4_scalability_compute_vs_vehicles(self, vehicle_counts: List[int] = None, iterations: int = 50) -> Dict[str, Any]:
-        """
-        姣旇緝6绉嶆柟妗堝湪涓嶅悓鍙備笌杞﹁締鏁颁笅鐨勬€昏绠楀紑閿€锛堝鎴风鎬绘椂闂淬€佹湇鍔″櫒绔€绘椂闂达級銆?
-        妯酱: Nv 鈭?{200,400,600,800,1000}
-        绾佃酱: 鎬昏绠楁椂闂?(ms)
-        杈撳嚭: 姣忕鏂规鍦ㄤ笉鍚孨v涓嬬殑鎬诲鎴风鏃堕棿鍜屾€绘湇鍔″櫒鏃堕棿
-        """
         if vehicle_counts is None:
             vehicle_counts = [200, 400, 600, 800, 1000]
         schemes = ["PCVCS", "ASR-WS", "P-SimiDedup", "VMDA", "pFind"]
@@ -1148,7 +1036,6 @@ class PerformanceEvaluator:
         return results
     
     def _measure_scheme_server_time(self, scheme: str, iterations: int) -> float:
-        """Measure per-report server-side verification time (ms)."""
         if scheme == "PCVCS":
             times = []
                                                                                                
@@ -1176,10 +1063,6 @@ class PerformanceEvaluator:
                                       
                           
     def experiment5_traffic_vs_vehicles(self, vehicle_counts: List[int] = None) -> Dict[str, Any]:
-        """
-        姣旇緝涓嶅悓鏂规鍦ㄦ€讳笂琛屾祦閲忔柟闈㈢殑鎵╁睍鎬с€?
-        Traffic(Nv) = Nv * ReportSize
-        """
         if vehicle_counts is None:
             vehicle_counts = [200, 400, 600, 800, 1000]
         schemes = ["ASR-WS", "P-SimiDedup", "VMDA", "pFind", "PCVCS"]
@@ -1231,9 +1114,6 @@ class PerformanceEvaluator:
                                            
                           
     def experiment6_anonymity_vs_setsize(self) -> Dict[str, Any]:
-        """
-        Plot anonymity strength versus anonymity-set size.
-        """
         self.logger.info("\n" + "=" * 70)
         self.logger.info("瀹為獙6(鏂?: 鍖垮悕鎬?vs 鍖垮悕闆嗗ぇ灏?(Anonymity vs Set Size)")
         self.logger.info("=" * 70)
@@ -1269,7 +1149,6 @@ class PerformanceEvaluator:
               
                           
     def run_all_experiments(self):
-        """杩愯鎵€鏈夊疄楠?"""
         self.logger.info("\n" + "=" * 70)
         self.logger.info("寮€濮嬫墽琛?VI. PERFORMANCE EVALUATION 瀹屾暣瀹為獙鏂规")
         self.logger.info("=" * 70)
@@ -1320,7 +1199,6 @@ class PerformanceEvaluator:
         self.logger.info("=" * 70)
     
     def generate_all_figures(self, exp1, exp2, exp3, exp4, exp5, exp6, exp4n, exp5n, exp6n):
-        """鐢熸垚鎵€鏈夊浘琛紙鍚柊瀹為獙锛?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1356,7 +1234,6 @@ class PerformanceEvaluator:
         self.logger.info("All figures generated.")
     
     def _generate_fig_exp1_client(self, data):
-        """鍥捐〃1: 杞﹁締绔€ц兘鍒嗚В (鍒嗙粍鏌辩姸鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1421,7 +1298,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp1_server(self, data):
-        """鍥捐〃2: 鏈嶅姟鍣ㄧ鎬ц兘鍒嗚В (鍒嗙粍鏌辩姸鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1480,7 +1356,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp2_comm(self, data):
-        """鍥捐〃3: 閫氫俊寮€閿€鍒嗘瀽 (瀵规瘮鎶樼嚎鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1556,7 +1431,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp3_security(self, data):
-        """鍥捐〃4: 瀹夊叏鎬ч獙璇?(2x1闈㈡澘鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1658,7 +1532,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp4_comparative(self, data):
-        """鍥捐〃5: 瀵规瘮鏂规鎬ц兘 (鏌辩姸鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1708,7 +1581,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp5_communication_comparison(self, data):
-        """鍥捐〃6: 閫氫俊寮€閿€瀵规瘮 (鏌辩姸鍥?"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1764,7 +1636,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp6_anonymity_strength(self, data):
-        """鍥捐〃7: 鍖垮悕鎬у己搴﹀姣?(鍙屾煴鐘跺浘)"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1858,7 +1729,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp7_compute_vs_vehicles(self, data):
-        """鍥捐〃7(鏂?: 璁＄畻寮€閿€ vs 杞﹁締鏁帮紙鍙屾姌绾块潰鏉匡級"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1901,7 +1771,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp8_traffic_vs_vehicles(self, data):
-        """鍥捐〃8(鏂?: 閫氫俊寮€閿€ vs 杞﹁締鏁帮紙鎶樼嚎鍥撅級"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1936,7 +1805,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def _generate_fig_exp9_anonymity_vs_setsize(self, data):
-        """鍥捐〃9(鏂?: 鍖垮悕鎬?vs 鍖垮悕闆嗗ぇ灏忥紙鎶樼嚎鍥撅級"""
         import matplotlib.pyplot as plt
         import numpy as np
         
@@ -1969,7 +1837,6 @@ class PerformanceEvaluator:
         plt.close()
     
     def generate_report(self, exp1, exp2, exp3, exp4, exp5, exp6):
-        """鐢熸垚瀹為獙鎶ュ憡"""
         report_path = self.output_dir / "PERFORMANCE_EVALUATION_REPORT.md"
         
         with open(report_path, 'w', encoding='utf-8') as f:
@@ -2075,9 +1942,6 @@ def parse_args():
 
 
 def ensure_crypto_backend(use_real_crypto: bool):
-    """
-    Ensure USE_REAL_CRYPTO is set before crypto modules are imported by re-exec when needed.
-    """
     desired = "1" if use_real_crypto else "0"
     current = os.environ.get("USE_REAL_CRYPTO", "")
     if current == desired:

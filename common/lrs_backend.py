@@ -1,7 +1,3 @@
-"""
-LSAG/LRS Python包装器
-使用ctypes调用C库实现
-"""
 import ctypes
 import os
 import sys
@@ -64,18 +60,6 @@ if _lib:
     _lib.lsag_verify.restype = ctypes.c_int
 
 def lsag_sign_py(msg: bytes, ring_pubkeys: list[bytes], sk_signer, ctx: bytes):
-    """
-    Python包装的LSAG签名函数
-    
-    Args:
-        msg: 要签名的消息
-        ring_pubkeys: 环中所有公钥的列表
-        sk_signer: 签名者的私钥（可能是PyNaCl的SigningKey对象或bytes）
-        ctx: 上下文/窗口ID
-    
-    Returns:
-        tuple: (signature, keyimage)
-    """
                          
     if hasattr(sk_signer, 'encode'):
                
@@ -133,19 +117,6 @@ def lsag_sign_py(msg: bytes, ring_pubkeys: list[bytes], sk_signer, ctx: bytes):
         return fallback_lsag_sign(msg, processed_ring_pubkeys, sk_signer_bytes, ctx)
 
 def lsag_verify_py(msg: bytes, ring_pubkeys: list[bytes], sig: bytes, keyimage: bytes, ctx: bytes):
-    """
-    Python包装的LSAG验证函数
-    
-    Args:
-        msg: 要验证的消息
-        ring_pubkeys: 环中所有公钥的列表
-        sig: 签名
-        keyimage: 密钥镜像
-        ctx: 上下文/窗口ID
-    
-    Returns:
-        bool: 验证是否成功
-    """
                      
     processed_ring_pubkeys = []
     for pk in ring_pubkeys:
@@ -181,9 +152,6 @@ def lsag_verify_py(msg: bytes, ring_pubkeys: list[bytes], sig: bytes, keyimage: 
 
                
 def fallback_lsag_sign(msg: bytes, ring_pubkeys: list[bytes], sk_signer: bytes, ctx: bytes):
-    """
-    占位符LSAG签名实现
-    """
                
     data = msg + ctx + sk_signer
     sig = hmac.new(sk_signer[:32], data, hashlib.sha256).digest()
@@ -194,8 +162,5 @@ def fallback_lsag_sign(msg: bytes, ring_pubkeys: list[bytes], sk_signer: bytes, 
     return sig, keyimage
 
 def fallback_lsag_verify(msg: bytes, ring_pubkeys: list[bytes], sig: bytes, keyimage: bytes, ctx: bytes):
-    """
-    占位符LSAG验证实现
-    """
                     
     return True

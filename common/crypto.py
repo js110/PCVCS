@@ -179,7 +179,6 @@ def haversine(lat1, lon1, lat2, lon2):
                                              
 
 def generate_token(rsu_id: str, timestamp: int, expiry: int) -> dict:
-    """Generate a simple token for RSU authentication"""
                                                                               
                                                           
     token_data = {
@@ -191,7 +190,6 @@ def generate_token(rsu_id: str, timestamp: int, expiry: int) -> dict:
     return token_data
 
 def verify_token(token: dict, rsu_id: str, current_timestamp: int) -> bool:
-    """Verify a token's validity"""
                                            
     if token.get("rsu_id") != rsu_id:
         return False

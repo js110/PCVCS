@@ -1,8 +1,5 @@
                       
                        
-"""
-图表生成模块 - IEEE标准图表
-"""
 
 import matplotlib
 matplotlib.use('Agg')          
@@ -25,17 +22,8 @@ IEEE_DPI = 300
 
 
 class IEEEChartGenerator:
-    """IEEE标准图表生成器"""
     
     def __init__(self, output_dir: Path, language: str = "en", dpi: int = 300):
-        """
-        初始化
-        
-        Args:
-            output_dir: 输出目录
-            language: 语言 (zh/en)
-            dpi: 分辨率
-        """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.language = language
@@ -45,7 +33,6 @@ class IEEEChartGenerator:
         self._setup_ieee_style()
         
     def _setup_ieee_style(self):
-        """设置IEEE图表样式"""
         plt.style.use('seaborn-v0_8-paper')
         
               
@@ -65,7 +52,6 @@ class IEEEChartGenerator:
         })
         
     def _get_labels(self, key: str) -> str:
-        """获取标签文本"""
         labels = {
             "zh": {
                 "time_ms": "时间 (ms)",
@@ -105,10 +91,6 @@ class IEEEChartGenerator:
         return labels.get(self.language, labels["en"]).get(key, key)
     
     def figure1_crypto_primitives(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 1: 密码学原语性能对比
-        分组柱状图
-        """
         fig, ax = plt.subplots(figsize=(IEEE_PAGE_WIDTH, 3.5))
         
               
@@ -161,10 +143,6 @@ class IEEEChartGenerator:
         return output_path
     
     def figure2_e2e_latency(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 2: 端到端延迟分解
-        堆叠柱状图
-        """
         fig, ax = plt.subplots(figsize=(IEEE_COLUMN_WIDTH, 3))
         
         categories = [self._get_labels("vehicle_side"), self._get_labels("server_side")]
@@ -191,10 +169,6 @@ class IEEEChartGenerator:
         return output_path
     
     def figure3_throughput_vs_concurrency(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 3: 吞吐量与并发度关系
-        折线图 - 使用基线对比的真实数据
-        """
         fig, ax = plt.subplots(figsize=(IEEE_COLUMN_WIDTH, 3))
         
                         
@@ -238,10 +212,6 @@ class IEEEChartGenerator:
         return output_path
     
     def figure4_scalability(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 4: 可扩展性测试
-        双Y轴折线图
-        """
         fig, ax1 = plt.subplots(figsize=(IEEE_COLUMN_WIDTH, 3))
         
         merkle_sizes = data.get("merkle_sizes", [8, 32, 128, 512])
@@ -272,10 +242,6 @@ class IEEEChartGenerator:
         return output_path
     
     def figure5_security_detection(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 5: 安全性检测率对比
-        分组柱状图
-        """
         fig, ax = plt.subplots(figsize=(IEEE_PAGE_WIDTH, 3.5))
         
         attack_types = data.get("attack_types", 
@@ -314,10 +280,6 @@ class IEEEChartGenerator:
         return output_path
     
     def figure6_baseline_comparison(self, data: Dict[str, Any]) -> Path:
-        """
-        Figure 6: 基线方案性能对比
-        分组柱状图
-        """
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(IEEE_PAGE_WIDTH, 3))
         
         schemes = data.get("schemes", ["PPRM", "LMDA-VCS", "Proposed"])
@@ -358,7 +320,6 @@ class IEEEChartGenerator:
         return output_path
     
     def generate_all_figures(self, all_data: Dict[str, Any]) -> List[Path]:
-        """生成所有图表"""
         figures = []
         
         print("Generating Figure 1: Cryptographic Primitives..." if self.language == "en" else "生成Figure 1: 密码学原语性能...")

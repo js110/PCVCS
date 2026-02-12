@@ -1,8 +1,5 @@
                       
                        
-"""
-实验数据模型模块
-"""
 
 from .benchmark_result import BenchmarkResult
 from .simulation_result import (

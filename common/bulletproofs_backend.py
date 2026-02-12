@@ -1,7 +1,3 @@
-"""
-Bulletproofs Python包装器
-使用ctypes调用Rust库实现
-"""
 import ctypes
 import sys
 import os
@@ -79,16 +75,6 @@ else:
     print("Bulletproofs库未加载，使用占位符实现")
 
 def pedersen_commit_py(value: int, blinding: int) -> bytes:
-    """
-    Python包装的Pedersen承诺函数
-    
-    Args:
-        value: 要承诺的值
-        blinding: 盲化因子
-    
-    Returns:
-        bytes: 32字节的承诺值
-    """
     if _lib:
                  
         commit_buf = ctypes.create_string_buffer(32)
@@ -109,18 +95,6 @@ def pedersen_commit_py(value: int, blinding: int) -> bytes:
         return fallback_pedersen_commit(value, blinding)
 
 def range_proof_prove_py(value: int, L: int, U: int, blinding: int) -> tuple[bytes, bytes]:
-    """
-    Python包装的范围证明生成函数
-    
-    Args:
-        value: 要证明的值
-        L: 范围下界
-        U: 范围上界
-        blinding: 盲化因子
-    
-    Returns:
-        tuple: (commitment, proof)
-    """
     if _lib:
                  
         commit_buf = ctypes.create_string_buffer(32)
@@ -150,18 +124,6 @@ def range_proof_prove_py(value: int, L: int, U: int, blinding: int) -> tuple[byt
         return fallback_range_proof_prove(value, L, U, blinding)
 
 def range_proof_verify_py(L: int, U: int, commit: bytes, proof: bytes) -> bool:
-    """
-    Python包装的范围证明验证函数
-    
-    Args:
-        L: 范围下界
-        U: 范围上界
-        commit: 承诺值
-        proof: 证明值
-    
-    Returns:
-        bool: 验证是否成功
-    """
     if _lib:
                        
         if len(commit) != 32:
@@ -183,23 +145,14 @@ def range_proof_verify_py(L: int, U: int, commit: bytes, proof: bytes) -> bool:
 
                
 def fallback_pedersen_commit(value: int, blinding: int) -> bytes:
-    """
-    占位符Pedersen承诺实现
-    """
     commit = hashlib.sha256(f"{value}|{blinding}".encode()).digest()
     return commit
 
 def fallback_range_proof_prove(value: int, L: int, U: int, blinding: int) -> tuple[bytes, bytes]:
-    """
-    占位符范围证明生成实现
-    """
     commit = hashlib.sha256(f"{value}|{blinding}".encode()).digest()
     proof = hashlib.sha256(f"{value}|{L}|{U}|{blinding}".encode()).digest()
     return commit, proof
 
 def fallback_range_proof_verify(L: int, U: int, commit: bytes, proof: bytes) -> bool:
-    """
-    占位符范围证明验证实现
-    """
                     
     return True

@@ -1,9 +1,5 @@
                       
                        
-"""
-生成新实验方案的图表 - 中文版（供检查）
-按照"新的实验计划.md"的要求生成5张图和2张表
-"""
 
 import json
 import numpy as np
@@ -33,7 +29,6 @@ OUTPUT_DIR = Path("new_experiment_results/20251129_151922/figures_cn")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 def load_data():
-    """加载所有实验数据"""
     with open(DATA_DIR / "performance.json", 'r', encoding='utf-8') as f:
         performance = json.load(f)
     
@@ -50,7 +45,6 @@ def load_data():
 
 
 def generate_fig1(security_data: Dict):
-    """Fig.1 功能与攻击阻断（正确性 & 安全性）"""
     print("生成 Fig.1: 功能正确性与攻击阻断率...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -107,7 +101,6 @@ def generate_fig1(security_data: Dict):
 
 
 def generate_fig2(privacy_data: Dict):
-    """Fig.2 隐私保护强度（位置 + 时间推断）"""
     print("生成 Fig.2: 隐私保护强度...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -151,7 +144,6 @@ def generate_fig2(privacy_data: Dict):
 
 
 def generate_fig3(performance_data: Dict):
-    """Fig.3 性能：端到端延迟 & 延迟分布"""
     print("生成 Fig.3: 端到端延迟分析...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -218,7 +210,6 @@ def generate_fig3(performance_data: Dict):
 
 
 def generate_fig4(performance_data: Dict):
-    """Fig.4 性能：消息大小 & 带宽"""
     print("生成 Fig.4: 系统可扩展性与通信开销...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -269,7 +260,6 @@ def generate_fig4(performance_data: Dict):
 
 
 def generate_fig5(performance_data: Dict, crypto_data: Dict):
-    """Fig.5 Ablation：性能对比和延迟分解"""
     print("生成 Fig.5: 消融实验...")
     
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
@@ -370,7 +360,6 @@ def generate_fig5(performance_data: Dict, crypto_data: Dict):
 
 
 def generate_table1(crypto_data: Dict):
-    """Table I - 密码原语微基准（图表版）"""
     print("生成 Table I: 密码原语微基准...")
     
           
@@ -456,7 +445,6 @@ def generate_table1(crypto_data: Dict):
 
 
 def generate_table2(security_data: Dict, privacy_data: Dict):
-    """Table II - 链接性 & 重放检测结果（图表版）"""
     print("生成 Table II: 链接性与重放检测结果...")
     
           
@@ -543,7 +531,6 @@ def generate_table2(security_data: Dict, privacy_data: Dict):
 
 
 def main():
-    """主函数"""
     print("="*70)
     print("生成新实验方案的图表和表格 - 中文版（供检查）")
     print("="*70)

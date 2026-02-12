@@ -1,8 +1,5 @@
                       
                        
-"""
-安全性测试模块 - 使用真实攻击样本
-"""
 
 import os
 import sys
@@ -25,10 +22,8 @@ from common.crypto_adapters import (
 
 
 class SecurityTester:
-    """安全性测试器 - 生成真实攻击样本并测试检测能力"""
     
     def __init__(self, logger: Optional[ExperimentLogger] = None):
-        """初始化测试器"""
         self.logger = logger
         self.results = DetectionResultCollection()
         
@@ -50,12 +45,10 @@ class SecurityTester:
             })
     
     def _log(self, message: str, level: str = "info") -> None:
-        """记录日志"""
         if self.logger:
             getattr(self.logger, level)(message)
     
     def _load_whitelist(self) -> List[str]:
-        """加载地理哈希白名单"""
         whitelist_file = self.data_dir / "whitelist_geohash.txt"
         if whitelist_file.exists():
             with open(whitelist_file, 'r', encoding='utf-8') as f:
@@ -70,7 +63,6 @@ class SecurityTester:
             return default_whitelist
     
     def _pk_to_hex(self, pk) -> str:
-        """将公钥转换为十六进制字符"""
         if hasattr(pk, 'encode'):
                                 
             return pk.encode().hex()
@@ -80,7 +72,6 @@ class SecurityTester:
             return bytes(pk).hex()
     
     def generate_valid_sample(self) -> Dict[str, Any]:
-        """生成合法样本"""
                           
         geohash = random.choice(self.whitelist)
         
@@ -140,7 +131,6 @@ class SecurityTester:
         }
     
     def generate_location_forge_attack(self) -> Dict[str, Any]:
-        """生成位置伪造攻击样本"""
                           
         invalid_geohash = "wtw3xxx"          
         
@@ -193,7 +183,6 @@ class SecurityTester:
         }
     
     def generate_time_forge_attack(self) -> Dict[str, Any]:
-        """生成时间窗口作弊攻击样本"""
         geohash = random.choice(self.whitelist)
         
                    
@@ -246,7 +235,6 @@ class SecurityTester:
         }
 
     def generate_token_abuse_attack(self) -> Dict[str, Any]:
-        """生成Token滥用攻击样本（过期Token）"""
         geohash = random.choice(self.whitelist)
         
         current_time = now_s()
@@ -299,7 +287,6 @@ class SecurityTester:
         }
     
     def generate_replay_attack(self) -> Dict[str, Any]:
-        """生成重放攻击样本（旧时间戳）"""
         geohash = random.choice(self.whitelist)
         
                  
@@ -352,7 +339,6 @@ class SecurityTester:
         }
     
     def generate_duplicate_report_attack(self) -> List[Dict[str, Any]]:
-        """生成多次上报攻击样本（相同key image）"""
                        
         geohash = random.choice(self.whitelist)
         
@@ -412,16 +398,6 @@ class SecurityTester:
         return samples
     
     def verify_sample(self, sample: Dict[str, Any], use_zkp: bool = True) -> bool:
-        """
-        验证样本
-        
-        Args:
-            sample: 样本数据
-            use_zkp: 是否使用零知识证明验证
-        
-        Returns:
-            是否通过验证
-        """
         if not use_zkp:
                              
                               
@@ -469,17 +445,6 @@ class SecurityTester:
             return False
     
     def test_attack_type(self, attack_type: str, sample_count: int, use_zkp: bool = True) -> DetectionResult:
-        """
-        测试特定类型的攻击
-        
-        Args:
-            attack_type: 攻击类型
-            sample_count: 样本数量
-            use_zkp: 是否使用零知识证明
-        
-        Returns:
-            DetectionResult实例
-        """
         self._log(f"测试攻击: {attack_type} (样本数 {sample_count}, ZKP: {use_zkp})")
         
         detected_count = 0
@@ -528,7 +493,6 @@ class SecurityTester:
         return result
     
     def run_all_tests(self, attack_types: List[str], sample_count: int = 100) -> DetectionResultCollection:
-        """运行所有安全测试"""
         self._log("=" * 60)
         self._log("开始运行所有安全测试")
         self._log("=" * 60)
@@ -546,6 +510,5 @@ class SecurityTester:
         return self.results
     
     def save_results(self, output_path: Path) -> None:
-        """保存结果"""
         self.results.to_json(output_path)
         self._log(f"安全测试结果已保存到: {output_path}")

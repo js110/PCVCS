@@ -1,33 +1,16 @@
-"""
-Merkle Tree Implementation
-"""
 import hashlib
 from typing import List, Optional
 
 class MerkleTree:
-    """Merkle Tree implementation for location whitelist verification"""
     
     def __init__(self, leaves: List[str]):
-        """
-        Initialize Merkle tree with leaves
-        
-        Args:
-            leaves: List of leaf values (geohash strings)
-        """
         self.leaves = leaves
         self.tree = self._build_tree(leaves)
     
     def _hash(self, data: str) -> bytes:
-        """Hash function for Merkle tree"""
         return hashlib.sha256(data.encode()).digest()
     
     def _build_tree(self, leaves: List[str]) -> List[List[bytes]]:
-        """
-        Build Merkle tree from leaves
-        
-        Returns:
-            List of levels, where each level is a list of hashes
-        """
         if not leaves:
             return []
         
@@ -50,21 +33,11 @@ class MerkleTree:
         return tree
     
     def get_root(self) -> str:
-        """Get Merkle root as hex string"""
         if not self.tree:
             return ""
         return self.tree[-1][0].hex()
     
     def get_proof(self, leaf: str) -> List[str]:
-        """
-        Generate Merkle proof for a leaf
-        
-        Args:
-            leaf: Leaf value to generate proof for
-            
-        Returns:
-            List of sibling hashes as hex strings
-        """
         if leaf not in self.leaves:
             return []
         
@@ -89,17 +62,6 @@ class MerkleTree:
         return proof
     
     def verify_proof(self, leaf: str, proof: List[str], root: str) -> bool:
-        """
-        Verify Merkle proof
-        
-        Args:
-            leaf: Leaf value to verify
-            proof: Merkle proof as list of hex strings
-            root: Merkle root as hex string
-            
-        Returns:
-            True if proof is valid, False otherwise
-        """
         if not proof or not root:
             return False
         

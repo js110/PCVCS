@@ -1,10 +1,5 @@
                       
                        
-"""
-新实验方案执行脚本
-严格遵循 新的实验计划.md 要求
-基于真实SUMO环境和真实密码学操作
-"""
 
 import json
 import time
@@ -25,10 +20,6 @@ from experiments.logger import ExperimentLogger
 
 
 class NewExperimentPlan:
-    """
-    新实验方案执行器
-    生成5张图 + 2张表
-    """
     
     def __init__(self, output_dir: str = "new_experiment_results"):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -62,7 +53,6 @@ class NewExperimentPlan:
         self.logger.info("=" * 70)
     
     def run_all_experiments(self):
-        """执行所有实验"""
         start_time = time.time()
         
         try:
@@ -102,10 +92,6 @@ class NewExperimentPlan:
             raise
     
     def run_crypto_microbenchmarks(self):
-        """
-        密码学原语微基准测试
-        生成 Table I 的数据
-        """
         self.logger.info("运行密码学微基准测试...")
         
                                   
@@ -132,10 +118,6 @@ class NewExperimentPlan:
         self.logger.info(f"  数据已保存: {output_file}")
     
     def run_functional_and_security_tests(self):
-        """
-        功能与安全性测试
-        生成 Fig.1 和 Table II 的数据
-        """
         self.logger.info("运行功能与安全性测试...")
         
         results = {}
@@ -172,7 +154,6 @@ class NewExperimentPlan:
         self.logger.info(f"  数据已保存: {output_file}")
     
     def _test_honest_reports(self, num_samples: int) -> Dict[str, Any]:
-        """测试诚实报告的接受率"""
         accepted = 0
         
         for i in range(num_samples):
@@ -194,7 +175,6 @@ class NewExperimentPlan:
         }
     
     def _test_location_forge(self, num_samples: int) -> Dict[str, Any]:
-        """测试位置伪造攻击"""
         accepted = 0
         
         for i in range(num_samples):
@@ -217,7 +197,6 @@ class NewExperimentPlan:
         }
     
     def _test_time_forge(self, num_samples: int) -> Dict[str, Any]:
-        """测试时间伪造攻击"""
         accepted = 0
         
         for i in range(num_samples):
@@ -239,7 +218,6 @@ class NewExperimentPlan:
         }
     
     def _test_token_tamper(self, num_samples: int) -> Dict[str, Any]:
-        """测试Token篡改攻击"""
         accepted = 0
         
         for i in range(num_samples):
@@ -261,7 +239,6 @@ class NewExperimentPlan:
         }
     
     def _test_replay_attack(self, num_samples: int) -> Dict[str, Any]:
-        """测试重放攻击"""
                          
         try:
             valid_sample = self.security_tester.generate_valid_sample()
@@ -295,10 +272,6 @@ class NewExperimentPlan:
         }
     
     def run_privacy_evaluation(self):
-        """
-        隐私评估实验
-        生成 Fig.2 的数据
-        """
         self.logger.info("运行隐私评估实验...")
         
         privacy_results = {}
@@ -326,10 +299,6 @@ class NewExperimentPlan:
         self.logger.info(f"  数据已保存: {output_file}")
     
     def _test_location_inference(self) -> Dict[str, Any]:
-        """
-        测试位置推断攻击
-        测量攻击者能否推断车辆真实位置
-        """
         area_sizes = [16, 64, 256, 1024]
         results = {}
         
@@ -362,10 +331,6 @@ class NewExperimentPlan:
         return results
     
     def _test_time_inference(self) -> Dict[str, Any]:
-        """
-        测试时间推断攻击
-        测量攻击者能否推断准确时间
-        """
         window_lengths = [60, 300, 1800]     
         results = {}
         
@@ -394,10 +359,6 @@ class NewExperimentPlan:
         return results
     
     def _test_cross_task_linkability(self) -> Dict[str, Any]:
-        """
-        测试跨任务链接性
-        测试能否关联同一车辆的多个报告
-        """
                                
         plain_linkability = 95.0
         
@@ -421,15 +382,6 @@ class NewExperimentPlan:
         return results
     
     def run_performance_tests(self):
-        """
-        性能测试
-        生成 Fig.3, Fig.4, Fig.5 的数据
-        
-        测试三种方案：
-        - Plain: 无ZK/LRS/PQ
-        - ZK+LRS: 有ZK和LRS，无PQ
-        - ZK+LRS+PQ: 完整方案
-        """
         self.logger.info("运行性能测试...")
         self.logger.info("注意：这将运行真实的SUMO仿真，需要较长时间...")
         
@@ -462,16 +414,6 @@ class NewExperimentPlan:
         self.logger.info(f"  数据已保存: {output_file}")
     
     def _run_e2e_performance_test(self, vehicle_count: int, scheme: str) -> Dict[str, Any]:
-        """
-        运行端到端性能测试
-        
-        Args:
-            vehicle_count: 车辆数量
-            scheme: Plain / ZK+LRS / ZK+LRS+PQ
-        
-        Returns:
-            性能指标字典
-        """
                 
         use_zkp = 'ZK' in scheme
         use_pq = 'PQ' in scheme
@@ -515,7 +457,6 @@ class NewExperimentPlan:
             }
     
     def _print_data_summary(self):
-        """打印数据摘要"""
         self.logger.info("\n" + "=" * 70)
         self.logger.info("实验数据摘要")
         self.logger.info("=" * 70)

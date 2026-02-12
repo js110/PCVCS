@@ -1,7 +1,3 @@
-"""
-Kyber/ML-KEM 密钥封装机制层
-用于传输层安全通信
-"""
 import hashlib
 import os
 
@@ -14,9 +10,6 @@ except ImportError:
     pass
 
 class KEMServer:
-    """
-    KEM服务器端实现
-    """
     def __init__(self):
         self.pk = None
         self.sk = None
@@ -24,9 +17,6 @@ class KEMServer:
         self.kyber = _kyber_lib
     
     def setup_keys(self):
-        """
-        生成KEM密钥对
-        """
         if self.kyber:
                           
             self.pk, self.sk = self.kyber.keygen()
@@ -38,15 +28,6 @@ class KEMServer:
             return self.pk, self.sk
     
     def finish_handshake(self, ct):
-        """
-        完成握手过程，从密文恢复共享密钥
-        
-        Args:
-            ct: 客户端发送的密文
-            
-        Returns:
-            bytes: 服务器端的共享密钥
-        """
         if self.kyber:
                           
             try:
@@ -64,23 +45,11 @@ class KEMServer:
         return key
 
 class KEMClient:
-    """
-    KEM客户端实现
-    """
     def __init__(self):
                      
         self.kyber = _kyber_lib
     
     def handshake(self, pk):
-        """
-        执行握手过程，生成密文和共享密钥
-        
-        Args:
-            pk: 服务器的公钥
-            
-        Returns:
-            tuple: (ct, key) 密文和客户端的共享密钥
-        """
         if self.kyber:
                           
             try:
@@ -100,54 +69,20 @@ class KEMClient:
         return ct, key
 
 def server_setup_keys():
-    """
-    服务器端设置密钥对
-    
-    Returns:
-        tuple: (pk, sk) 公钥和私钥
-    """
     server = KEMServer()
     return server.setup_keys()
 
 def client_handshake(pk):
-    """
-    客户端握手
-    
-    Args:
-        pk: 服务器公钥
-        
-    Returns:
-        tuple: (ct, key) 密文和会话密钥
-    """
     client = KEMClient()
     return client.handshake(pk)
 
 def server_finish(ct, sk):
-    """
-    服务器端完成握手
-    
-    Args:
-        ct: 客户端密文
-        sk: 服务器私钥
-        
-    Returns:
-        bytes: 会话密钥
-    """
     server = KEMServer()
     server.sk = sk
     return server.finish_handshake(ct)
 
          
 def example_server_handshake(conn):
-    """
-    服务器端握手示例
-    
-    Args:
-        conn: 网络连接对象，需要实现sendall和recv方法
-        
-    Returns:
-        bytes: 会话密钥
-    """
               
     pk, sk = server_setup_keys()
     
@@ -163,15 +98,6 @@ def example_server_handshake(conn):
     return session_key
 
 def example_client_handshake(conn):
-    """
-    客户端握手示例
-    
-    Args:
-        conn: 网络连接对象，需要实现sendall和recv方法
-        
-    Returns:
-        bytes: 会话密钥
-    """
                 
     pk = conn.recv(1024)
     
@@ -185,37 +111,12 @@ def example_client_handshake(conn):
 
                                 
 def kem_keygen():
-    """
-    KEM密钥生成
-    
-    Returns:
-        tuple: (pk, sk) 公钥和私钥
-    """
     return server_setup_keys()
 
 def kem_encaps(pk):
-    """
-    KEM封装
-    
-    Args:
-        pk: 公钥
-        
-    Returns:
-        tuple: (ct, key) 密文和会话密钥
-    """
     return client_handshake(pk)
 
 def kem_decaps(sk, ct):
-    """
-    KEM解封装
-    
-    Args:
-        sk: 私钥
-        ct: 密文
-        
-    Returns:
-        bytes: 会话密钥
-    """
     return server_finish(ct, sk)
 
                          

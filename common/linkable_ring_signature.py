@@ -1,14 +1,5 @@
                       
                        
-"""
-可关联环签名（Linkable Ring Signature, LRS）实现
-用于群智感知系统中的匿名性和可控关联性
-
-功能：
-1. 匿名性：隐藏签名者在环中的具体身份
-2. 可链接性：通过link_tag检测同一车辆的重复提交
-3. 受控去匿名化：审计机构可在争议场景中追溯真实身份
-"""
 
 import os
 import hashlib
@@ -20,7 +11,6 @@ from dataclasses import dataclass, asdict
 
 @dataclass
 class VehicleIdentity:
-    """车辆身份信息"""
     vehicle_id: str                  
     master_sk: bytes                    
     master_pk: bytes              
@@ -29,7 +19,6 @@ class VehicleIdentity:
 
 @dataclass
 class TaskKey:
-    """任务专用密钥"""
     task_id: str                        
     derived_sk: bytes                    
     derived_pk: bytes                
@@ -38,7 +27,6 @@ class TaskKey:
 
 @dataclass
 class PublicKeyRing:
-    """公钥注册环 Rring"""
     ring_id: str                         
     task_id: str                             
     registered_pubkeys: List[bytes]          
@@ -47,7 +35,6 @@ class PublicKeyRing:
 
 @dataclass
 class AuditRecord:
-    """审计记录（由审计机构维护）"""
     vehicle_id: str                 
     master_pk: bytes             
     task_id: str                 
@@ -57,15 +44,8 @@ class AuditRecord:
 
 
 class LinkableRingSignature:
-    """可关联环签名系统"""
     
     def __init__(self, audit_authority_sk: Optional[bytes] = None):
-        """
-        初始化LRS系统
-        
-        Args:
-            audit_authority_sk: 审计机构的追踪密钥（私钥）
-        """
         self.audit_authority_sk = audit_authority_sk or secrets.token_bytes(32)
         self.audit_authority_pk = hashlib.sha256(self.audit_authority_sk).digest()
         
@@ -78,15 +58,6 @@ class LinkableRingSignature:
                                                      
     
     def register_vehicle(self, vehicle_id: str) -> VehicleIdentity:
-        """
-        注册新车辆，生成主密钥对
-        
-        Args:
-            vehicle_id: 车辆唯一标识
-            
-        Returns:
-            VehicleIdentity: 车辆身份信息
-        """
                 
         master_sk = secrets.token_bytes(32)
         master_pk = hashlib.sha256(b"master_pk" + master_sk).digest()
@@ -101,16 +72,6 @@ class LinkableRingSignature:
         return identity
     
     def derive_task_key(self, vehicle_identity: VehicleIdentity, task_id: str) -> TaskKey:
-        """
-        从主密钥派生任务专用密钥（方案2实现）
-        
-        Args:
-            vehicle_identity: 车辆身份
-            task_id: 任务标识（如窗口ID）
-            
-        Returns:
-            TaskKey: 任务专用密钥
-        """
                       
         master_sk = vehicle_identity.master_sk
         task_id_bytes = task_id.encode('utf-8')
@@ -145,16 +106,6 @@ class LinkableRingSignature:
         return task_key
     
     def create_public_key_ring(self, task_id: str, registered_vehicles: List[VehicleIdentity]) -> PublicKeyRing:
-        """
-        创建任务专用的公钥注册环 Rring
-        
-        Args:
-            task_id: 任务ID
-            registered_vehicles: 注册车辆列表
-            
-        Returns:
-            PublicKeyRing: 公钥环
-        """
                      
         pubkeys = []
         for vehicle in registered_vehicles:
@@ -176,17 +127,6 @@ class LinkableRingSignature:
         task_key: TaskKey, 
         public_ring: PublicKeyRing
     ) -> Dict[str, Any]:
-        """
-        使用LRS对消息进行签名
-        
-        Args:
-            message: 消息 M = (tid, Cm, Cg, Ct, Ctok)
-            task_key: 签名者的任务密钥
-            public_ring: 公钥环 Rring
-            
-        Returns:
-            σLRS: LRS签名对象
-        """
         from .crypto_adapters import lrs_sign
         
                      
@@ -228,17 +168,6 @@ class LinkableRingSignature:
         sigma_lrs: Dict[str, Any], 
         public_ring: PublicKeyRing
     ) -> bool:
-        """
-        边缘验证者检查签名有效性
-        
-        Args:
-            message: 原始消息
-            sigma_lrs: LRS签名
-            public_ring: 公钥环
-            
-        Returns:
-            bool: 签名是否有效
-        """
         from .crypto_adapters import lrs_verify
         
                   
@@ -261,18 +190,6 @@ class LinkableRingSignature:
         sigma_lrs: Dict[str, Any], 
         task_id: str
     ) -> Tuple[bool, Optional[List[Dict[str, Any]]]]:
-        """
-        通过比较link_tag检测重复提交
-        
-        Args:
-            sigma_lrs: 新的签名
-            task_id: 任务ID
-            
-        Returns:
-            (is_duplicate, previous_submissions): 
-                - is_duplicate: 是否为重复提交
-                - previous_submissions: 之前的提交记录列表（如果有）
-        """
         link_tag = sigma_lrs["link_tag"]
         
                               
@@ -296,13 +213,6 @@ class LinkableRingSignature:
                                                       
     
     def _register_to_audit(self, vehicle_identity: VehicleIdentity, task_key: TaskKey):
-        """
-        向审计机构注册车辆-任务映射（内部方法）
-        
-        Args:
-            vehicle_identity: 车辆身份
-            task_key: 任务密钥
-        """
         record_key = f"{task_key.task_id}:{task_key.link_tag}"
         
         record = AuditRecord(
@@ -322,17 +232,6 @@ class LinkableRingSignature:
         task_id: str, 
         authority_sk: bytes
     ) -> Optional[AuditRecord]:
-        """
-        审计机构的受控去匿名化功能
-        
-        Args:
-            link_tag: 要追溯的链接标签
-            task_id: 任务ID
-            authority_sk: 审计机构的追踪密钥
-            
-        Returns:
-            AuditRecord: 车辆真实身份信息（如果权限验证通过）
-        """
                   
         if authority_sk != self.audit_authority_sk:
             raise PermissionError("无效的审计机构追踪密钥")
@@ -346,16 +245,6 @@ class LinkableRingSignature:
             return None
     
     def export_audit_report(self, task_id: str, authority_sk: bytes) -> Dict[str, Any]:
-        """
-        导出任务的审计报告
-        
-        Args:
-            task_id: 任务ID
-            authority_sk: 审计机构密钥
-            
-        Returns:
-            Dict: 审计报告
-        """
         if authority_sk != self.audit_authority_sk:
             raise PermissionError("无效的审计机构追踪密钥")
         
@@ -382,7 +271,6 @@ class LinkableRingSignature:
                                                 
 
 def hmac_sha256(key: bytes, data: bytes) -> bytes:
-    """HMAC-SHA256"""
     import hmac
     return hmac.new(key, data, hashlib.sha256).digest()
 
@@ -390,7 +278,6 @@ def hmac_sha256(key: bytes, data: bytes) -> bytes:
                                                 
 
 def example_usage():
-    """论文方案的完整使用示例"""
     print("=== 可关联环签名（LRS）系统演示 ===\n")
     
               
