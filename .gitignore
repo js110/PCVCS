@@ -210,6 +210,8 @@ performance_evaluation_results*/
 .qoder/
 .cargo/
 .tmp_*
+README*
+**/README*
 
 # Exclude manuscript/document/image assets
 *.png
